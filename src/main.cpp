@@ -1,24 +1,32 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <tuple>
+#include <glm/vec2.hpp>
+#include <glm/common.hpp>
+#include <glm/geometric.hpp>
+#include "gameObjects.h"
 
-void renderScene() {
-	glClear(GL_COLOR_BUFFER_BIT);
-	glFlush();
-}
+Game game;
 
 
 void init() {
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glShadeModel(GL_FLAT);
+	
+	game.gameInit();
+}
+
+
+void renderScene() {
 
 }
 
 void main(int argc, char **argv) {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("Hello guys");
-	glutDisplayFunc(renderScene);
-	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	glewInit();
-	glutMainLoop();
+	glutInitWindowSize(960, 580);
+	glutCreateWindow(argv[0]);
+	init();
 }
