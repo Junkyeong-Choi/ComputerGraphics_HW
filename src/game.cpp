@@ -1,5 +1,5 @@
 #include "game.h"
-
+#include <iostream>
 #include <glm/geometric.hpp>
 
 
@@ -8,6 +8,7 @@ bool Game::isExiting() {
 }
 
 void Game::update(int delta) {
+	std::cout << delta << std::endl;
 	return;
 }
 
@@ -15,12 +16,37 @@ void Game::render() {
 	return;
 }
 
-Game::Game() {
+void display() {
+
+}
+
+void reshape(int w, int h) {
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0, 1, 0, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+
+Game::Game(int argc, char* argv[], int width, int height, bool isFullScreen) {
 	player1 = MovableRectangleObject(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0));
 	player2 = MovableRectangleObject(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0));
 	ball = BallObject(glm::vec2(90, 70), 7.5, glm::vec2(0, 0));
 	net = RectangleObject(glm::vec2(90, 0), glm::vec2(5, 50));
 	gamestate = GAME_MENU;
+
+	// Initialize window
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(width, height);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("Pickachu Volleyball");
+	if (isFullScreen)
+		glutFullScreen();
+
+	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
 }
 
 

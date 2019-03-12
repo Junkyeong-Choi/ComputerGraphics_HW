@@ -1,5 +1,7 @@
 #pragma once
 #include <tuple>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 #include "movableRectangleObject.h"
 #include "ballObject.h"
 
@@ -28,7 +30,7 @@ private:
 	Collision CheckCollision(RectangleObject rect, BallObject ball);
 	Collision CheckCollision(RectangleObject fixed_rect, MovableRectangleObject movable_rect);
 public:
-	Game();
+	Game(int argc, char* argv[], int width, int height, bool isFullScreen);
 	~Game() {}
 	bool isExiting();
 	void update(int delta);
