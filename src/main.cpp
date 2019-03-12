@@ -1,32 +1,25 @@
-#include <iostream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include <tuple>
-#include <glm/vec2.hpp>
-#include <glm/common.hpp>
-#include <glm/geometric.hpp>
 #include "gameObjects.h"
 
-Game game;
+const int width = 1920;
+const int height = 1080;
+bool isFullScreen = true;
 
+int main(int argc, char* argv[]) {
+	Game volleyball;
 
-void init() {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glShadeModel(GL_FLAT);
-	
-	game.gameInit();
-}
+	int delta;
+	int lastFrame = glutGet(GLUT_ELAPSED_TIME);
 
+	while (!volleyball.isExiting()) {
+		int currentFrame = glutGet(GLUT_ELAPSED_TIME);
+		delta = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
-void renderScene() {
+		volleyball.update(delta);
+		volleyball.render();
+	}
 
-}
-
-void main(int argc, char **argv) {
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(960, 580);
-	glutCreateWindow(argv[0]);
-	init();
+	return 0;
 }
