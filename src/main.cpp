@@ -10,6 +10,7 @@ bool isFullScreen = false;
 //const int height = 1080;
 //bool isFullScreen = true;
 
+// Architecture inspired by https://learnopengl.com/In-Practice/2D-Game/Breakout
 int main(int argc, char* argv[]) {
 	Game volleyball(argc, argv, width, height, isFullScreen);
 
@@ -24,5 +25,5 @@ int main(int argc, char* argv[]) {
 		volleyball.render();
 	}
 
-		return 0;
+	return 0;
 }

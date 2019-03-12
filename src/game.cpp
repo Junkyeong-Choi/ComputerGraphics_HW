@@ -2,10 +2,81 @@
 #include <iostream>
 #include <glm/geometric.hpp>
 
+using namespace std;
+
+const float DEG2RAD = 3.141592 / 180.0;
+
+// code from https://forums.khronos.org/showthread.php/19787
+void drawEllipse(float x, float y, float xradius, float yradius)
+{
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; i++)
+	{
+		float degInRad = i * DEG2RAD;
+		glVertex2f(x + xradius + cos(degInRad)*xradius, y + yradius + sin(degInRad)*yradius);
+	}
+	glEnd();
+}
+
+void reshape(int w, int h) {
+	glViewport(0, 0, w, h);
+}
 
 bool Game::isExiting() {
 	return false;
 }
+
+
+void Game::render() {
+	glLoadIdentity();
+	gluOrtho2D(0.0, 192.0, 0.0, 108.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glm::vec2 pos = player1.getPosition();
+	glm::vec2 size = player1.getSize();
+	glColor3f(1.0, 1.0, 0.0);
+	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+
+	pos = player2.getPosition();
+	size = player2.getSize();
+	glColor3f(1.0, 1.0, 0.0);
+	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+
+	pos = net.getPosition();
+	size = net.getSize();
+	glColor3f(0.8, 0.1, 0.1);
+	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+
+	pos = ball.getPosition();
+	float radius = ball.getRadius();
+	glColor3f(0.9, 0.0, 0.0);
+	drawEllipse(pos.x, pos.y, radius, radius);
+
+	glutSwapBuffers();
+}
+
+Game::Game(int argc, char* argv[], int width, int height, bool isFullScreen) {
+	player1 = MovableRectangleObject(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0));
+	player2 = MovableRectangleObject(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0));
+	ball = BallObject(glm::vec2(90, 70), 7.5, glm::vec2(0.1, 0.1));
+	net = RectangleObject(glm::vec2(90, 0), glm::vec2(5, 50));
+	gamestate = GAME_MENU;
+
+	// Initialize window
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(width, height);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("Pickachu Volleyball");
+	if (isFullScreen)
+		glutFullScreen();
+
+	glutReshapeFunc(reshape);
+
+	glClearColor(0.6, 0.851, 0.918, 0.0);
+	glShadeModel(GL_FLAT);
+}
+
 
 Direction Game::vectorDirection(glm::vec2 target) {
 	glm::vec2 compass[] = {
@@ -156,14 +227,11 @@ void Game::update(int delta) {
 	for (size_t i = 0; i < 2; i++) {
 		glm::vec2 playerPosition = players[i].getPosition();
 		glm::vec2 playerSize = players[i].getSize();
-		if (playerPosition.x < 0) {
+		if (playerPosition.x < 0) 
 			playerPosition.x = 0;
-			players[i].setPosition(playerPosition);
-		}
-		if (playerPosition.x + playerSize.x > 192) {
+		if (playerPosition.x + playerSize.x > 192) 
 			playerPosition.x = 192 - playerSize.x;
-			players[i].setPosition(playerPosition);
-		}
+		players[i].setPosition(playerPosition);
 	}
 
 	glm::vec2 ballPosition = ball.getPosition();
@@ -171,12 +239,20 @@ void Game::update(int delta) {
 	float ballRadius = ball.getRadius();
 	if (ballPosition.x < 0 || ballPosition.x + 2 * ballRadius > 192) {
 		ballVelocity.x = -ballVelocity.x;
-		ball.setVelocity(ballVelocity);
+		if (ballPosition.x < 0)
+			ballPosition.x += 1;
+		else
+			ballPosition.x -= 1;
 	}
-	if (ballPosition.y < 0 || ballPosition.y + 2 * ballRadius > 192) {
+	if (ballPosition.y < 0 || ballPosition.y + 2 * ballRadius > 108) {
 		ballVelocity.y = -ballVelocity.y;
-		ball.setVelocity(ballVelocity);
+		if (ballPosition.y < 0) 
+			ballPosition.y += 1;
+		else
+			ballPosition.y -= 1;
 	}
+	ball.setVelocity(ballVelocity);
+	ball.setPosition(ballPosition);
 
 	for (size_t i = 0; i < 2; i++) {
 		glm::vec2 playerPosition = players[i].getPosition();
@@ -193,41 +269,3 @@ void Game::update(int delta) {
 
 	return;
 }
-
-void Game::render() {
-	return;
-}
-
-void display() {
-
-}
-
-void reshape(int w, int h) {
-	glViewport(0, 0, w, h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(0, 1, 0, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-}
-
-Game::Game(int argc, char* argv[], int width, int height, bool isFullScreen) {
-	player1 = MovableRectangleObject(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0));
-	player2 = MovableRectangleObject(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0));
-	ball = BallObject(glm::vec2(90, 70), 7.5, glm::vec2(0, 0));
-	net = RectangleObject(glm::vec2(90, 0), glm::vec2(5, 50));
-	gamestate = GAME_MENU;
-
-	// Initialize window
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(width, height);
-	glutInitWindowPosition(100, 100);
-	glutCreateWindow("Pickachu Volleyball");
-	if (isFullScreen)
-		glutFullScreen();
-
-	glutDisplayFunc(display);
-	glutReshapeFunc(reshape);
-}
-
