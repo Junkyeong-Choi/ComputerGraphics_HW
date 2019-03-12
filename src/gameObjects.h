@@ -64,12 +64,26 @@ private:
 	RectangleObject net;
 	GameState gamestate;
 public:
-	Game() {}
+	Game();
 	~Game() {}
-	void gameInit();
+	bool isExiting();
+	void update(int delta);
+	void render();
 };
 
-void Game::gameInit() {
+bool Game::isExiting() {
+	return false;
+}
+
+void Game::update(int delta) {
+	return;
+}
+
+void Game::render() {
+	return;
+}
+
+Game::Game() {
 	player1 = MovableRectangleObject(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0));
 	player2 = MovableRectangleObject(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0));
 	ball = BallObject(glm::vec2(90, 70), 7.5, glm::vec2(0,0));

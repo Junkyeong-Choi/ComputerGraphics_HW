@@ -18,7 +18,9 @@
 x64/
 x86/
 bld/
-[Bb]in/
+[Bb]in/**
+![Bb]in/freeglut.dll
+![Bb]in/glew32.dll
 [Oo]bj/
 
 # Visual Studio 2015 cache/options directory
