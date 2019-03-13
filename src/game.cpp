@@ -26,7 +26,6 @@ bool Game::isExiting() {
 	return exiting;
 }
 
-
 void Game::render() {
 	glLoadIdentity();
 	gluOrtho2D(0.0, 192.0, 0.0, 108.0);
@@ -82,11 +81,35 @@ void Game::handleInput(unsigned char key) {
 }
 
 void Game::handleSpecialInput(int key) {
-	cout << key << endl;
+	glm::vec2 velocity(0.0, 0.0);
+
+	switch (key) {
+	case GLUT_KEY_LEFT:
+		velocity.x = -0.1;
+		break;
+	case GLUT_KEY_RIGHT:
+		velocity.x = 0.1;
+		break;
+	}
+
+	player2.setVelocity(velocity);
 }
 
 void Game::handleSpecialInputUp(int key) {
-	cout << key << endl;
+	glm::vec2 velocity = player2.getVelocity();
+
+	switch (key) {
+	case GLUT_KEY_LEFT:
+		if (velocity.x < 0)
+			velocity.x = 0;
+		break;
+	case GLUT_KEY_RIGHT:
+		if (velocity.x > 0)
+			velocity.x = 0;
+		break;
+	}
+
+	player2.setVelocity(velocity);
 }
 
 
