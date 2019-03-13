@@ -56,7 +56,7 @@ int bitmapStringLength(void* font, const char* text) {
 	do {
 		length += glutBitmapWidth(font, text[i]);
 		i++;
-	} while (text[i] != '\0' && i < 10);
+	} while (text[i] != '\0');
 
 	return length;
 }
@@ -98,4 +98,11 @@ void renderGo() {
 
 void renderScoreText() {
 	renderText(0.5, 0.9, "SCORE!");
+}
+
+void renderCameraText(bool ballCameraMode) {
+	if (ballCameraMode)
+		renderText(0.5, 0.9, "Ball Camera (Spacebar to change)");
+	else
+		renderText(0.5, 0.9, "Normal Camera (Spacebar to change)");
 }

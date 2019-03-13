@@ -66,6 +66,8 @@ void Game::render() {
 		renderGo();
 	else if (gamestate == GAME_SCORE)
 		renderScoreText();
+	else
+		renderCameraText(ballCameraMode);
 
 	glutSwapBuffers();
 }
