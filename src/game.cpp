@@ -56,7 +56,7 @@ void Game::render() {
 }
 
 Game::Game(int argc, char* argv[], int width, int height, bool isFullScreen) {
-	player1 = MovableRectangleObject(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0));
+	player1 = MovableRectangleObject(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0.1, 0));
 	player2 = MovableRectangleObject(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0));
 	ball = BallObject(glm::vec2(90, 70), 7.5, glm::vec2(0.1, 0.1));
 	net = RectangleObject(glm::vec2(90, 0), glm::vec2(5, 50));
@@ -140,98 +140,79 @@ Collision Game::CheckCollision(RectangleObject fixed_rect, MovableRectangleObjec
 void Game::update(int delta) {
 	//std::cout << delta << std::endl;
 	RectangleObject* objectsToCollideAgainstBall[3] = {&player1, &player2, &net};
-	MovableRectangleObject objectsToCollideAgainstNet[2] = { player1, player2 };
+	MovableRectangleObject* objectsToCollideAgainstNet[2] = { &player1, &player2 };
 
 	for (size_t i = 0; i < 3; i++){
 		Collision collision = CheckCollision(*objectsToCollideAgainstBall[i], ball);
 		if (std::get<0>(collision)) {
 			Direction dir = std::get<1>(collision);
 			glm::vec2 diff_vec = std::get<2>(collision);
+			glm::vec2 ballVelocity = ball.getVelocity();
+			glm::vec2 ballPosition = ball.getPosition();
+			float ballRadius = ball.getRadius();
+
 			if (dir == LEFT || dir == RIGHT) {
-				glm::vec2 velocity = ball.getVelocity();
-				velocity.x = -velocity.x;
-				ball.setVelocity(velocity);
-				float penetration = ball.getRadius() - std::abs(diff_vec.x);
-				if (dir == LEFT) {
-					glm::vec2 position = ball.getPosition();
-					position.x += penetration;
-					ball.setPosition(position);
-				}
-				else {
-					glm::vec2 position = ball.getPosition();
-					position.x -= penetration;
-					ball.setPosition(position);
-				}	
+				ballVelocity.x = -ballVelocity.x;
+				float penetration = ballRadius - std::abs(diff_vec.x);
+				if (dir == LEFT) 
+					ballPosition.x += penetration;
+				else
+					ballPosition.x -= penetration;
 			}
 			else {
-				glm::vec2 velocity = ball.getVelocity();
-				velocity.y = -velocity.y;
-				ball.setVelocity(velocity);
+				ballVelocity.y = -ballVelocity.y;
 				float penetration = ball.getRadius() - std::abs(diff_vec.y);
-				if (dir == DOWN) {
-					glm::vec2 position = ball.getPosition();
-					position.y += penetration;
-					ball.setPosition(position);
-				}
-				else {
-					glm::vec2 position = ball.getPosition();
-					position.y -= penetration;
-					ball.setPosition(position);
-				}
+				if (dir == DOWN) 
+					ballPosition.y += penetration;
+				else 
+					ballPosition.y -= penetration;
 			}
+			ball.setVelocity(ballVelocity);
+			ball.setPosition(ballPosition);
 		}
 	}
 
 	for (size_t i = 0; i < 2; i++) {
-		Collision collision = CheckCollision(net, objectsToCollideAgainstNet[i]);
+		Collision collision = CheckCollision(net, *objectsToCollideAgainstNet[i]);
 		if (std::get<0>(collision)) {
 			Direction dir = std::get<1>(collision);
 			glm::vec2 diff_vec = std::get<2>(collision);
-			if (dir == LEFT || dir == RIGHT) {
-				glm::vec2 velocity = objectsToCollideAgainstNet[i].getVelocity();
-				velocity.x = -velocity.x;
-				ball.setVelocity(velocity);
-				float penetration = objectsToCollideAgainstNet[i].getSize().x / 2 - std::abs(diff_vec.x);
-				if (dir == LEFT) {
-					glm::vec2 position = objectsToCollideAgainstNet[i].getPosition();
-					position.x += penetration;
-					objectsToCollideAgainstNet[i].setPosition(position);
-				}
-				else {
-					glm::vec2 position = objectsToCollideAgainstNet[i].getPosition();
-					position.x -= penetration;
-					objectsToCollideAgainstNet[i].setPosition(position);
-				}
-			}
+			glm::vec2 objectVelocity = objectsToCollideAgainstNet[i]->getVelocity();
+			glm::vec2 objectPosition = objectsToCollideAgainstNet[i]->getPosition();
+
+			//if (dir == LEFT || dir == RIGHT) {
+				objectVelocity.x = -objectVelocity.x;
+				float penetration = objectsToCollideAgainstNet[i]->getSize().x / 2 - std::abs(diff_vec.x);
+				if (dir == LEFT) 
+					objectPosition.x += penetration;
+				else 
+					objectPosition.x -= penetration;
+			//}
+			/*
 			else {
-				glm::vec2 velocity = objectsToCollideAgainstNet[i].getVelocity();
-				velocity.y = -velocity.y;
-				ball.setVelocity(velocity);
+				objectVelocity.y = -objectVelocity.y;
 				float penetration = objectsToCollideAgainstNet[i].getSize().y / 2 - std::abs(diff_vec.y);
-				if (dir == DOWN) {
-					glm::vec2 position = objectsToCollideAgainstNet[i].getPosition();
-					position.y += penetration;
-					objectsToCollideAgainstNet[i].setPosition(position);
-				}
-				else {
-					glm::vec2 position = objectsToCollideAgainstNet[i].getPosition();
-					position.y -= penetration;
-					objectsToCollideAgainstNet[i].setPosition(position);
-				}
+				if (dir == DOWN) 
+					objectPosition.y += penetration;
+				else 
+					objectPosition.y -= penetration;
 			}
+			*/
+			objectsToCollideAgainstNet[i]->setVelocity(objectVelocity);
+			objectsToCollideAgainstNet[i]->setPosition(objectPosition);
 		}
 	}
 
 
-	MovableRectangleObject players[2] = { player1, player2 };
+	MovableRectangleObject* players[2] = { &player1, &player2 };
 	for (size_t i = 0; i < 2; i++) {
-		glm::vec2 playerPosition = players[i].getPosition();
-		glm::vec2 playerSize = players[i].getSize();
+		glm::vec2 playerPosition = players[i]->getPosition();
+		glm::vec2 playerSize = players[i]->getSize();
 		if (playerPosition.x < 0) 
 			playerPosition.x = 0;
 		if (playerPosition.x + playerSize.x > 192) 
 			playerPosition.x = 192 - playerSize.x;
-		players[i].setPosition(playerPosition);
+		players[i]->setPosition(playerPosition);
 	}
 
 	glm::vec2 ballPosition = ball.getPosition();
@@ -255,12 +236,13 @@ void Game::update(int delta) {
 	ball.setPosition(ballPosition);
 
 	for (size_t i = 0; i < 2; i++) {
-		glm::vec2 playerPosition = players[i].getPosition();
-		glm::vec2 playerVelocity = players[i].getVelocity();
+		glm::vec2 playerPosition = players[i]->getPosition();
+		glm::vec2 playerVelocity = players[i]->getVelocity();
 		glm::vec2 playerDisplacement = playerVelocity * (float)delta;
 		playerPosition += playerDisplacement;
-		players[i].setPosition(playerPosition);
+		players[i]->setPosition(playerPosition);
 	}
+
 	ballPosition = ball.getPosition();
 	ballVelocity = ball.getVelocity();
 	glm::vec2 ballDisplacement = ballVelocity * (float)delta;
