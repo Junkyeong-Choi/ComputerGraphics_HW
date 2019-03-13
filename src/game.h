@@ -11,6 +11,7 @@ enum GameState {
 	GAME_PLAYING
 };
 
+
 enum Direction {
 	UP,
 	RIGHT,
@@ -31,13 +32,13 @@ private:
 	bool ballCameraMode;
 	int score1;
 	int score2;
+	bool exiting;
 
 	Direction vectorDirection(glm::vec2 target);
 	Collision CheckCollision(RectangleObject rect, BallObject ball);
 	Collision CheckCollision(RectangleObject fixed_rect, MovableRectangleObject movable_rect);
 	void updateBall(int delta);
 	void updatePlayer(int delta);
-	bool exiting;
 public:
 	Game();
 	~Game() {}

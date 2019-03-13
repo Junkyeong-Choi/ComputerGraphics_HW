@@ -242,6 +242,7 @@ void Game::updateBall(int delta) {
 			ball.setPosition(ballPosition);
 		}
 	}
+
 }
 
 void Game::updatePlayer(int delta) {
@@ -275,9 +276,9 @@ void Game::updatePlayer(int delta) {
 		glm::vec2 player2Position = player2.getPosition();
 		if (ballPosition.x < 1 && player1Position.x < 16)
 			player1Position.x = 16;
-		if (ballPosition.x >74 && player1Position.x > 54)
+		if (ballPosition.x > 74 && ballPosition.x < 90 && player1Position.x > 54)
 			player1Position.x = 54;
-		if (ballPosition.x < 96 && player2Position.x < 121)
+		if (ballPosition.x > 90 && ballPosition.x < 96 && player2Position.x < 121)
 			player2Position.x = 121;
 		if (ballPosition.x > 176 && player2Position.x > 156)
 			player2Position.x = 156;
@@ -292,6 +293,14 @@ void Game::update(int delta) {
 	updateBall(delta);
 	
 	updatePlayer(delta);
-	
+
+	if (ball.getPosition().y < 2) {
+		if (ball.getPosition().x < 92)
+			score1++;
+		if (ball.getPosition().x > 92)
+			score2++;
+		ball.setPosition(glm::vec2(90, 70));
+	}
+
 	return;
 }
