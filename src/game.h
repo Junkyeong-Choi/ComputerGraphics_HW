@@ -29,10 +29,12 @@ private:
 	Direction vectorDirection(glm::vec2 target);
 	Collision CheckCollision(RectangleObject rect, BallObject ball);
 	Collision CheckCollision(RectangleObject fixed_rect, MovableRectangleObject movable_rect);
+	bool exiting;
 public:
 	Game();
 	~Game() {}
 	void init(int argc, char* argv[], int width, int height, bool isFullScreen);
+	void exit();
 	bool isExiting();
 	void handleInput(unsigned char key);
 	void handleSpecialInput(int key);

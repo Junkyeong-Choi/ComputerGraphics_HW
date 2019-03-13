@@ -17,12 +17,17 @@ Game volleyball;
 int lastFrame;
 
 void display() {
+	// Update lastFrame to prevent time delta being so large that makes ball go beyond the boundary
 	lastFrame = glutGet(GLUT_ELAPSED_TIME);
 	volleyball.render();
 }
 
 void reshape(int w, int h) {
 	glViewport(0, 0, w, h);
+}
+
+void close() {
+	volleyball.exit();
 }
 
 void keyboard(unsigned char key, int x, int y) {

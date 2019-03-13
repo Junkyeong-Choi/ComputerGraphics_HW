@@ -18,8 +18,12 @@ void drawEllipse(float x, float y, float xradius, float yradius)
 	glEnd();
 }
 
+void Game::exit() {
+	exiting = true;
+}
+
 bool Game::isExiting() {
-	return false;
+	return exiting;
 }
 
 
