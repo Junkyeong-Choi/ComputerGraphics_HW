@@ -18,14 +18,13 @@ void drawEllipse(float x, float y, float xradius, float yradius)
 	glEnd();
 }
 
-void reshape(int w, int h) {
-	glViewport(0, 0, w, h);
+void Game::exit() {
+	exiting = true;
 }
 
 bool Game::isExiting() {
-	return false;
+	return exiting;
 }
-
 
 void Game::render() {
 	glLoadIdentity();
@@ -55,13 +54,16 @@ void Game::render() {
 	glutSwapBuffers();
 }
 
-Game::Game(int argc, char* argv[], int width, int height, bool isFullScreen) {
-	player1 = MovableRectangleObject(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0.1, 0));
+
+Game::Game() {
+	player1 = MovableRectangleObject(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0));
 	player2 = MovableRectangleObject(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0));
 	ball = BallObject(glm::vec2(90, 70), 7.5, glm::vec2(0.1, 0.1));
 	net = RectangleObject(glm::vec2(90, 0), glm::vec2(5, 50));
 	gamestate = GAME_MENU;
+}
 
+void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
 	// Initialize window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -71,10 +73,44 @@ Game::Game(int argc, char* argv[], int width, int height, bool isFullScreen) {
 	if (isFullScreen)
 		glutFullScreen();
 
-	glutReshapeFunc(reshape);
-
 	glClearColor(0.6, 0.851, 0.918, 0.0);
 	glShadeModel(GL_FLAT);
+}
+
+void Game::handleInput(unsigned char key) {
+	cout << key << endl;
+}
+
+void Game::handleSpecialInput(int key) {
+	glm::vec2 velocity(0.0, 0.0);
+
+	switch (key) {
+	case GLUT_KEY_LEFT:
+		velocity.x = -0.1;
+		break;
+	case GLUT_KEY_RIGHT:
+		velocity.x = 0.1;
+		break;
+	}
+
+	player2.setVelocity(velocity);
+}
+
+void Game::handleSpecialInputUp(int key) {
+	glm::vec2 velocity = player2.getVelocity();
+
+	switch (key) {
+	case GLUT_KEY_LEFT:
+		if (velocity.x < 0)
+			velocity.x = 0;
+		break;
+	case GLUT_KEY_RIGHT:
+		if (velocity.x > 0)
+			velocity.x = 0;
+		break;
+	}
+
+	player2.setVelocity(velocity);
 }
 
 

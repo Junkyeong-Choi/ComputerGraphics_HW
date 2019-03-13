@@ -19,6 +19,8 @@ enum Direction {
 };
 typedef std::tuple<bool, Direction, glm::vec2> Collision;
 
+#define PLAYER_MAX_VELOCITY 0.1
+
 class Game {
 private:
 	MovableRectangleObject player1;
@@ -29,10 +31,16 @@ private:
 	Direction vectorDirection(glm::vec2 target);
 	Collision CheckCollision(RectangleObject rect, BallObject ball);
 	Collision CheckCollision(RectangleObject fixed_rect, MovableRectangleObject movable_rect);
+	bool exiting;
 public:
-	Game(int argc, char* argv[], int width, int height, bool isFullScreen);
+	Game();
 	~Game() {}
+	void init(int argc, char* argv[], int width, int height, bool isFullScreen);
+	void exit();
 	bool isExiting();
+	void handleInput(unsigned char key);
+	void handleSpecialInput(int key);
+	void handleSpecialInputUp(int key);
 	void update(int delta);
 	void render();
 };
