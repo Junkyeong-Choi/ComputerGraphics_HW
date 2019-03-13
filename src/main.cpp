@@ -34,6 +34,10 @@ void keyboard(unsigned char key, int x, int y) {
 	volleyball.handleInput(key);
 }
 
+void keyboardUp(unsigned char key, int x, int y) {
+	volleyball.handleInputUp(key);
+}
+
 void specialKeyboard(int key, int x, int y) {
 	volleyball.handleSpecialInput(key);
 }
@@ -48,6 +52,7 @@ int main(int argc, char* argv[]) {
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
+	glutKeyboardUpFunc(keyboardUp);
 	glutSpecialFunc(specialKeyboard);
 	glutSpecialUpFunc(specialKeyboardUp);
 

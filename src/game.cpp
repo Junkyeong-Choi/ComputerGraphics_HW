@@ -27,9 +27,52 @@ bool Game::isExiting() {
 }
 
 void Game::render() {
-	glLoadIdentity();
-	gluOrtho2D(0.0, 192.0, 0.0, 108.0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	if (ballCameraMode) {
+		const float width = 192.0 * 3 / 4;
+		const float height = 108.0 * 3 / 4;
+		glm::vec2 pos = ball.getPosition();
+		float radius = ball.getRadius();
+		pos.x += radius;
+		pos.y += radius;
+		float x, y;
+
+		if (pos.x < width / 2)
+			x = 0;
+		else if (pos.x > 192.0 - width / 2)
+			x = 192.0 - width;
+		else
+			x = pos.x - width / 2;
+
+		if (pos.y < height / 2)
+			y = 0;
+		else if (pos.y > 108.0 - height / 2)
+			y = 108.0 - height;
+		else
+			y = pos.y - height / 2;
+
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluOrtho2D(0.0, width, 0.0, height);
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glTranslatef(-x, -y, 0.0);
+		gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+	else {
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluOrtho2D(0.0, 192.0, 0.0, 108.0);
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		gluLookAt(0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	glColor3f(0.6, 0.851, 0.918);
+	glRectf(0.0, 0.0, 192.0, 108.0);
 	
 	glm::vec2 pos = player1.getPosition();
 	glm::vec2 size = player1.getSize();
@@ -61,6 +104,7 @@ Game::Game() {
 	ball = BallObject(glm::vec2(90, 70), 7.5, glm::vec2(0.1, 0.1));
 	net = RectangleObject(glm::vec2(90, 0), glm::vec2(5, 50));
 	gamestate = GAME_MENU;
+	ballCameraMode = false;
 }
 
 void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
@@ -73,12 +117,43 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 	if (isFullScreen)
 		glutFullScreen();
 
-	glClearColor(0.6, 0.851, 0.918, 0.0);
+	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_FLAT);
 }
 
 void Game::handleInput(unsigned char key) {
-	cout << key << endl;
+	glm::vec2 velocity(0.0, 0.0);
+
+	switch (key) {
+	case 'a':
+		velocity.x = -0.1;
+		break;
+	case 'd':
+		velocity.x = 0.1;
+		break;
+	case ' ':
+		ballCameraMode = !ballCameraMode;
+		return;
+	}
+
+	player1.setVelocity(velocity);
+}
+
+void Game::handleInputUp(unsigned char key) {
+	glm::vec2 velocity = player1.getVelocity();
+
+	switch (key) {
+	case 'a':
+		if (velocity.x < 0)
+			velocity.x = 0;
+		break;
+	case 'd':
+		if (velocity.x > 0)
+			velocity.x = 0;
+		break;
+	}
+
+	player1.setVelocity(velocity);
 }
 
 void Game::handleSpecialInput(int key) {

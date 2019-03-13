@@ -28,6 +28,7 @@ private:
 	BallObject ball;
 	RectangleObject net;
 	GameState gamestate;
+	bool ballCameraMode;
 	Direction vectorDirection(glm::vec2 target);
 	Collision CheckCollision(RectangleObject rect, BallObject ball);
 	Collision CheckCollision(RectangleObject fixed_rect, MovableRectangleObject movable_rect);
@@ -39,6 +40,7 @@ public:
 	void exit();
 	bool isExiting();
 	void handleInput(unsigned char key);
+	void handleInputUp(unsigned char key);
 	void handleSpecialInput(int key);
 	void handleSpecialInputUp(int key);
 	void update(int delta);
