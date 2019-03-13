@@ -60,6 +60,13 @@ void Game::render() {
 
 	renderScore(score1, score2);
 
+	if (gamestate == GAME_READY)
+		renderReady(delayTime);
+	else if (gamestate == GAME_PLAYING && delayTime > 0)
+		renderGo();
+	else if (gamestate == GAME_SCORE)
+		renderScoreText();
+
 	glutSwapBuffers();
 }
 
@@ -386,6 +393,9 @@ void Game::update(int delta) {
 	if (gamestate == GAME_PLAYING) {
 		updateBall(delta);
 		updatePlayer(delta);
+
+		if (delayTime > 0)
+			delayTime -= delta;
 
 		if (ball.getPosition().y < 2) {
 			if (ball.getPosition().x < 92)

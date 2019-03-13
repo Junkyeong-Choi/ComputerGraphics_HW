@@ -49,7 +49,7 @@ void setBallCamera(glm::vec2 pos, float radius) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-int bitmapStringLength(void* font, char* text) {
+int bitmapStringLength(void* font, const char* text) {
 	int length = 0;
 	int i = 0;
 
@@ -61,7 +61,7 @@ int bitmapStringLength(void* font, char* text) {
 	return length;
 }
 
-void renderText(float x, float y, char* text) {
+void renderText(float x, float y, const char* text) {
 	void* font = GLUT_BITMAP_HELVETICA_18;
 	int width = glutGet(GLUT_WINDOW_WIDTH);
 	int height = glutGet(GLUT_WINDOW_HEIGHT);
@@ -84,4 +84,18 @@ void renderScore(int score1, int score2) {
 	renderText(0.1, 0.9, buffer);
 	_itoa_s(score2, buffer, 10);
 	renderText(0.9, 0.9, buffer);
+}
+
+void renderReady(int delayTime) {
+	char buffer[10];
+	_itoa_s(delayTime / 1000 + 1, buffer, 10);
+	renderText(0.5, 0.9, buffer);
+}
+
+void renderGo() {
+	renderText(0.5, 0.9, "GO!");
+}
+
+void renderScoreText() {
+	renderText(0.5, 0.9, "SCORE!");
 }
