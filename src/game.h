@@ -9,8 +9,8 @@ enum GameState {
 	GAME_MENU,
 	GAME_READY,
 	GAME_PLAYING,
-	GAME_ONE_WIN,
-	GAME_TWO_WIN
+	GAME_SCORE,
+	GAME_SET,
 };
 
 enum Direction {
