@@ -30,9 +30,13 @@ private:
 	Collision CheckCollision(RectangleObject rect, BallObject ball);
 	Collision CheckCollision(RectangleObject fixed_rect, MovableRectangleObject movable_rect);
 public:
-	Game(int argc, char* argv[], int width, int height, bool isFullScreen);
+	Game();
 	~Game() {}
+	void init(int argc, char* argv[], int width, int height, bool isFullScreen);
 	bool isExiting();
+	void handleInput(unsigned char key);
+	void handleSpecialInput(int key);
+	void handleSpecialInputUp(int key);
 	void update(int delta);
 	void render();
 };
