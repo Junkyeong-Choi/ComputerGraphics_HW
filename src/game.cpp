@@ -259,7 +259,6 @@ void Game::updatePlayer(int delta) {
 			glm::vec2 objectVelocity = players[i]->getVelocity();
 			glm::vec2 objectPosition = players[i]->getPosition();
 
-			objectVelocity.x = -objectVelocity.x;
 			float penetration = players[i]->getSize().x / 2 - std::abs(diff_vec.x);
 			if (dir == LEFT)
 				objectPosition.x += penetration;
@@ -270,6 +269,22 @@ void Game::updatePlayer(int delta) {
 			players[i]->setPosition(objectPosition);
 		}
 	}
+	glm::vec2 ballPosition = ball.getPosition();
+	if (ballPosition.y < 28) {
+		glm::vec2 player1Position = player1.getPosition();
+		glm::vec2 player2Position = player2.getPosition();
+		if (ballPosition.x < 1 && player1Position.x < 16)
+			player1Position.x = 16;
+		if (ballPosition.x >74 && player1Position.x > 54)
+			player1Position.x = 54;
+		if (ballPosition.x < 96 && player2Position.x < 121)
+			player2Position.x = 121;
+		if (ballPosition.x > 176 && player2Position.x > 156)
+			player2Position.x = 156;
+		player1.setPosition(player1Position);
+		player2.setPosition(player2Position);
+	}
+	
 }
 
 void Game::update(int delta) {
