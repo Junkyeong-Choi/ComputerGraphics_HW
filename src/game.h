@@ -8,7 +8,9 @@
 enum GameState {
 	GAME_MENU,
 	GAME_READY,
-	GAME_PLAYING
+	GAME_PLAYING,
+	GAME_ONE_WIN,
+	GAME_TWO_WIN
 };
 
 enum Direction {
@@ -32,6 +34,7 @@ private:
 	bool is2player;
 	int score1;
 	int score2;
+	int winningScore;
 	bool exiting;
 
 	Direction vectorDirection(glm::vec2 target);
