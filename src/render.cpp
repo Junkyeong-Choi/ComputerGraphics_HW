@@ -124,3 +124,21 @@ void renderMenu(bool is2player) {
 		glColor3f(0.4, 0.4, 0.4);
 	renderText(0.5, 0.35, "Multi Play");
 }
+
+void renderWinText(bool is2player, int score1, int score2) {
+	if (is2player) {
+		if (score1 > score2)
+			renderText(0.5, 0.9, "PLAYER 1 WIN!");
+		else
+			renderText(0.5, 0.9, "PLAYER 2 WIN!");
+	}
+	else {
+		if (score1 > score2)
+			renderText(0.5, 0.9, "YOU WIN!");
+		else
+			renderText(0.5, 0.9, "YOU LOSE ;(");
+	}
+
+	glColor3f(0.4, 0.4, 0.4);
+	renderText(0.5, 0.8, "(Press Enter)");
+}

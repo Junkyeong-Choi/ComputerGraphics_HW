@@ -9,3 +9,4 @@ void renderGo();
 void renderScoreText();
 void renderCameraText(bool ballCameraMode);
 void renderMenu(bool is2player);
+void renderWinText(bool is2player, int score1, int score2);

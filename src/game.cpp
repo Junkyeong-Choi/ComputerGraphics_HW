@@ -62,10 +62,11 @@ void Game::render() {
 		glColor3f(0.9, 0.0, 0.0);
 		drawEllipse(pos.x, pos.y, radius, radius);
 
+		glColor3f(0.0, 0.0, 0.0);
 		renderScore(score1, score2);
 	}
 
-	glColor3f(0.0, 0.0, 0.0);
+	glColor3f(1.0, 0.0, 0.0);
 	
 	if (gamestate != GAME_MENU) {
 		if (gamestate == GAME_READY)
@@ -74,6 +75,8 @@ void Game::render() {
 			renderGo();
 		else if (gamestate == GAME_SCORE)
 			renderScoreText();
+		else if (gamestate == GAME_SET)
+			renderWinText(is2player, score1, score2);
 		else
 			renderCameraText(ballCameraMode);
 	}
@@ -91,7 +94,7 @@ Game::Game() :
 	delayTime(3000),
 	is2player(false),
 	score1(0), score2(0),
-	winningScore(15)
+	winningScore(1)
 {}
 
 void Game::resetPosition() {
@@ -144,6 +147,14 @@ void Game::handleInput(unsigned char key) {
 		if (key == '\n' || key == 13)
 			gamestate = GAME_READY;
 	}
+	else if (gamestate == GAME_SET) {
+		if (key == '\n' || key == 13) {
+			gamestate = GAME_MENU;
+			score1 = 0;
+			score2 = 0;
+			resetPosition();
+		}
+	}
 
 	if (key == ' ')
 		ballCameraMode = !ballCameraMode;
@@ -187,8 +198,10 @@ void Game::handleSpecialInput(int key) {
 		player2.setVelocity(velocity);
 	}
 	else if (gamestate == GAME_MENU) {
-		if (key == GLUT_KEY_UP || key == GLUT_KEY_DOWN)
-			is2player = !is2player;
+		if (key == GLUT_KEY_UP)
+			is2player = false;
+		else if (key == GLUT_KEY_DOWN)
+			is2player = true;
 	}
 }
 
@@ -423,7 +436,6 @@ void Game::update(int delta) {
 
 			if (score1 == winningScore || score2 == winningScore) {
 				gamestate = GAME_SET;
-				delayTime = 3000;
 			}
 			else {
 				gamestate = GAME_SCORE;
@@ -441,6 +453,9 @@ void Game::update(int delta) {
 			gamestate = GAME_READY;
 			resetPosition();
 		}
+	}
+	else if (gamestate == GAME_SET) {
+		updateBall(delta / 2);
 	}
 
 	return;
