@@ -3,7 +3,7 @@
 #include "object.h"
 
 class RectangleObject : public Object {
-private:
+protected:
 	glm::vec2 size;
 public:
 	RectangleObject() {}
