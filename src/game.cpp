@@ -70,7 +70,7 @@ Game::Game():
 	net(glm::vec2(90, 0), glm::vec2(5, 50)),
 	gamestate(GAME_MENU),
 	ballCameraMode(false),
-	score1(123249), score2(0)
+	score1(0), score2(0)
 {}
 
 void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
