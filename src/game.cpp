@@ -326,9 +326,9 @@ void Game::update(int delta) {
 
 	if (ball.getPosition().y < 2) {
 		if (ball.getPosition().x < 92)
-			score1++;
-		if (ball.getPosition().x > 92)
 			score2++;
+		if (ball.getPosition().x > 92)
+			score1++;
 		ball.setPosition(glm::vec2(90, 70));
 	}
 
