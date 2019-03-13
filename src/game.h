@@ -29,6 +29,9 @@ private:
 	RectangleObject net;
 	GameState gamestate;
 	bool ballCameraMode;
+	int score1;
+	int score2;
+
 	Direction vectorDirection(glm::vec2 target);
 	Collision CheckCollision(RectangleObject rect, BallObject ball);
 	Collision CheckCollision(RectangleObject fixed_rect, MovableRectangleObject movable_rect);
