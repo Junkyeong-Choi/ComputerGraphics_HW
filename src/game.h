@@ -32,6 +32,7 @@ private:
 	GameState gamestate;
 	bool ballCameraMode;
 	bool is2player;
+	int delayTime;
 	int score1;
 	int score2;
 	int winningScore;
@@ -40,6 +41,7 @@ private:
 	Direction vectorDirection(glm::vec2 target);
 	Collision CheckCollision(RectangleObject rect, BallObject ball);
 	Collision CheckCollision(RectangleObject fixed_rect, MovableRectangleObject movable_rect);
+	void resetPosition();
 	void updateBall(int delta);
 	void updatePlayer(int delta);
 public:

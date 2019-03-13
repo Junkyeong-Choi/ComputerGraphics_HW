@@ -67,14 +67,29 @@ void Game::render() {
 Game::Game() :
 	player1(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
 	player2(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
-	ball(glm::vec2(90, 70), 7.5, glm::vec2(0.1, 0.1)),
-	net(glm::vec2(90, 0), glm::vec2(5, 50)),
-	gamestate(GAME_MENU),
+	ball(glm::vec2(88.5, 70), 7.5, glm::vec2(0.1, 0.1)),
+	net(glm::vec2(93.5, 0), glm::vec2(5, 50)),
+	gamestate(GAME_READY),
 	ballCameraMode(false),
+	delayTime(3000),
 	is2player(false),
 	score1(0), score2(0),
 	winningScore(15)
 {}
+
+void Game::resetPosition() {
+	player1.setPosition(glm::vec2(24, 0));
+	player1.setsize(glm::vec2(20, 35));
+	player1.setVelocity(glm::vec2(0, 0));
+
+	player2.setPosition(glm::vec2(148, 0));
+	player2.setsize(glm::vec2(20, 35));
+	player2.setVelocity(glm::vec2(0, 0));
+
+	ball.setPosition(glm::vec2(88.5, 70));
+	ball.setRadius(7.5);
+	ball.setVelocity(glm::vec2(0.1, 0.1));
+}
 
 void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
 	// Initialize window
@@ -91,78 +106,88 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 }
 
 void Game::handleInput(unsigned char key) {
-	glm::vec2 velocity(0.0, 0.0);
+	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
+		glm::vec2 velocity(0.0, 0.0);
 
-	switch (key) {
-	case 'a':
-		velocity.x = -0.1;
-		break;
-	case 'd':
-		velocity.x = 0.1;
-		break;
-	case ' ':
-		ballCameraMode = !ballCameraMode;
-		return;
+		switch (key) {
+		case 'a':
+			velocity.x = -0.1;
+			break;
+		case 'd':
+			velocity.x = 0.1;
+			break;
+		case ' ':
+			ballCameraMode = !ballCameraMode;
+			return;
+		}
+
+		player1.setVelocity(velocity);
 	}
 
-	player1.setVelocity(velocity);
+	if (key == ' ')
+		ballCameraMode = !ballCameraMode;
 }
 
 void Game::handleInputUp(unsigned char key) {
-	glm::vec2 velocity = player1.getVelocity();
+	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
+		glm::vec2 velocity = player1.getVelocity();
 
-	switch (key) {
-	case 'a':
-		if (velocity.x < 0)
-			velocity.x = 0;
-		break;
-	case 'd':
-		if (velocity.x > 0)
-			velocity.x = 0;
-		break;
+		switch (key) {
+		case 'a':
+			if (velocity.x < 0)
+				velocity.x = 0;
+			break;
+		case 'd':
+			if (velocity.x > 0)
+				velocity.x = 0;
+			break;
+		}
+
+		player1.setVelocity(velocity);
 	}
-
-	player1.setVelocity(velocity);
 }
 
 void Game::handleSpecialInput(int key) {
-	if (!is2player)
-		return;
+	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
+		if (!is2player)
+			return;
 
-	glm::vec2 velocity(0.0, 0.0);
+		glm::vec2 velocity(0.0, 0.0);
 
-	switch (key) {
-	case GLUT_KEY_LEFT:
-		velocity.x = -0.1;
-		break;
-	case GLUT_KEY_RIGHT:
-		velocity.x = 0.1;
-		break;
+		switch (key) {
+		case GLUT_KEY_LEFT:
+			velocity.x = -0.1;
+			break;
+		case GLUT_KEY_RIGHT:
+			velocity.x = 0.1;
+			break;
+		}
+
+		player2.setVelocity(velocity);
 	}
-
-	player2.setVelocity(velocity);
 }
 
 void Game::handleSpecialInputUp(int key) {
-	if (!is2player)
-		return;
+	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
+		if (!is2player)
+			return;
 
-	glm::vec2 velocity = player2.getVelocity();
+		glm::vec2 velocity = player2.getVelocity();
 
-	switch (key) {
-	case GLUT_KEY_LEFT:
-		if (velocity.x < 0)
-			velocity.x = 0;
-		break;
-	case GLUT_KEY_RIGHT:
-		if (velocity.x > 0)
-			velocity.x = 0;
-		break;
+		switch (key) {
+		case GLUT_KEY_LEFT:
+			if (velocity.x < 0)
+				velocity.x = 0;
+			break;
+		case GLUT_KEY_RIGHT:
+			if (velocity.x > 0)
+				velocity.x = 0;
+			break;
+		}
+
+		player2.setVelocity(velocity);
 	}
-
-	player2.setVelocity(velocity);
 }
-
 
 Direction Game::vectorDirection(glm::vec2 target) {
 	glm::vec2 compass[] = {
@@ -310,17 +335,25 @@ void Game::updatePlayer(int delta) {
 		}
 	}
 	glm::vec2 ballPosition = ball.getPosition();
-	if (ballPosition.y < 28) {
+	glm::vec2 netPosition = net.getPosition();
+	float ballRadius = ball.getRadius();
+	glm::vec2 netSize = net.getSize();
+	glm::vec2 player1Size = player1.getSize();
+	glm::vec2 player2Size = player2.getSize();
+
+	int epsilon = 3;
+
+	if (ballPosition.y < netSize.y - ballRadius) {
 		glm::vec2 player1Position = player1.getPosition();
 		glm::vec2 player2Position = player2.getPosition();
-		if (ballPosition.x < 1 && player1Position.x < 16)
-			player1Position.x = 16;
-		if (ballPosition.x > 74 && ballPosition.x < 90 && player1Position.x > 54)
-			player1Position.x = 54;
-		if (ballPosition.x > 90 && ballPosition.x < 96 && player2Position.x < 121)
-			player2Position.x = 121;
-		if (ballPosition.x > 176 && player2Position.x > 156)
-			player2Position.x = 156;
+		if (ballPosition.x <= epsilon && player1Position.x <= ballRadius * 2)
+			player1Position.x = ballRadius * 2 + epsilon;
+		if (ballPosition.x >= (netPosition.x - ballRadius * 2 - epsilon) && ballPosition.x <= (netPosition.x - ballRadius * 2) && player1Position.x >= (netPosition.x - ballRadius * 2 - player1Size.x))
+			player1Position.x = netPosition.x - ballRadius * 2 - player1Size.x - epsilon;
+		if (ballPosition.x >= (netPosition.x + netSize.x) && ballPosition.x <= (netPosition.x + netSize.x + epsilon) && player2Position.x <= (netPosition.x + netSize.x + ballRadius * 2))
+			player2Position.x = netPosition.x + netSize.x + ballRadius * 2 + epsilon;
+		if (ballPosition.x >= 192 - ballRadius * 2 - epsilon && player2Position.x >= 192 - ballRadius * 2 - player2Size.x)
+			player2Position.x = 192 - ballRadius * 2 - player2Size.x - epsilon;
 		player1.setPosition(player1Position);
 		player2.setPosition(player2Position);
 	}
@@ -329,31 +362,57 @@ void Game::updatePlayer(int delta) {
 
 void Game::update(int delta) {
 
-	if (!is2player) {
-		glm::vec2 velocity(0.0, 0.0);
-		
-		if (player2.getPosition().x < ball.getPosition().x)
-			velocity.x = PLAYER_MAX_VELOCITY * 0.83;
-		else
-			velocity.x = - PLAYER_MAX_VELOCITY * 0.83;
-
-		player2.setVelocity(velocity);
+	if (gamestate == GAME_READY) {
+		delayTime -= delta;
+		if (delayTime < 0) {
+			delayTime = 1000;
+			gamestate = GAME_PLAYING;
+		}
 	}
-	
-	updateBall(delta);
-	updatePlayer(delta);
 
-	if (ball.getPosition().y < 2) {
-		if (ball.getPosition().x < 92)
-			score2++;
-		if (ball.getPosition().x > 92)
-			score1++;
-		ball.setPosition(glm::vec2(90, 70));
+	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
+		if (!is2player) {
+			glm::vec2 velocity(0.0, 0.0);
 
-		if (score1 == winningScore) 
-			gamestate = GAME_ONE_WIN;
-		if (score2 == winningScore)
-			gamestate = GAME_TWO_WIN;
+			if (player2.getPosition().x < ball.getPosition().x)
+				velocity.x = PLAYER_MAX_VELOCITY * 0.83;
+			else
+				velocity.x = -PLAYER_MAX_VELOCITY * 0.83;
+
+			player2.setVelocity(velocity);
+		}
+	}
+
+	if (gamestate == GAME_PLAYING) {
+		updateBall(delta);
+		updatePlayer(delta);
+
+		if (ball.getPosition().y < 2) {
+			if (ball.getPosition().x < 92)
+				score2++;
+			else
+				score1++;
+
+			if (score1 == winningScore || score2 == winningScore) {
+				gamestate = GAME_SET;
+				delayTime = 3000;
+			}
+			else {
+				gamestate = GAME_SCORE;
+				delayTime = 3000;
+			}
+		}
+	}
+	else if (gamestate == GAME_SCORE) {
+		updateBall(delta / 2);
+		updatePlayer(delta / 2);
+		delayTime -= delta;
+
+		if (delayTime < 0) {
+			delayTime = 3000;
+			gamestate = GAME_READY;
+			resetPosition();
+		}
 	}
 
 	return;
