@@ -72,7 +72,6 @@ void renderText(float x, float y, const char* text) {
 	gluOrtho2D(0.0, width, 0.0, height);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glColor3f(0, 0, 0);
 
 	glRasterPos2i(width * x - length / 2, height * y - 9);
 	glutBitmapString(font, reinterpret_cast<const unsigned char *>(text));
@@ -101,8 +100,27 @@ void renderScoreText() {
 }
 
 void renderCameraText(bool ballCameraMode) {
+	glColor3f(0.4, 0.4, 0.4);
+
 	if (ballCameraMode)
 		renderText(0.5, 0.9, "Ball Camera (Spacebar to change)");
 	else
 		renderText(0.5, 0.9, "Normal Camera (Spacebar to change)");
+}
+
+void renderMenu(bool is2player) {
+	glColor3f(1.0, 1.0, 0.0);
+	renderText(0.5, 0.65, "PIKACHU VOLLEYBALL");
+
+	if (is2player)
+		glColor3f(0.4, 0.4, 0.4);
+	else
+		glColor3f(0.0, 0.0, 0.0);
+	renderText(0.5, 0.45, "Single Play");
+
+	if (is2player)
+		glColor3f(0.0, 0.0, 0.0);
+	else
+		glColor3f(0.4, 0.4, 0.4);
+	renderText(0.5, 0.35, "Multi Play");
 }

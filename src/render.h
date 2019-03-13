@@ -8,3 +8,4 @@ void renderReady(int delayTime);
 void renderGo();
 void renderScoreText();
 void renderCameraText(bool ballCameraMode);
+void renderMenu(bool is2player);

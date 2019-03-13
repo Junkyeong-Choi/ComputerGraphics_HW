@@ -37,48 +37,56 @@ void Game::render() {
 	// draw background color
 	glColor3f(0.6, 0.851, 0.918);
 	glRectf(0.0, 0.0, 192.0, 108.0);
+
+	if (gamestate == GAME_MENU) {
+		renderMenu(is2player);
+	}
+	else {
+		glm::vec2 pos = player1.getPosition();
+		glm::vec2 size = player1.getSize();
+		glColor3f(1.0, 1.0, 0.0);
+		glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+
+		pos = player2.getPosition();
+		size = player2.getSize();
+		glColor3f(1.0, 1.0, 0.0);
+		glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+
+		pos = net.getPosition();
+		size = net.getSize();
+		glColor3f(0.8, 0.1, 0.1);
+		glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+
+		pos = ball.getPosition();
+		float radius = ball.getRadius();
+		glColor3f(0.9, 0.0, 0.0);
+		drawEllipse(pos.x, pos.y, radius, radius);
+
+		renderScore(score1, score2);
+	}
+
+	glColor3f(0.0, 0.0, 0.0);
 	
-	glm::vec2 pos = player1.getPosition();
-	glm::vec2 size = player1.getSize();
-	glColor3f(1.0, 1.0, 0.0);
-	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-
-	pos = player2.getPosition();
-	size = player2.getSize();
-	glColor3f(1.0, 1.0, 0.0);
-	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-
-	pos = net.getPosition();
-	size = net.getSize();
-	glColor3f(0.8, 0.1, 0.1);
-	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-
-	pos = ball.getPosition();
-	float radius = ball.getRadius();
-	glColor3f(0.9, 0.0, 0.0);
-	drawEllipse(pos.x, pos.y, radius, radius);
-
-	renderScore(score1, score2);
-
-	if (gamestate == GAME_READY)
-		renderReady(delayTime);
-	else if (gamestate == GAME_PLAYING && delayTime > 0)
-		renderGo();
-	else if (gamestate == GAME_SCORE)
-		renderScoreText();
-	else
-		renderCameraText(ballCameraMode);
+	if (gamestate != GAME_MENU) {
+		if (gamestate == GAME_READY)
+			renderReady(delayTime);
+		else if (gamestate == GAME_PLAYING && delayTime > 0)
+			renderGo();
+		else if (gamestate == GAME_SCORE)
+			renderScoreText();
+		else
+			renderCameraText(ballCameraMode);
+	}
 
 	glutSwapBuffers();
 }
-
 
 Game::Game() :
 	player1(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
 	player2(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
 	ball(glm::vec2(88.5, 70), 7.5, glm::vec2(0.1, 0.1)),
 	net(glm::vec2(93.5, 0), glm::vec2(5, 50)),
-	gamestate(GAME_READY),
+	gamestate(GAME_MENU),
 	ballCameraMode(false),
 	delayTime(3000),
 	is2player(false),
@@ -132,6 +140,10 @@ void Game::handleInput(unsigned char key) {
 
 		player1.setVelocity(velocity);
 	}
+	else if (gamestate == GAME_MENU) {
+		if (key == '\n' || key == 13)
+			gamestate = GAME_READY;
+	}
 
 	if (key == ' ')
 		ballCameraMode = !ballCameraMode;
@@ -173,6 +185,10 @@ void Game::handleSpecialInput(int key) {
 		}
 
 		player2.setVelocity(velocity);
+	}
+	else if (gamestate == GAME_MENU) {
+		if (key == GLUT_KEY_UP || key == GLUT_KEY_DOWN)
+			is2player = !is2player;
 	}
 }
 
