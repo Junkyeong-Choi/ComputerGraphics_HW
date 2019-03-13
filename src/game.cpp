@@ -70,7 +70,7 @@ Game::Game():
 	net(glm::vec2(90, 0), glm::vec2(5, 50)),
 	gamestate(GAME_MENU),
 	ballCameraMode(false),
-	score1(0), score2(0)
+	score1(0), score2(0), winningScore(15)
 {}
 
 void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
@@ -330,6 +330,11 @@ void Game::update(int delta) {
 		if (ball.getPosition().x > 92)
 			score1++;
 		ball.setPosition(glm::vec2(90, 70));
+
+		if (score1 == winningScore) 
+			gamestate = GAME_ONE_WIN;
+		if (score2 == winningScore)
+			gamestate = GAME_TWO_WIN;
 	}
 
 	return;
