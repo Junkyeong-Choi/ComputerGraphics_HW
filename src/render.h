@@ -1,3 +1,6 @@
 #pragma once
+#include <glm/geometric.hpp>
 
-void setCamera(bool ballCameraMode, BallObject ball);
+void setNormalCamera();
+void setBallCamera(glm::vec2 pos, float radius);
+void renderScore(int score1, int score2);

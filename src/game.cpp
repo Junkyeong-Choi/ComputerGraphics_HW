@@ -28,7 +28,10 @@ bool Game::isExiting() {
 }
 
 void Game::render() {
-	setCamera(ballCameraMode, ball);
+	if (ballCameraMode)
+		setBallCamera(ball.getPosition(), ball.getRadius());
+	else
+		setNormalCamera();
 
 	glColor3f(0.6, 0.851, 0.918);
 	glRectf(0.0, 0.0, 192.0, 108.0);
@@ -53,6 +56,8 @@ void Game::render() {
 	glColor3f(0.9, 0.0, 0.0);
 	drawEllipse(pos.x, pos.y, radius, radius);
 
+	renderScore(score1, score2);
+
 	glutSwapBuffers();
 }
 
@@ -64,7 +69,7 @@ Game::Game():
 	net(glm::vec2(90, 0), glm::vec2(5, 50)),
 	gamestate(GAME_MENU),
 	ballCameraMode(false),
-	score1(0), score2(0)
+	score1(123249), score2(0)
 {}
 
 void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
