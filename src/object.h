@@ -2,7 +2,7 @@
 #include <glm/vec2.hpp>
 
 class Object {
-private:
+protected:
 	glm::vec2 position;
 public:
 	Object() {}

@@ -32,6 +32,8 @@ private:
 	Direction vectorDirection(glm::vec2 target);
 	Collision CheckCollision(RectangleObject rect, BallObject ball);
 	Collision CheckCollision(RectangleObject fixed_rect, MovableRectangleObject movable_rect);
+	void updateBall(int delta);
+	void updatePlayer(int delta);
 	bool exiting;
 public:
 	Game();
