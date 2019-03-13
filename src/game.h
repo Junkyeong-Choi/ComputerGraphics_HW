@@ -11,7 +11,6 @@ enum GameState {
 	GAME_PLAYING
 };
 
-
 enum Direction {
 	UP,
 	RIGHT,
@@ -30,6 +29,7 @@ private:
 	RectangleObject net;
 	GameState gamestate;
 	bool ballCameraMode;
+	bool is2player;
 	int score1;
 	int score2;
 	bool exiting;

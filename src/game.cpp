@@ -33,6 +33,7 @@ void Game::render() {
 	else
 		setNormalCamera();
 
+	// draw background color
 	glColor3f(0.6, 0.851, 0.918);
 	glRectf(0.0, 0.0, 192.0, 108.0);
 	
@@ -62,13 +63,14 @@ void Game::render() {
 }
 
 
-Game::Game():
+Game::Game() :
 	player1(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
 	player2(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
 	ball(glm::vec2(90, 70), 7.5, glm::vec2(0.1, 0.1)),
 	net(glm::vec2(90, 0), glm::vec2(5, 50)),
 	gamestate(GAME_MENU),
 	ballCameraMode(false),
+	is2player(false),
 	score1(0), score2(0)
 {}
 
@@ -122,6 +124,9 @@ void Game::handleInputUp(unsigned char key) {
 }
 
 void Game::handleSpecialInput(int key) {
+	if (!is2player)
+		return;
+
 	glm::vec2 velocity(0.0, 0.0);
 
 	switch (key) {
@@ -137,6 +142,9 @@ void Game::handleSpecialInput(int key) {
 }
 
 void Game::handleSpecialInputUp(int key) {
+	if (!is2player)
+		return;
+
 	glm::vec2 velocity = player2.getVelocity();
 
 	switch (key) {
@@ -294,9 +302,19 @@ void Game::updatePlayer(int delta) {
 }
 
 void Game::update(int delta) {
+
+	if (!is2player) {
+		glm::vec2 velocity(0.0, 0.0);
+		
+		if (player2.getPosition().x < ball.getPosition().x)
+			velocity.x = PLAYER_MAX_VELOCITY * 0.83;
+		else
+			velocity.x = - PLAYER_MAX_VELOCITY * 0.83;
+
+		player2.setVelocity(velocity);
+	}
 	
 	updateBall(delta);
-	
 	updatePlayer(delta);
 
 	if (ball.getPosition().y < 2) {
