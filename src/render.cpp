@@ -2,6 +2,9 @@
 #include <GL/freeglut.h>
 #include <glm/geometric.hpp>
 #include "ballObject.h"
+#include <iostream>
+
+using namespace std;
 
 void setNormalCamera() {
 	glMatrixMode(GL_PROJECTION);
@@ -46,20 +49,23 @@ void setBallCamera(glm::vec2 pos, float radius) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-int len(int n) {
-	unsigned int num = 0;
+int bitmapStringLength(void* font, char* text) {
+	int length = 0;
+	int i = 0;
 
 	do {
-		++num;
-		n /= 10;
-	} while (n);
+		length += glutBitmapWidth(font, text[i]);
+		i++;
+	} while (text[i] != '\0' && i < 10);
 
-	return num;
+	return length;
 }
 
-void renderScore(int score1, int score2) {
+void renderText(float x, float y, char* text) {
+	void* font = GLUT_BITMAP_HELVETICA_18;
 	int width = glutGet(GLUT_WINDOW_WIDTH);
 	int height = glutGet(GLUT_WINDOW_HEIGHT);
+	int length = bitmapStringLength(font, text);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -68,15 +74,14 @@ void renderScore(int score1, int score2) {
 	glLoadIdentity();
 	glColor3f(0, 0, 0);
 
+	glRasterPos2i(width * x - length / 2, height * y - 9);
+	glutBitmapString(font, reinterpret_cast<const unsigned char *>(text));
+}
+
+void renderScore(int score1, int score2) {
 	char buffer[10];
-	int len1 = len(score1);
-	int len2 = len(score2);
-
 	_itoa_s(score1, buffer, 10);
-	glRasterPos2i(width / 10 - 9 * len1 / 2, height * 9 / 10 - 7);
-	glutBitmapString(GLUT_BITMAP_9_BY_15, reinterpret_cast<const unsigned char *>(buffer));
-
+	renderText(0.1, 0.9, buffer);
 	_itoa_s(score2, buffer, 10);
-	glRasterPos2i(width * 9 / 10 - 9 * len2 / 2, height * 9 / 10 - 7);
-	glutBitmapString(GLUT_BITMAP_9_BY_15, reinterpret_cast<const unsigned char *>(buffer));
+	renderText(0.9, 0.9, buffer);
 }
