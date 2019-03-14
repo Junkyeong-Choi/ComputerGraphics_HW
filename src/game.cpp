@@ -84,6 +84,8 @@ Game::Game() :
 {}
 
 void Game::resetPosition() {
+	delayTime = 3000;
+
 	player1.setPosition(glm::vec2(24, 0));
 	player1.setsize(glm::vec2(20, 35));
 	player1.setVelocity(glm::vec2(0, 0));
@@ -94,7 +96,7 @@ void Game::resetPosition() {
 
 	ball.setPosition(glm::vec2(88.5, 70));
 	ball.setRadius(7.5);
-	ball.setVelocity(BALLSPEED*generateUnitVector());
+	ball.setVelocity(BALLSPEED * generateUnitVector());
 }
 
 void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
