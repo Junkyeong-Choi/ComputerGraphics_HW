@@ -9,6 +9,30 @@ using namespace std;
 
 const float DEG2RAD = 3.141592 / 180.0;
 
+// code from https://forums.khronos.org/showthread.php/19787
+void drawEllipse(float x, float y, float xradius, float yradius, int startDegree = 0, int endDegree = 360)
+{
+	glBegin(GL_POLYGON);
+	for (int i = startDegree; i <= endDegree; i++)
+	{
+		float degInRad = i * DEG2RAD;
+		glVertex2f(x + xradius + cos(degInRad)*xradius, y + yradius + sin(degInRad)*yradius);
+	}
+	glEnd();
+}
+
+// modified code from https://forums.khronos.org/showthread.php/19787
+void drawEllipseStroke(float x, float y, float xradius, float yradius, int startDegree = 0, int endDegree = 360)
+{
+	glBegin(GL_LINE_STRIP);
+	for (int i = startDegree; i <= endDegree; i++)
+	{
+		float degInRad = i * DEG2RAD;
+		glVertex2f(x + xradius + cos(degInRad)*xradius, y + yradius + sin(degInRad)*yradius);
+	}
+	glEnd();
+}
+
 void setNormalCamera() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -157,35 +181,190 @@ void renderWinText(bool is2player, int score1, int score2) {
 	renderText(0.5, 0.8, "(Press Enter)");
 }
 
+void renderPikachuBase(float width, float height) {
+	glColor3f(1.0, 1.0, 0.0);
+	drawEllipse(0.0, height - width, width / 2, width / 2);
+	drawEllipse(0.0, height * 0.03, width / 2, height * 0.3);
+}
+
+void renderPikachuChick(float width, float height) {
+	glColor3f(1.0, 0.0, 0.0);
+	drawEllipse(width * 3 / 5, height * 3 / 5, width / 8, width / 8);
+}
+
+void renderPikachuEye(float width, float height) {
+	glColor3f(0.0, 0.0, 0.0);
+	drawEllipse(width * 3 / 4, height * 3 / 4, width / 16, width / 10);
+	glColor3f(1.0, 1.0, 1.0);
+	drawEllipse(width * 4 / 5, height * 4 / 5, width / 32, width / 20);
+}
+
+void renderPikachuNose(float width, float height) {
+	glColor3f(0.0, 0.0, 0.0);
+	drawEllipse(width * 19 / 20, height * 5 / 7, width / 20, width / 20);
+}
+
+void renderPikachuMouth(float width, float height) {
+	glColor3f(0.0, 0.0, 0.0);
+	glBegin(GL_LINES);
+	{
+		glVertex3f(width * 0.9, height * 9 / 14, 0.0);
+		glVertex3f(width * 0.97, height * 9 / 14, 0.0);
+	}
+	glEnd();
+}
+
+void renderPikachuFace(float width, float height) {
+	renderPikachuChick(width, height);
+	renderPikachuEye(width, height);
+	renderPikachuNose(width, height);
+	renderPikachuMouth(width, height);
+}
+
+void renderPikachuEar(float width, float height) {
+	glTranslatef(width / 5, height * 6 / 7, 0.0);
+	glRotatef(50.0, 0.0, 0.0, 1.0);
+
+	glColor3f(1.0, 1.0, 0.0);
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(width / 4, 0.0, 0.0);
+		glVertex3f(width / 8, height / 4, 0.0);
+	}
+	glEnd();
+
+	glColor3f(0.0, 0.0, 0.0);
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(width / 16, height / 8, 0.0);
+		glVertex3f(width * 3 / 16, height / 8, 0.0);
+		glVertex3f(width / 8, height / 4, 0.0);
+	}
+	glEnd();
+
+	glRotatef(-50.0, 0.0, 0.0, 1.0);
+	glTranslatef(-width / 5, -height * 6 / 7, 0.0);
+}
+
+void renderPikachuFoot(float width, float height) {
+	glColor3f(1.0, 1.0, 0.0);
+	drawEllipse(width * 0.3, 0, width * 0.3, height / 28);
+}
+
+void renderPikachuTail(float width, float height) {
+	glTranslatef(width * 0.05, height * 0.2, 0.0);
+	glRotatef(60.0, 0.0, 0.0, 1.0);
+
+	glColor3f(1.0, 1.0, 0.0);
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, height * 0.3, 0.0);
+		glVertex3f(width * 0.2, height * 0.3, 0.0);
+		glVertex3f(width * 0.1, 0.0, 0.0);
+	}
+	glEnd();
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(width * 0.1, height * 0.4, 0.0);
+		glVertex3f(width * 0.35, height * 0.55, 0.0);
+		glVertex3f(width * 0.25, height * 0.2, 0.0);
+		glVertex3f(width * 0.1, height * 0.2, 0.0);
+	}
+	glEnd();
+	glColor3f(0.624, 0.0, 0.0);
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, height * 0.15, 0.0);
+		glVertex3f(width * 0.15, height * 0.15, 0.0);
+		glVertex3f(width * 0.1, 0.0, 0.0);
+	}
+	glEnd();
+
+	glRotatef(-60.0, 0.0, 0.0, 1.0);
+	glTranslatef(-width * 0.05, -height * 0.2, 0.0);
+}
+
+void renderPikachuHand(float width, float height) {
+	glTranslatef(width * 0.7, height * 0.3, 0.0);
+	glRotatef(135.0, 0.0, 0.0, 1.0);
+
+	glColor3f(0.0, 0.0, 0.0);
+	drawEllipseStroke(0.0, 0.0, width * 0.25, height * 0.05, 90, 270);
+
+	glRotatef(-135.0, 0.0, 0.0, 1.0);
+	glTranslatef(-width * 0.7, -height * 0.3, 0.0);
+}
+
 void renderPikachu(MovableRectangleObject player, bool isLeft) {
 	glm::vec2 pos = player.getPosition();
 	glm::vec2 size = player.getSize();
-	glColor3f(1.0, 1.0, 0.0);
-	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glTranslatef(pos.x, pos.y, 0.0);
+	if (!isLeft) {
+		glTranslatef(size.x, 0.0, 0.0);
+		glScalef(-1.0, 1.0, 0.0);
+	}
+
+	renderPikachuBase(size.x, size.y);
+	renderPikachuFace(size.x, size.y);
+	renderPikachuEar(size.x, size.y);
+	renderPikachuFoot(size.x, size.y);
+	renderPikachuTail(size.x, size.y);
+	renderPikachuHand(size.x, size.y);
+
+	if (!isLeft) {
+		glScalef(-1.0, 1.0, 0.0);
+		glTranslatef(-size.x, 0.0, 0.0);
+	}
+	glTranslatef(-pos.x, -pos.y, 0.0);
 }
 
 void renderNet(RectangleObject net) {
 	glm::vec2 pos = net.getPosition();
 	glm::vec2 size = net.getSize();
-	glColor3f(0.8, 0.1, 0.1);
-	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-}
 
-// code from https://forums.khronos.org/showthread.php/19787
-void drawEllipse(float x, float y, float xradius, float yradius)
-{
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
+	glTranslatef(pos.x, pos.y, 0.0);
+
+	glColor3f(0.6, 0.6, 0.6);
+	glRectf(0, 0, size.x, size.y);
+	glColor3f(0.0, 0.0, 0.0);
+	glBegin(GL_LINE_LOOP);
 	{
-		float degInRad = i * DEG2RAD;
-		glVertex2f(x + xradius + cos(degInRad)*xradius, y + yradius + sin(degInRad)*yradius);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, size.y, 0.0);
+		glVertex3f(size.x, size.y, 0.0);
+		glVertex3f(size.x, 0.0, 0.0);
 	}
 	glEnd();
+	glColor3f(0.8, 0.8, 0.8);
+	drawEllipse(0.0, size.y - size.x, size.x * 0.5, size.x * 0.5);
+	glColor3f(0.7, 0.7, 0.7);
+	drawEllipse(size.x * 0.25, size.y - size.x * 0.75, size.x * 0.25, size.x * 0.25);
+	glColor3f(0.0, 0.0, 0.0);
+	drawEllipseStroke(0.0, size.y - size.x, size.x * 0.5, size.x * 0.5);
+	drawEllipseStroke(size.x * 0.25, size.y - size.x * 0.75, size.x * 0.25, size.x * 0.25);
+
+	glTranslatef(-pos.x, -pos.y, 0.0);
 }
 
 void renderBall(BallObject ball) {
 	glm::vec2 pos = ball.getPosition();
 	float radius = ball.getRadius();
-	glColor3f(0.9, 0.0, 0.0);
-	drawEllipse(pos.x, pos.y, radius, radius);
+	glColor3f(1.0, 0.0, 0.0);
+	drawEllipse(pos.x, pos.y, radius, radius, 0, 180);
+	glColor3f(0.6, 0.6, 0.6);
+	drawEllipse(pos.x, pos.y, radius, radius, 180, 360);
+	glColor3f(0.8, 0.0, 0.0);
+	glRectf(pos.x, pos.y + radius * 0.9, pos.x + radius * 2, pos.y + radius * 1.1);
+	drawEllipse(pos.x + radius * 0.58, pos.y + radius * 0.58, radius * 0.42, radius * 0.42);
+	glColor3f(0.6, 0.6, 0.6);
+	drawEllipse(pos.x + radius * 0.8, pos.y + radius * 0.8, radius * 0.2, radius * 0.2);
+	glColor3f(0.0, 0.0, 0.0);
+	drawEllipseStroke(pos.x + radius * 0.8, pos.y + radius * 0.8, radius * 0.2, radius * 0.2);
+	drawEllipseStroke(pos.x + radius * 0.9, pos.y + radius * 0.9, radius * 0.1, radius * 0.1);
+	drawEllipseStroke(pos.x, pos.y, radius, radius);
 }
