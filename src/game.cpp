@@ -3,10 +3,13 @@
 #include <iostream>
 #include <algorithm>
 #include <glm/geometric.hpp>
+#include <random>
+#include <ctime>
 
 using namespace std;
 
 const float DEG2RAD = 3.141592 / 180.0;
+const float BALLSPEED = 0.15;
 
 // code from https://forums.khronos.org/showthread.php/19787
 void drawEllipse(float x, float y, float xradius, float yradius)
@@ -84,17 +87,34 @@ void Game::render() {
 	glutSwapBuffers();
 }
 
+float generateRandomFromZeroToOne() {
+	mt19937 engine((unsigned int)time(NULL));
+	std::uniform_real_distribution<float> distribution(0.0, 1.0);
+
+	return distribution(engine);
+}
+
+glm::vec2 generateUnitVector() {
+	float x = 1;
+	float y = 0;
+	while (x < 0.1 || y < 0.1) {
+		x = generateRandomFromZeroToOne();
+		y = sqrt(1 - x * x);
+	}
+
+	return glm::vec2(x, y);
+}
+
 Game::Game() :
 	player1(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
 	player2(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
-	ball(glm::vec2(88.5, 70), 7.5, glm::vec2(0.1, 0.1)),
+	ball(glm::vec2(88.5, 70), 7.5, BALLSPEED * generateUnitVector()),
 	net(glm::vec2(93.5, 0), glm::vec2(5, 50)),
 	gamestate(GAME_MENU),
 	ballCameraMode(false),
 	delayTime(3000),
 	is2player(false),
-	score1(0), score2(0),
-	winningScore(1)
+	score1(0), score2(0), winningScore(1)
 {}
 
 void Game::resetPosition() {
@@ -108,7 +128,7 @@ void Game::resetPosition() {
 
 	ball.setPosition(glm::vec2(88.5, 70));
 	ball.setRadius(7.5);
-	ball.setVelocity(glm::vec2(0.1, 0.1));
+	ball.setVelocity(BALLSPEED*generateUnitVector());
 }
 
 void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
@@ -381,7 +401,7 @@ void Game::updatePlayer(int delta) {
 
 	int epsilon = 3;
 
-	if (ballPosition.y < netSize.y - ballRadius) {
+	if (ballPosition.y < player2Size.y - ballRadius) {
 		glm::vec2 player1Position = player1.getPosition();
 		glm::vec2 player2Position = player2.getPosition();
 		if (ballPosition.x <= epsilon && player1Position.x <= ballRadius * 2)
@@ -428,7 +448,9 @@ void Game::update(int delta) {
 		if (delayTime > 0)
 			delayTime -= delta;
 
-		if (ball.getPosition().y < 2) {
+		int epsilon = 2;
+
+		if (ball.getPosition().y < epsilon) {
 			if (ball.getPosition().x < 92)
 				score2++;
 			else
