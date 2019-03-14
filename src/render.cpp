@@ -3,6 +3,7 @@
 #include <glm/geometric.hpp>
 #include "ballObject.h"
 #include "movableRectangleObject.h"
+#include "game.h"
 #include <iostream>
 
 using namespace std;
@@ -76,8 +77,11 @@ void setBallCamera(glm::vec2 pos, float radius) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void renderBackground() {
-	glColor3f(0.6, 0.851, 0.918);
+void renderBackground(GameState gamestate) {
+	if (gamestate == GAME_MENU)
+		glColor3f(1.0, 1.0, 0.0);
+	else
+		glColor3f(0.6, 0.851, 0.918);
 	glRectf(0.0, 0.0, 192.0, 108.0);
 }
 
@@ -144,21 +148,49 @@ void renderCameraText(bool ballCameraMode) {
 		renderText(0.5, 0.9, "Normal Camera (Spacebar to change)");
 }
 
+void renderMenuPikachuHalf() {
+	glColor3f(0.0, 0.0, 0.0);
+	drawEllipse(10, 5, 8.0, 8.0);
+	glColor3f(1.0, 1.0, 1.0);
+	drawEllipse(11.5, 10.5, 4.0, 4.0);
+	glColor3f(1.0, 0.0, 0.0);
+	drawEllipse(16.5, -20.0, 7.0, 7.0);
+	glColor3f(0.0, 0.0, 0.0);
+	drawEllipseStroke(0.0, -10.0, 4.0, 2.0, 180, 370);
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, 1.0, 0.0);
+		glVertex3f(2.0, 1.0, 0.0);
+	}
+	glEnd();
+}
+
 void renderMenu(bool is2player) {
-	glColor3f(1.0, 1.0, 0.0);
-	renderText(0.5, 0.65, "PIKACHU VOLLEYBALL");
+	glMatrixMode(GL_MODELVIEW);
+	glTranslatef(192.0 * 0.25, 108.0 * 0.5, 0.0);
+
+	renderMenuPikachuHalf();
+	glScalef(-1.0, 1.0, 0.0);
+	renderMenuPikachuHalf();
+	glScalef(-1.0, 1.0, 0.0);
+
+	glTranslatef(-192.0 * 0.25, -108.0 * 0.5, 0.0);
+
+	glColor3f(0.8, 0.0, 0.0);
+	renderText(0.75, 0.65, "PIKACHU VOLLEYBALL");
 
 	if (is2player)
 		glColor3f(0.4, 0.4, 0.4);
 	else
 		glColor3f(0.0, 0.0, 0.0);
-	renderText(0.5, 0.45, "Single Play");
+	renderText(0.75, 0.45, "Single Play");
 
 	if (is2player)
 		glColor3f(0.0, 0.0, 0.0);
 	else
 		glColor3f(0.4, 0.4, 0.4);
-	renderText(0.5, 0.35, "Multi Play");
+	renderText(0.75, 0.35, "Multi Play");
 }
 
 void renderWinText(bool is2player, int score1, int score2) {

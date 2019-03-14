@@ -24,7 +24,7 @@ void Game::render() {
 	else
 		setNormalCamera();
 
-	renderBackground();
+	renderBackground(gamestate);
 
 	if (gamestate == GAME_MENU) {
 		renderMenu(is2player);
