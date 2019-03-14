@@ -88,7 +88,7 @@ void Game::render() {
 }
 
 float generateRandomFromZeroToOne() {
-	mt19937 engine((unsigned int)time(NULL));
+	mt19937 engine(time(NULL));
 	std::uniform_real_distribution<float> distribution(0.0, 1.0);
 
 	return distribution(engine);
@@ -97,7 +97,7 @@ float generateRandomFromZeroToOne() {
 glm::vec2 generateUnitVector() {
 	float x = 1;
 	float y = 0;
-	while (x < 0.1 || y < 0.1) {
+	while (x < 0.4 || y < 0.2) {
 		x = generateRandomFromZeroToOne();
 		y = sqrt(1 - x * x);
 	}
@@ -114,7 +114,7 @@ Game::Game() :
 	ballCameraMode(false),
 	delayTime(3000),
 	is2player(false),
-	score1(0), score2(0), winningScore(1)
+	score1(0), score2(0), winningScore(5)
 {}
 
 void Game::resetPosition() {
@@ -128,7 +128,10 @@ void Game::resetPosition() {
 
 	ball.setPosition(glm::vec2(88.5, 70));
 	ball.setRadius(7.5);
-	ball.setVelocity(BALLSPEED*generateUnitVector());
+	glm::vec2 ballVelocity = BALLSPEED * generateUnitVector();
+	if ((whoScores == 1 && ballVelocity.x < 0) || (whoScores == 2 && ballVelocity.x > 0))
+		ballVelocity.x = -ballVelocity.x;
+	ball.setVelocity(ballVelocity);
 }
 
 void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
@@ -451,13 +454,22 @@ void Game::update(int delta) {
 		int epsilon = 2;
 
 		if (ball.getPosition().y < epsilon) {
-			if (ball.getPosition().x < 92)
+			if (ball.getPosition().x < 92) {
+				whoScores = 2;
 				score2++;
-			else
+			}
+				
+			else {
+				whoScores = 1;
 				score1++;
+			}
+				
 
 			if (score1 == winningScore || score2 == winningScore) {
 				gamestate = GAME_SET;
+				std::mt19937 engine(time(NULL));
+				std::uniform_int_distribution<int> distribution(1, 2);
+				whoScores = distribution(engine);
 			}
 			else {
 				gamestate = GAME_SCORE;
