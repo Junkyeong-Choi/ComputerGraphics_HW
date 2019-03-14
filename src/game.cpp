@@ -8,20 +8,7 @@
 
 using namespace std;
 
-const float DEG2RAD = 3.141592 / 180.0;
 const float BALLSPEED = 0.15;
-
-// code from https://forums.khronos.org/showthread.php/19787
-void drawEllipse(float x, float y, float xradius, float yradius)
-{
-	glBegin(GL_POLYGON);
-	for (int i = 0; i < 360; i++)
-	{
-		float degInRad = i * DEG2RAD;
-		glVertex2f(x + xradius + cos(degInRad)*xradius, y + yradius + sin(degInRad)*yradius);
-	}
-	glEnd();
-}
 
 void Game::exit() {
 	exiting = true;
@@ -37,41 +24,20 @@ void Game::render() {
 	else
 		setNormalCamera();
 
-	// draw background color
-	glColor3f(0.6, 0.851, 0.918);
-	glRectf(0.0, 0.0, 192.0, 108.0);
+	renderBackground();
 
 	if (gamestate == GAME_MENU) {
 		renderMenu(is2player);
 	}
 	else {
-		glm::vec2 pos = player1.getPosition();
-		glm::vec2 size = player1.getSize();
-		glColor3f(1.0, 1.0, 0.0);
-		glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-
-		pos = player2.getPosition();
-		size = player2.getSize();
-		glColor3f(1.0, 1.0, 0.0);
-		glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-
-		pos = net.getPosition();
-		size = net.getSize();
-		glColor3f(0.8, 0.1, 0.1);
-		glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-
-		pos = ball.getPosition();
-		float radius = ball.getRadius();
-		glColor3f(0.9, 0.0, 0.0);
-		drawEllipse(pos.x, pos.y, radius, radius);
-
-		glColor3f(0.0, 0.0, 0.0);
+		renderPikachu(player1, true);
+		renderPikachu(player2, false);
+		renderNet(net);
+		renderBall(ball);
 		renderScore(score1, score2);
-	}
 
-	glColor3f(1.0, 0.0, 0.0);
-	
-	if (gamestate != GAME_MENU) {
+		glColor3f(1.0, 0.0, 0.0);
+
 		if (gamestate == GAME_READY)
 			renderReady(delayTime);
 		else if (gamestate == GAME_PLAYING && delayTime > 0)
@@ -433,9 +399,9 @@ void Game::update(int delta) {
 			glm::vec2 velocity(0.0, 0.0);
 
 			if (player2.getPosition().x < ball.getPosition().x)
-				velocity.x = PLAYER_MAX_VELOCITY * 0.83;
+				velocity.x = ball.getVelocity().x * 0.83;
 			else
-				velocity.x = -PLAYER_MAX_VELOCITY * 0.83;
+				velocity.x = -ball.getVelocity().x * 0.83;
 
 			player2.setVelocity(velocity);
 		}
