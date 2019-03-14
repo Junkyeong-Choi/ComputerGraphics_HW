@@ -2,9 +2,12 @@
 #include <GL/freeglut.h>
 #include <glm/geometric.hpp>
 #include "ballObject.h"
+#include "movableRectangleObject.h"
 #include <iostream>
 
 using namespace std;
+
+const float DEG2RAD = 3.141592 / 180.0;
 
 void setNormalCamera() {
 	glMatrixMode(GL_PROJECTION);
@@ -49,6 +52,11 @@ void setBallCamera(glm::vec2 pos, float radius) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
+void renderBackground() {
+	glColor3f(0.6, 0.851, 0.918);
+	glRectf(0.0, 0.0, 192.0, 108.0);
+}
+
 int bitmapStringLength(void* font, const char* text) {
 	int length = 0;
 	int i = 0;
@@ -79,6 +87,7 @@ void renderText(float x, float y, const char* text) {
 
 void renderScore(int score1, int score2) {
 	char buffer[10];
+	glColor3f(0.0, 0.0, 0.0);
 	_itoa_s(score1, buffer, 10);
 	renderText(0.1, 0.9, buffer);
 	_itoa_s(score2, buffer, 10);
@@ -88,14 +97,17 @@ void renderScore(int score1, int score2) {
 void renderReady(int delayTime) {
 	char buffer[10];
 	_itoa_s(delayTime / 1000 + 1, buffer, 10);
+	glColor3f(1.0, 0.0, 0.0);
 	renderText(0.5, 0.9, buffer);
 }
 
 void renderGo() {
+	glColor3f(1.0, 0.0, 0.0);
 	renderText(0.5, 0.9, "GO!");
 }
 
 void renderScoreText() {
+	glColor3f(1.0, 0.0, 0.0);
 	renderText(0.5, 0.9, "SCORE!");
 }
 
@@ -126,6 +138,8 @@ void renderMenu(bool is2player) {
 }
 
 void renderWinText(bool is2player, int score1, int score2) {
+	glColor3f(1.0, 0.0, 0.0);
+
 	if (is2player) {
 		if (score1 > score2)
 			renderText(0.5, 0.9, "PLAYER 1 WIN!");
@@ -141,4 +155,37 @@ void renderWinText(bool is2player, int score1, int score2) {
 
 	glColor3f(0.4, 0.4, 0.4);
 	renderText(0.5, 0.8, "(Press Enter)");
+}
+
+void renderPikachu(MovableRectangleObject player, bool isLeft) {
+	glm::vec2 pos = player.getPosition();
+	glm::vec2 size = player.getSize();
+	glColor3f(1.0, 1.0, 0.0);
+	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+}
+
+void renderNet(RectangleObject net) {
+	glm::vec2 pos = net.getPosition();
+	glm::vec2 size = net.getSize();
+	glColor3f(0.8, 0.1, 0.1);
+	glRectf(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+}
+
+// code from https://forums.khronos.org/showthread.php/19787
+void drawEllipse(float x, float y, float xradius, float yradius)
+{
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < 360; i++)
+	{
+		float degInRad = i * DEG2RAD;
+		glVertex2f(x + xradius + cos(degInRad)*xradius, y + yradius + sin(degInRad)*yradius);
+	}
+	glEnd();
+}
+
+void renderBall(BallObject ball) {
+	glm::vec2 pos = ball.getPosition();
+	float radius = ball.getRadius();
+	glColor3f(0.9, 0.0, 0.0);
+	drawEllipse(pos.x, pos.y, radius, radius);
 }
