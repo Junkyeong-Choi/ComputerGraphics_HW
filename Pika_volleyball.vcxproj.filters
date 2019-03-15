@@ -21,13 +21,13 @@
     <ClCompile Include="src\game.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ballObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="movableRectangleObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\render.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ballObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movableRectangleObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
