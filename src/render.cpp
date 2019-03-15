@@ -4,9 +4,6 @@
 #include "ballObject.h"
 #include "movableRectangleObject.h"
 #include "game.h"
-#include <iostream>
-
-using namespace std;
 
 const float DEG2RAD = 3.141592 / 180.0;
 

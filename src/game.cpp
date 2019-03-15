@@ -1,12 +1,9 @@
 #include "game.h"
 #include "render.h"
-#include <iostream>
 #include <algorithm>
 #include <glm/geometric.hpp>
 #include <random>
 #include <ctime>
-
-using namespace std;
 
 const float BALLSPEED = 0.15;
 
@@ -54,7 +51,7 @@ void Game::render() {
 }
 
 float generateRandomFromZeroToOne() {
-	mt19937 engine(time(NULL));
+	std::mt19937 engine(time(NULL));
 	std::uniform_real_distribution<float> distribution(0.0, 1.0);
 
 	return distribution(engine);
@@ -403,8 +400,6 @@ void Game::update(int delta) {
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
 		if (!is2player) {
 			glm::vec2 velocity(0.0, 0.0);
-
-			cout << player2.getPosition().x << ' ' << ball.getPosition().x << endl;
 
 			if (player2.getPosition().x < ball.getPosition().x)
 				velocity.x = ball.getVelocity().x * 0.83;

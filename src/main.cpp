@@ -1,9 +1,6 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "game.h"
-#include <iostream>
-
-using namespace std;
 
 const int width = 768;
 const int height = 432;
