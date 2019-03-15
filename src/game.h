@@ -36,7 +36,7 @@ private:
 	int score1;
 	int score2;
 	int winningScore;
-	int whoScores;
+	bool player1Scored;
 	bool exiting;
 
 	Direction vectorDirection(glm::vec2 target);

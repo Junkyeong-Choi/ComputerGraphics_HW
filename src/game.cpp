@@ -80,7 +80,8 @@ Game::Game() :
 	ballCameraMode(false),
 	delayTime(3000),
 	is2player(false),
-	score1(0), score2(0), winningScore(5)
+	score1(0), score2(0), winningScore(5),
+	player1Scored(false)
 {}
 
 void Game::resetPosition() {
@@ -97,7 +98,7 @@ void Game::resetPosition() {
 	ball.setPosition(glm::vec2(88.5, 70));
 	ball.setRadius(7.5);
 	glm::vec2 ballVelocity = BALLSPEED * generateUnitVector();
-	if ((whoScores == 1 && ballVelocity.x < 0) || (whoScores == 2 && ballVelocity.x > 0))
+	if ((player1Scored && ballVelocity.x < 0) || (!player1Scored && ballVelocity.x > 0))
 		ballVelocity.x = -ballVelocity.x;
 	ball.setVelocity(ballVelocity);
 }
@@ -403,6 +404,8 @@ void Game::update(int delta) {
 		if (!is2player) {
 			glm::vec2 velocity(0.0, 0.0);
 
+			cout << player2.getPosition().x << ' ' << ball.getPosition().x << endl;
+
 			if (player2.getPosition().x < ball.getPosition().x)
 				velocity.x = ball.getVelocity().x * 0.83;
 			else
@@ -423,12 +426,12 @@ void Game::update(int delta) {
 
 		if (ball.getPosition().y < epsilon) {
 			if (ball.getPosition().x < 92) {
-				whoScores = 2;
+				player1Scored = false;
 				score2++;
 			}
 				
 			else {
-				whoScores = 1;
+				player1Scored = true;
 				score1++;
 			}
 				
@@ -436,8 +439,8 @@ void Game::update(int delta) {
 			if (score1 == winningScore || score2 == winningScore) {
 				gamestate = GAME_SET;
 				std::mt19937 engine(time(NULL));
-				std::uniform_int_distribution<int> distribution(1, 2);
-				whoScores = distribution(engine);
+				std::uniform_int_distribution<int> distribution(0, 1);
+				player1Scored = distribution(engine);
 			}
 			else {
 				gamestate = GAME_SCORE;

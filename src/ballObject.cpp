@@ -8,15 +8,15 @@ void BallObject::move(int delta) {
 	if (position.x < 0 || position.x + 2 * radius > 192) {
 		velocity.x = -velocity.x;
 		if (position.x < 0)
-			position.x += 1;
+			position.x = 0;
 		else
-			position.x -= 1;
+			position.x = 192 - 2 * radius;
 	}
 	if (position.y < 0 || position.y + 2 * radius > 108) {
 		velocity.y = -velocity.y;
 		if (position.y < 0)
-			position.y += 1;
+			position.y = 0;
 		else
-			position.y -= 1;
+			position.y = 108 - 2 * radius;
 	}
 }
