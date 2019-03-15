@@ -10,7 +10,7 @@ using namespace std;
 
 const float DEG2RAD = 3.141592 / 180.0;
 
-// code from https://forums.khronos.org/showthread.php/19787
+// modified code from https://forums.khronos.org/showthread.php/19787
 void drawEllipse(float x, float y, float xradius, float yradius, int startDegree = 0, int endDegree = 360)
 {
 	glBegin(GL_POLYGON);
