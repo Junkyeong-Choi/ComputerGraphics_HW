@@ -2,8 +2,9 @@
 #include <tuple>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include "movableRectangleObject.h"
 #include "ballObject.h"
+#include "character.h"
+
 
 enum GameState {
 	GAME_MENU,
@@ -25,8 +26,8 @@ typedef std::tuple<bool, Direction, glm::vec2> Collision;
 
 class Game {
 private:
-	MovableRectangleObject player1;
-	MovableRectangleObject player2;
+	Character player1;
+	Character player2;
 	BallObject ball;
 	RectangleObject net;
 	GameState gamestate;

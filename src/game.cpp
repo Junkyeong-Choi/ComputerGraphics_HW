@@ -68,8 +68,8 @@ glm::vec2 generateUnitVector() {
 }
 
 Game::Game() :
-	player1(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
-	player2(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0)),
+	player1(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0), 0, 0, 0),
+	player2(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0), 0, 0, 0),
 	ball(glm::vec2(88.5, 70), 7.5, BALLSPEED * generateUnitVector()),
 	net(glm::vec2(93.5, 0), glm::vec2(5, 50)),
 	gamestate(GAME_MENU),
