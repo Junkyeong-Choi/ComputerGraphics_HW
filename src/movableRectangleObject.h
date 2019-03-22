@@ -2,7 +2,7 @@
 #include "rectangleObject.h"
 
 class MovableRectangleObject : public RectangleObject {
-private:
+protected:
 	glm::vec2 velocity;
 public:
 	MovableRectangleObject() {}

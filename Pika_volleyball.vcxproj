@@ -120,6 +120,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\cloud.cpp" />
     <ClCompile Include="src\collision.cpp" />
     <ClCompile Include="src\ballObject.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -131,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\character.h" />
+    <ClInclude Include="src\cloud.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\ballObject.h" />
     <ClInclude Include="src\game.h" />
