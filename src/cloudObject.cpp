@@ -9,4 +9,6 @@ void CloudObject::move(int delta) {
 		position.x += 192;
 	if (position.x > 192)
 		position.x -= 192;
+
+	curling += curlingSpeed * delta;
 }

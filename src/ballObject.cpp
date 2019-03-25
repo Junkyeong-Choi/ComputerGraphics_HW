@@ -19,4 +19,6 @@ void BallObject::move(int delta) {
 		else
 			position.y = 108 - 2 * radius;
 	}
+
+	electricityAngle += electricityAngleSpeed * delta;
 }
