@@ -1,5 +1,6 @@
 #pragma once
 #include "object.h"
+#include "electricityObject.h"
 
 class BallObject : public Object {
 private:
@@ -7,11 +8,12 @@ private:
 	float electricityAngle;
 	float electricityAngleSpeed;
 	glm::vec2 velocity;
+	ElectricityObject electricity;
 public:
 	BallObject() {}
 	~BallObject() {}
 	BallObject(glm::vec2 _position, float _radius, glm::vec2 _velocity, float _electricityAngle, float _electricityAngleSpeed) :
-		Object(_position), radius(_radius), velocity(_velocity), electricityAngle(_electricityAngle), electricityAngleSpeed(_electricityAngleSpeed) {}
+		Object(_position), radius(_radius), velocity(_velocity), electricityAngle(_electricityAngle), electricityAngleSpeed(_electricityAngleSpeed), electricity() {}
 	float getRadius() { return radius; }
 	float getElectricityAngle() { return electricityAngle; }
 	float getElectricityAngleSpeed() { return electricityAngleSpeed; }
