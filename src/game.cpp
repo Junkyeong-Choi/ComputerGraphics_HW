@@ -68,8 +68,8 @@ glm::vec2 generateUnitVector() {
 }
 
 Game::Game() :
-	player1(glm::vec2(24.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f),
-	player2(glm::vec2(148.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f),
+	player1(glm::vec2(24.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f),
+	player2(glm::vec2(148.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f),
 	ball(glm::vec2(88.5f, 70.0f), 7.5f, BALLSPEED * generateUnitVector(), 0.0f, 0.1f),
 	net(glm::vec2(93.5f, 0.0f), glm::vec2(5.0f, 50.0f)),
 	gamestate(GAME_MENU),
@@ -78,7 +78,12 @@ Game::Game() :
 	is2player(false),
 	score1(0), score2(0), winningScore(5),
 	player1Scored(false) {
-	clouds.push_back(CloudObject(glm::vec2(24.0f, 70.0f), glm::vec2(35.0f, 20.0f), glm::vec2(2.0f, 0.0f), 0.0f, 0.1f));
+	clouds.push_back(CloudObject(glm::vec2(24.0f, 70.0f), glm::vec2(35.0f, 20.0f), glm::vec2(0.05f, 0.0f), 0.0f, 0.1f));
+	clouds.push_back(CloudObject(glm::vec2(148.0f, 70.0f), glm::vec2(35.0f, 20.0f), glm::vec2(0.05f, 0.0f), 0.0f, 0.1f));
+}
+
+Game::~Game() {
+	std::vector<CloudObject>().swap(clouds);
 }
 
 void Game::resetPosition() {
@@ -310,6 +315,12 @@ void Game::updatePlayer(int delta) {
 	
 }
 
+void Game::updateClouds(int delta) {
+	std::vector<CloudObject>::iterator iter;
+	for (iter = clouds.begin(); iter != clouds.end(); iter++)
+		iter->move(delta);
+}
+
 void Game::update(int delta) {
 
 	if (gamestate == GAME_READY) {
@@ -336,6 +347,7 @@ void Game::update(int delta) {
 	if (gamestate == GAME_PLAYING) {
 		updateBall(delta);
 		updatePlayer(delta);
+		updateClouds(delta);
 
 		if (delayTime > 0)
 			delayTime -= delta;

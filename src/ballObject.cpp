@@ -21,5 +21,7 @@ void BallObject::move(int delta) {
 	}
 
 	electricityAngle += electricityAngleSpeed * delta;
+	if (electricityAngle > 360)
+		electricityAngle -= 360;
 	electricity.move(delta);
 }

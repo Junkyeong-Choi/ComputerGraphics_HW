@@ -46,9 +46,10 @@ private:
 	void resetPosition();
 	void updateBall(int delta);
 	void updatePlayer(int delta);
+	void updateClouds(int delta);
 public:
 	Game();
-	~Game() {}
+	~Game();
 	void init(int argc, char* argv[], int width, int height, bool isFullScreen);
 	void exit();
 	bool isExiting();
