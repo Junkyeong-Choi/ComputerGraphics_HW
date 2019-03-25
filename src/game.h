@@ -1,9 +1,11 @@
 #pragma once
 #include <tuple>
+#include <vector>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "ballObject.h"
-#include "character.h"
+#include "characterObject.h"
+#include "cloudObject.h"
 
 
 enum GameState {
@@ -26,10 +28,11 @@ typedef std::tuple<bool, Direction, glm::vec2> Collision;
 
 class Game {
 private:
-	Character player1;
-	Character player2;
+	CharacterObject player1;
+	CharacterObject player2;
 	BallObject ball;
 	RectangleObject net;
+	std::vector<CloudObject> clouds;
 	GameState gamestate;
 	bool ballCameraMode;
 	bool is2player;

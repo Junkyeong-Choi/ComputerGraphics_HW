@@ -68,17 +68,18 @@ glm::vec2 generateUnitVector() {
 }
 
 Game::Game() :
-	player1(glm::vec2(24, 0), glm::vec2(20, 35), glm::vec2(0, 0), 0, 0, 0),
-	player2(glm::vec2(148, 0), glm::vec2(20, 35), glm::vec2(0, 0), 0, 0, 0),
-	ball(glm::vec2(88.5, 70), 7.5, BALLSPEED * generateUnitVector()),
-	net(glm::vec2(93.5, 0), glm::vec2(5, 50)),
+	player1(glm::vec2(24.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f),
+	player2(glm::vec2(148.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f),
+	ball(glm::vec2(88.5f, 70.0f), 7.5f, BALLSPEED * generateUnitVector(), 0.0f),
+	net(glm::vec2(93.5f, 0.0f), glm::vec2(5.0f, 50.0f)),
 	gamestate(GAME_MENU),
 	ballCameraMode(false),
 	delayTime(3000),
 	is2player(false),
 	score1(0), score2(0), winningScore(5),
-	player1Scored(false)
-{}
+	player1Scored(false) {
+	clouds.push_back(CloudObject(glm::vec2(24.0f, 70.0f), glm::vec2(35.0f, 20.0f), glm::vec2(2.0f, 0.0f), 0.0f));
+}
 
 void Game::resetPosition() {
 	delayTime = 3000;

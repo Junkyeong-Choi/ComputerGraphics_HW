@@ -1,6 +1,6 @@
-#include "cloud.h"
+#include "cloudObject.h"
 
-void Cloud::move(int delta) {
+void CloudObject::move(int delta) {
 
 	glm::vec2 displacement = velocity * (float)delta;
 	position += displacement;

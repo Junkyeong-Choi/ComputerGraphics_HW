@@ -9,7 +9,8 @@ private:
 public:
 	BallObject() {}
 	~BallObject() {}
-	BallObject(glm::vec2 _position, float _radius, glm::vec2 _velocity) : Object(_position), radius(_radius), velocity(_velocity) {}
+	BallObject(glm::vec2 _position, float _radius, glm::vec2 _velocity, float _electricityAngle) : 
+		Object(_position), radius(_radius), velocity(_velocity), electricityAngle(_electricityAngle) {}
 	float getRadius() { return radius; }
 	float getElectricityAngle() { return electricityAngle; }
 	glm::vec2 getVelocity() { return velocity; }
