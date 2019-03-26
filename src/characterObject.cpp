@@ -13,10 +13,6 @@ void CharacterObject::move(int delta) {
 	if (position.x + size.x > 192)
 		position.x = 192 - size.x;
 
-	tailProximalAngle += tailProximalAngleVelocity * delta;
-	tailDistalAngle += tailDistalAngleVelocity * delta;
-	earAngle += earAngleVelocity * delta;
-
 	if (tailProximalAngle > 360)
 		tailProximalAngle -= 360;
 	if (tailDistalAngle > 360)
@@ -37,6 +33,8 @@ void CharacterObject::move(int delta) {
 		if (earAngle > EAR_ANGLE_LIMIT || earAngle < -EAR_ANGLE_LIMIT)
 			earAngleVelocity = -earAngleVelocity;
 	}
+	else
+		durationOfVibration = 0;
 }
 
 void CharacterObject::handleCollision(int delta) {
