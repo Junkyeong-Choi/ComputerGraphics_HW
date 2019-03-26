@@ -1,8 +1,9 @@
 #include "characterObject.h"
-#define DURATION_OF_VIBRATION 500
-#define TAIL_PROXIMAL_ANGLE_LIMIT 15
-#define TAIL_DISTAL_ANGLE_LIMIT 15
-#define EAR_ANGLE_LIMIT 15
+
+
+const int TAIL_PROXIMAL_ANGLE_LIMIT = 15;
+const int TAIL_DISTAL_ANGLE_LIMIT = 15;
+const int EAR_ANGLE_LIMIT = 15;
 
 void CharacterObject::move(int delta) {
 	glm::vec2 displacement = velocity * (float)delta;
@@ -35,8 +36,4 @@ void CharacterObject::move(int delta) {
 	}
 	else
 		durationOfVibration = 0;
-}
-
-void CharacterObject::handleCollision(int delta) {
-	durationOfVibration = DURATION_OF_VIBRATION;
 }

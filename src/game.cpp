@@ -5,6 +5,7 @@
 #include <ctime>
 
 const float BALLSPEED = 0.15;
+const int DURATION_OF_VIBRATION = 500;
 
 void Game::exit() {
 	exiting = true;
@@ -229,6 +230,9 @@ void Game::updateBall(int delta) {
 	for (size_t i = 0; i < 3; i++) {
 		Collision collision = CheckCollision(*objectsToCollideAgainstBall[i], ball);
 		if (std::get<0>(collision)) {
+			if (objectsToCollideAgainstBall[i] == &player1)
+				player1.setDurationOfVibration(DURATION_OF_VIBRATION);
+
 			Direction dir = std::get<1>(collision);
 			glm::vec2 diffVec = std::get<2>(collision);
 			glm::vec2 ballVelocity = ball.getVelocity();

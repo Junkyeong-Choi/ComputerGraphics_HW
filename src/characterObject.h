@@ -34,6 +34,5 @@ public:
 	void setEarAngleVelocity(float _earAngleVelocity) { earAngleVelocity = _earAngleVelocity; }
 	void setDurationOfVibration(int _durationOfVibration) { durationOfVibration = _durationOfVibration; }
 
-	void handleCollision(int delta);
 	void move(int delta);
 };
