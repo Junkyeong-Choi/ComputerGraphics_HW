@@ -1,9 +1,9 @@
 #include "characterObject.h"
 
 
-const int TAIL_PROXIMAL_ANGLE_LIMIT = 15;
-const int TAIL_DISTAL_ANGLE_LIMIT = 15;
-const int EAR_ANGLE_LIMIT = 15;
+const float TAIL_PROXIMAL_ANGLE_LIMIT = 15;
+const float TAIL_DISTAL_ANGLE_LIMIT = 15;
+const float EAR_ANGLE_LIMIT = 15;
 
 void CharacterObject::move(int delta) {
 	glm::vec2 displacement = velocity * (float)delta;
