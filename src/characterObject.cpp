@@ -27,13 +27,31 @@ void CharacterObject::move(int delta) {
 		tailDistalAngle += tailDistalAngleVelocity * delta;
 		earAngle += earAngleVelocity * delta;
 
-		if (tailProximalAngle > TAIL_PROXIMAL_ANGLE_LIMIT || tailProximalAngle < -TAIL_PROXIMAL_ANGLE_LIMIT)
+		float epsilon = 0.05;
+		if (tailProximalAngle > TAIL_PROXIMAL_ANGLE_LIMIT || tailProximalAngle < -TAIL_PROXIMAL_ANGLE_LIMIT) {
 			tailProximalAngleVelocity = -tailProximalAngleVelocity;
-		if (tailDistalAngle > TAIL_DISTAL_ANGLE_LIMIT || tailDistalAngle < -TAIL_DISTAL_ANGLE_LIMIT)
-			tailDistalAngleVelocity = -tailDistalAngleVelocity;
-		if (earAngle > EAR_ANGLE_LIMIT || earAngle < -EAR_ANGLE_LIMIT)
-			earAngleVelocity = -earAngleVelocity;
+			if (tailProximalAngle > TAIL_PROXIMAL_ANGLE_LIMIT)
+				tailProximalAngle = TAIL_PROXIMAL_ANGLE_LIMIT - epsilon;
+			else
+				tailProximalAngle = -TAIL_PROXIMAL_ANGLE_LIMIT + epsilon;
+
+		}
+			if (tailDistalAngle > TAIL_DISTAL_ANGLE_LIMIT || tailDistalAngle < -TAIL_DISTAL_ANGLE_LIMIT) {
+				tailDistalAngleVelocity = -tailDistalAngleVelocity;
+				if (tailDistalAngle > TAIL_DISTAL_ANGLE_LIMIT)
+					tailDistalAngle = TAIL_DISTAL_ANGLE_LIMIT - epsilon;
+				else
+					tailDistalAngle = -TAIL_DISTAL_ANGLE_LIMIT + epsilon;
+		}
+			if (earAngle > EAR_ANGLE_LIMIT || earAngle < -EAR_ANGLE_LIMIT) {
+				earAngleVelocity = -earAngleVelocity;
+				if (earAngle > EAR_ANGLE_LIMIT)
+					earAngle = EAR_ANGLE_LIMIT - epsilon;
+				else
+					earAngle = -EAR_ANGLE_LIMIT + epsilon;
+		}
 	}
+
 	else
 		durationOfVibration = 0;
 }
