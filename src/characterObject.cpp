@@ -1,16 +1,14 @@
 #include "characterObject.h"
 
 
-
-
 void CharacterObject::move(int delta) {
-	const float TAIL_PROXIMAL_ANGLE_LIMIT = 15;
-	const float TAIL_DISTAL_ANGLE_LIMIT = 15;
-	const float EAR_ANGLE_LIMIT = 15;
+	const float TAIL_PROXIMAL_ANGLE_LIMIT = 5;
+	const float TAIL_DISTAL_ANGLE_LIMIT = 5;
+	const float EAR_ANGLE_LIMIT = 5;
 
 	glm::vec2 displacement = velocity * (float)delta;
 	position += displacement;
-	
+
 	if (position.x < 0)
 		position.x = 0;
 	if (position.x + size.x > 192)
