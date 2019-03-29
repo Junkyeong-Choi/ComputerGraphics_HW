@@ -25,6 +25,7 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::vec2 netPos = net.getPosition();
 	glm::vec2 netSize = net.getSize();
 	glm::vec2 ballPos = ball.getPosition();
+	float ballRadius = ball.getRadius();
 
 	glm::mat4 backgroundToPikachu1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
@@ -63,6 +64,11 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::mat4 backgroundToBall =
 		glm::translate(glm::mat4(1), glm::vec3(ballPos.x, ballPos.y, 0.0f));
 
+	glm::mat4 ballToElectricity =
+		glm::translate(glm::mat4(1), glm::vec3(ballRadius, ballRadius, 0.0f)) *
+		glm::rotate(glm::mat4(1), ball.getElectricityAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f)) *
+		glm::translate(glm::mat4(1), glm::vec3(0.0f, -ballRadius * sqrt(3) / 2, 0.0f));
+
 	return
 	new SceneGraphNode(glm::mat4(1), renderBackground,
 		new SceneGraphNode(backgroundToPikachu1, renderPikachu,
@@ -92,7 +98,10 @@ SceneGraphNode *Game::constructSceneGraph() {
 			new SceneGraphNode(backgroundToNet, renderNet,
 				nullptr,
 				new SceneGraphNode(backgroundToBall, renderBall,
-					nullptr,
+					new SceneGraphNode(ballToElectricity, renderElectricity,
+						nullptr,
+						nullptr
+					),
 					nullptr
 				)
 			)
@@ -112,7 +121,6 @@ void Game::render() {
 	else {
 		SceneGraphNode *root = constructSceneGraph();
 		root->traverse();
-		delete root;
 
 		renderScore(score1, score2);
 
@@ -126,6 +134,8 @@ void Game::render() {
 			renderWinText(is2player, score1, score2);
 		else
 			renderCameraText(ballCameraMode);
+
+		delete root;
 	}
 
 	glutSwapBuffers();
@@ -185,6 +195,7 @@ void Game::resetPosition() {
 	if ((player1Scored && ballVelocity.x < 0) || (!player1Scored && ballVelocity.x > 0))
 		ballVelocity.x = -ballVelocity.x;
 	ball.setVelocity(ballVelocity);
+	ball.setElectricityAngle(0.0f);
 }
 
 void Game::restartGame() {
