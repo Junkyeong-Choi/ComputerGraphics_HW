@@ -20,18 +20,28 @@ bool Game::isExiting() {
 SceneGraphNode *Game::constructSceneGraph() {
 	glm::vec2 player1pos = player1.getPosition();
 	glm::vec2 player1size = player1.getSize();
-	glm::mat4 backgroundToPikachu1 = glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
+
+	glm::mat4 backgroundToPikachu1 =
+		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
+
 	glm::mat4 pikachuToEar1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1size.x / 5, player1size.y * 6 / 7, 0.0f)) * 
 		glm::rotate(glm::mat4(1), (50.0f + player1.getEarAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+
 	glm::mat4 pikachuToProximalTail1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.05f, player1size.y * 0.2f, 0.0f)) *
 		glm::rotate(glm::mat4(1), (60.0f + player1.getTailProximalAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+	
+	glm::mat4 proximalToDistalTail1 =
+		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.1f, player1size.y * 0.2f, 0.0f)) *
+		glm::rotate(glm::mat4(1), player1.getTailDistalAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	return new SceneGraphNode(glm::mat4(1), renderBackground, new SceneGraphNode(
 		backgroundToPikachu1, renderPikachu, new SceneGraphNode(
 			pikachuToEar1, renderPikachuEar, nullptr, new SceneGraphNode(
-				pikachuToProximalTail1, renderPikachuProximalTail, nullptr, nullptr
+				pikachuToProximalTail1, renderPikachuProximalTail, new SceneGraphNode(
+					proximalToDistalTail1, renderPikachuDistalTail, nullptr, nullptr
+				), nullptr
 			)
 		), nullptr
 	), nullptr);

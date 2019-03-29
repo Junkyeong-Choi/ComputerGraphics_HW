@@ -16,6 +16,7 @@ void renderBackground(void);
 void renderPikachu(void);
 void renderPikachuEar(void);
 void renderPikachuProximalTail(void);
+void renderPikachuDistalTail(void);
 void renderPikachuOld(MovableRectangleObject player, bool isLeft);
 void renderNet(RectangleObject net);
 void renderBall(BallObject ball);
