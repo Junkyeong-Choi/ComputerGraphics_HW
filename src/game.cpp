@@ -22,6 +22,8 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::vec2 player2pos = player2.getPosition();
 	glm::vec2 player1size = player1.getSize();
 	glm::vec2 player2size = player2.getSize();
+	glm::vec2 netPos = net.getPosition();
+	glm::vec2 netSize = net.getSize();
 
 	glm::mat4 backgroundToPikachu1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
@@ -53,6 +55,9 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::mat4 proximalToDistalTail2 =
 		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.1f, player1size.y * 0.2f, 0.0f)) *
 		glm::rotate(glm::mat4(1), player2.getTailDistalAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+	
+	glm::mat4 backgroundToNet =
+		glm::translate(glm::mat4(1), glm::vec3(netPos.x, netPos.y, 0.0f));
 
 	return
 	new SceneGraphNode(glm::mat4(1), renderBackground,
@@ -80,7 +85,10 @@ SceneGraphNode *Game::constructSceneGraph() {
 					nullptr
 				)
 			),
-			nullptr
+			new SceneGraphNode(backgroundToNet, renderNet,
+				nullptr,
+				nullptr
+			)
 		)
 	);
 }
@@ -99,7 +107,6 @@ void Game::render() {
 		root->traverse();
 		delete root;
 
-		renderNet(net);
 		renderBall(ball);
 		renderScore(score1, score2);
 

@@ -337,11 +337,8 @@ void renderPikachuDistalTail(void) {
 	glEnd();
 }
 
-void renderNet(RectangleObject net) {
-	glm::vec2 pos = net.getPosition();
-	glm::vec2 size = net.getSize();
-
-	glTranslatef(pos.x, pos.y, 0.0f);
+void renderNet(void) {
+	glm::vec2 size = glm::vec2(5.0f, 50.0f);
 
 	glColor3f(0.6f, 0.6f, 0.6f);
 	glRectf(0.0f, 0.0f, size.x, size.y);
@@ -361,8 +358,6 @@ void renderNet(RectangleObject net) {
 	glColor3f(0.0f, 0.0f, 0.0f);
 	drawEllipseStroke(0.0f, size.y - size.x, size.x * 0.5f, size.x * 0.5f);
 	drawEllipseStroke(size.x * 0.25f, size.y - size.x * 0.75f, size.x * 0.25f, size.x * 0.25f);
-
-	glTranslatef(-pos.x, -pos.y, 0.0);
 }
 
 void renderBall(BallObject ball) {
