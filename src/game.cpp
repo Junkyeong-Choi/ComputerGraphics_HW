@@ -106,6 +106,16 @@ void Game::resetPosition() {
 	ball.setVelocity(ballVelocity);
 }
 
+void Game::restartGame() {
+	resetPosition();
+	ballCameraMode = false;
+	delayTime = 3000;
+	score1 = 0;
+	score2 = 0;
+	player1Scored = false;
+	gamestate = GAME_READY;
+}
+
 void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen) {
 	// Initialize window
 	glutInit(&argc, argv);
@@ -130,6 +140,9 @@ void Game::handleInput(unsigned char key) {
 			break;
 		case 'd':
 			velocity.x = 0.1;
+			break;
+		case 'r':
+			restartGame();
 			break;
 		case ' ':
 			ballCameraMode = !ballCameraMode;
@@ -385,6 +398,7 @@ void Game::update(int delta) {
 	else if (gamestate == GAME_SCORE) {
 		updateBall(delta / 2);
 		updatePlayer(delta / 2);
+		updateClouds(delta/2);
 		delayTime -= delta;
 
 		if (delayTime < 0) {
@@ -395,6 +409,7 @@ void Game::update(int delta) {
 	}
 	else if (gamestate == GAME_SET) {
 		updateBall(delta / 2);
+		updateClouds(delta / 2);
 	}
 
 	return;
