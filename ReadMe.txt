@@ -77,9 +77,6 @@ This files define the game state, scores of each players,
 camera mode, and the number of players. It also defines
 the methods to update and render the game. 
 
-- collision.cpp, collision.h
-
-
 - main.cpp
 Source code file that contains  main function for program.
 It initializes Game object and attach event handlers to it.
