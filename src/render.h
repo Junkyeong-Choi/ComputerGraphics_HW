@@ -15,6 +15,7 @@ void renderWinText(bool is2player, int score1, int score2);
 void renderBackground(void);
 void renderPikachu(void);
 void renderPikachuEar(void);
+void renderPikachuProximalTail(void);
 void renderPikachuOld(MovableRectangleObject player, bool isLeft);
 void renderNet(RectangleObject net);
 void renderBall(BallObject ball);
