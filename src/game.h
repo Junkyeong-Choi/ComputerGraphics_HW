@@ -44,6 +44,7 @@ private:
 	bool exiting;
 
 	void resetPosition();
+	void restartGame();
 	void updateBall(int delta);
 	void updatePlayer(int delta);
 	void updateClouds(int delta);
