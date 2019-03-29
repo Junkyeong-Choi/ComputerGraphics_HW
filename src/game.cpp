@@ -19,7 +19,9 @@ bool Game::isExiting() {
 
 SceneGraphNode *Game::constructSceneGraph() {
 	glm::vec2 player1pos = player1.getPosition();
+	glm::vec2 player2pos = player2.getPosition();
 	glm::vec2 player1size = player1.getSize();
+	glm::vec2 player2size = player2.getSize();
 
 	glm::mat4 backgroundToPikachu1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
@@ -36,15 +38,51 @@ SceneGraphNode *Game::constructSceneGraph() {
 		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.1f, player1size.y * 0.2f, 0.0f)) *
 		glm::rotate(glm::mat4(1), player1.getTailDistalAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
 
-	return new SceneGraphNode(glm::mat4(1), renderBackground, new SceneGraphNode(
-		backgroundToPikachu1, renderPikachu, new SceneGraphNode(
-			pikachuToEar1, renderPikachuEar, nullptr, new SceneGraphNode(
-				pikachuToProximalTail1, renderPikachuProximalTail, new SceneGraphNode(
-					proximalToDistalTail1, renderPikachuDistalTail, nullptr, nullptr
-				), nullptr
-			)
-		), nullptr
-	), nullptr);
+	glm::mat4 backgroundToPikachu2 =
+		glm::translate(glm::mat4(1), glm::vec3(player2pos.x +player2size.x, player2pos.y, 0.0f)) *
+		glm::scale(glm::mat4(1), glm::vec3(-1.0f, 1.0f, 0.0f));
+
+	glm::mat4 pikachuToEar2 =
+		glm::translate(glm::mat4(1), glm::vec3(player1size.x / 5, player1size.y * 6 / 7, 0.0f)) *
+		glm::rotate(glm::mat4(1), (50.0f + player2.getEarAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glm::mat4 pikachuToProximalTail2 =
+		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.05f, player1size.y * 0.2f, 0.0f)) *
+		glm::rotate(glm::mat4(1), (60.0f + player2.getTailProximalAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glm::mat4 proximalToDistalTail2 =
+		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.1f, player1size.y * 0.2f, 0.0f)) *
+		glm::rotate(glm::mat4(1), player2.getTailDistalAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	return
+	new SceneGraphNode(glm::mat4(1), renderBackground,
+		new SceneGraphNode(backgroundToPikachu1, renderPikachu,
+			new SceneGraphNode(pikachuToEar1, renderPikachuEar,
+				nullptr,
+				new SceneGraphNode(pikachuToProximalTail1, renderPikachuProximalTail,
+					new SceneGraphNode(proximalToDistalTail1, renderPikachuDistalTail,
+						nullptr,
+						nullptr
+					),
+					nullptr
+				)
+			),
+			nullptr
+		),
+		new SceneGraphNode(backgroundToPikachu2, renderPikachu,
+			new SceneGraphNode(pikachuToEar2, renderPikachuEar,
+				nullptr,
+				new SceneGraphNode(pikachuToProximalTail2, renderPikachuProximalTail,
+					new SceneGraphNode(proximalToDistalTail2, renderPikachuDistalTail,
+						nullptr,
+						nullptr
+					),
+					nullptr
+				)
+			),
+			nullptr
+		)
+	);
 }
 
 void Game::render() {
@@ -59,8 +97,8 @@ void Game::render() {
 	else {
 		SceneGraphNode *root = constructSceneGraph();
 		root->traverse();
+		delete root;
 
-		renderPikachuOld(player2, false);
 		renderNet(net);
 		renderBall(ball);
 		renderScore(score1, score2);
