@@ -11,6 +11,7 @@ ElectricityObject::ElectricityObject() {
 }
 
 ElectricityObject::~ElectricityObject() {
+	// remove vector memory
 	std::vector<PointInfo>().swap(foldingPointsInfo);
 }
 
