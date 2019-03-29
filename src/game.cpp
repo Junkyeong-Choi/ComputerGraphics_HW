@@ -30,6 +30,9 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::vec2 points[7];
 	glm::mat4 electricityToLine[6];
 
+	glm::vec2 cloud1pos = clouds.begin()->getPosition();
+	glm::vec2 cloud2pos = clouds.end()->getPosition();
+
 	glm::mat4 backgroundToPikachu1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
 
@@ -97,6 +100,14 @@ SceneGraphNode *Game::constructSceneGraph() {
 			glm::scale(glm::mat4(1), glm::vec3(glm::length(line), glm::length(line), 0.0f));
 	}
 
+	glm::mat4 backgroundToCloud1 =
+		glm::translate(glm::mat4(1), glm::vec3(cloud1pos.x, cloud1pos.y, 0.0f)) *
+		glm::translate(glm::mat4(1), glm::vec3(4.6f * 7.0f / 2, 7.0f * 1.5, 0.0f));
+
+	glm::mat4 backgroundToCloud2 =
+		glm::translate(glm::mat4(1), glm::vec3(cloud2pos.x, cloud2pos.y, 0.0f)) *
+		glm::translate(glm::mat4(1), glm::vec3(4.6f * 7.0f / 2, 7.0f * 1.5, 0.0f));
+
 	return
 	new SceneGraphNode(glm::mat4(1), renderBackground,
 		new SceneGraphNode(backgroundToPikachu1, renderPikachu,
@@ -149,9 +160,12 @@ SceneGraphNode *Game::constructSceneGraph() {
 						nullptr
 					),
 					// implement cloud1 in SceneGraphNode below
-					new SceneGraphNode(glm::mat4(1), NULL,
+					new SceneGraphNode(backgroundToCloud1, renderCloudBase,
 						nullptr,
-						nullptr
+						new SceneGraphNode(backgroundToCloud2, renderCloudBase,
+							nullptr,
+							nullptr
+						)
 					)
 				)
 			)

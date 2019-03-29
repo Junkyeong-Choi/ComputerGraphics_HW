@@ -20,3 +20,4 @@ void renderPikachuDistalTail(void);
 void renderNet(void);
 void renderBall(void);
 void renderElectricLine(void);
+void renderCloudBase(void);

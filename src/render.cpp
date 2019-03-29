@@ -387,3 +387,12 @@ void renderElectricLine(void) {
 	}
 	glEnd();
 }
+
+void renderCloudBase(void) {
+	float radius = 7.0f;
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	drawEllipse(0.0, radius, radius, radius);
+	drawEllipse(-sqrt(3) * radius / 2, -radius / 2, radius, radius);
+	drawEllipse(sqrt(3) * radius / 2, -radius / 2, radius, radius);
+}
