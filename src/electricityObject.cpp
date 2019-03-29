@@ -18,7 +18,13 @@ void ElectricityObject::move(int delta) {
 	std::vector<PointInfo>::iterator iter;
 	for (iter = foldingPointsInfo.begin(); iter != foldingPointsInfo.end(); iter++) {
 		iter->pointPosition.y += iter->pointVelocity * delta;
-		if (iter->pointPosition.y > iter->vibrationLimit || iter->pointPosition.y < -iter->vibrationLimit)
+		if (iter->pointPosition.y > iter->vibrationLimit || iter->pointPosition.y < -iter->vibrationLimit) {
 			iter->pointVelocity = -iter->pointVelocity;
+			if (iter->pointPosition.y > iter->vibrationLimit)
+				iter->pointPosition.y = iter->vibrationLimit;
+			else
+				iter->pointPosition.y = -iter->vibrationLimit;
+		}
+			
 	}
 }
