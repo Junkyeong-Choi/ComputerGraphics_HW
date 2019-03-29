@@ -18,4 +18,4 @@ void renderPikachuEar(void);
 void renderPikachuProximalTail(void);
 void renderPikachuDistalTail(void);
 void renderNet(void);
-void renderBall(BallObject ball);
+void renderBall(void);

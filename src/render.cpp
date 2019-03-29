@@ -360,20 +360,20 @@ void renderNet(void) {
 	drawEllipseStroke(size.x * 0.25f, size.y - size.x * 0.75f, size.x * 0.25f, size.x * 0.25f);
 }
 
-void renderBall(BallObject ball) {
-	glm::vec2 pos = ball.getPosition();
-	float radius = ball.getRadius();
+void renderBall() {
+	float radius = 7.5f;
+
 	glColor3f(1.0f, 0.0f, 0.0f);
-	drawEllipse(pos.x, pos.y, radius, radius, 0, 180);
+	drawEllipse(0.0f, 0.0f, radius, radius, 0, 180);
 	glColor3f(0.6f, 0.6f, 0.6f);
-	drawEllipse(pos.x, pos.y, radius, radius, 180, 360);
+	drawEllipse(0.0f, 0.0f, radius, radius, 180, 360);
 	glColor3f(0.8f, 0.0f, 0.0f);
-	glRectf(pos.x, pos.y + radius * 0.9f, pos.x + radius * 2, pos.y + radius * 1.1f);
-	drawEllipse(pos.x + radius * 0.58f, pos.y + radius * 0.58f, radius * 0.42f, radius * 0.42f);
+	glRectf(0.0f, radius * 0.9f, radius * 2, radius * 1.1f);
+	drawEllipse(radius * 0.58f, radius * 0.58f, radius * 0.42f, radius * 0.42f);
 	glColor3f(0.6f, 0.6f, 0.6f);
-	drawEllipse(pos.x + radius * 0.8f, pos.y + radius * 0.8f, radius * 0.2f, radius * 0.2f);
+	drawEllipse(radius * 0.8f, radius * 0.8f, radius * 0.2f, radius * 0.2f);
 	glColor3f(0.0f, 0.0f, 0.0f);
-	drawEllipseStroke(pos.x + radius * 0.8f, pos.y + radius * 0.8f, radius * 0.2f, radius * 0.2f);
-	drawEllipseStroke(pos.x + radius * 0.9f, pos.y + radius * 0.9f, radius * 0.1f, radius * 0.1f);
-	drawEllipseStroke(pos.x, pos.y, radius, radius);
+	drawEllipseStroke(radius * 0.8f, radius * 0.8f, radius * 0.2f, radius * 0.2f);
+	drawEllipseStroke(radius * 0.9f, radius * 0.9f, radius * 0.1f, radius * 0.1f);
+	drawEllipseStroke(0.0f, 0.0f, radius, radius);
 }
