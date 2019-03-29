@@ -5,7 +5,6 @@
 #include <random>
 #include <ctime>
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 
 const float BALLSPEED = 0.15f;
 const int DURATION_OF_VIBRATION = 500;
@@ -28,7 +27,7 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::vec2 ballPos = ball.getPosition();
 	float ballRadius = ball.getRadius();
 	std::vector<PointInfo> pointsVector = ball.getElectricity().getPoints();
-	PointInfo points[7];
+	glm::vec2 points[7];
 	glm::mat4 electricityToLine[6];
 
 	glm::mat4 backgroundToPikachu1 =
@@ -69,22 +68,33 @@ SceneGraphNode *Game::constructSceneGraph() {
 		glm::translate(glm::mat4(1), glm::vec3(ballPos.x, ballPos.y, 0.0f));
 
 	glm::mat4 ballToElectricity =
-		glm::scale(glm::mat4(1), glm::vec3(7.5f / 6, 1.0f, 0.0f)) *
 		glm::translate(glm::mat4(1), glm::vec3(ballRadius, ballRadius, 0.0f)) *
 		glm::rotate(glm::mat4(1), ball.getElectricityAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f)) *
-		glm::translate(glm::mat4(1), glm::vec3(0.0f, -ballRadius * sqrt(3) / 2, 0.0f));
+		glm::translate(glm::mat4(1), glm::vec3(0.0f, -ballRadius * sqrt(3) / 2, 0.0f)) *
+		glm::scale(glm::mat4(1), glm::vec3(7.5f / 6, 7.5f / 6, 0.0f));
 
 	std::vector<PointInfo>::iterator iter = pointsVector.begin();
 
 	for (int i = 0; i < 7; i++) {
-		std::cout << iter->pointPosition.x << ' ' << iter->pointPosition.y << std::endl;
-		points[i] = *iter;
+		points[i] = iter->pointPosition;
 		iter++;
 	}
 
 	for (int i = 0; i < 6; i++) {
-		glm::vec2 point1 = points[i].pointPosition;
-		glm::vec2 point2 = points[i + 1].pointPosition;
+		// https://stackoverflow.com/questions/31064234/find-the-angle-between-two-vectors-from-an-arbitrary-origin
+		glm::vec2 point1 = points[i];
+		glm::vec2 point2 = points[i + 1];
+		glm::vec2 line = point2 - point1;
+
+		glm::vec2 normalizedLine = glm::normalize(line);
+		float angle = glm::acos(glm::dot(glm::vec2(1.0f, 0.0f), normalizedLine));
+		// https://math.stackexchange.com/questions/555198/find-direction-of-angle-between-2-vectors
+		float direction = line.y > 0 ? 1.0f : -1.0f;
+
+		electricityToLine[i] =
+			glm::translate(glm::mat4(1), glm::vec3(point1.x, point1.y, 0.0f)) *
+			glm::rotate(glm::mat4(1), direction * angle, glm::vec3(0.0f, 0.0f, 1.0f)) *
+			glm::scale(glm::mat4(1), glm::vec3(glm::length(line), glm::length(line), 0.0f));
 	}
 
 	return
@@ -117,7 +127,25 @@ SceneGraphNode *Game::constructSceneGraph() {
 				nullptr,
 				new SceneGraphNode(backgroundToBall, renderBall,
 					new SceneGraphNode(ballToElectricity, NULL,
-						nullptr,
+						new SceneGraphNode(electricityToLine[0], renderElectricLine,
+							nullptr,
+							new SceneGraphNode(electricityToLine[1], renderElectricLine,
+								nullptr,
+								new SceneGraphNode(electricityToLine[2], renderElectricLine,
+									nullptr,
+									new SceneGraphNode(electricityToLine[3], renderElectricLine,
+										nullptr,
+										new SceneGraphNode(electricityToLine[4], renderElectricLine,
+											nullptr,
+											new SceneGraphNode(electricityToLine[5], renderElectricLine,
+												nullptr,
+												nullptr
+											)
+										)
+									)
+								)
+							)
+						),
 						nullptr
 					),
 					// implement cloud1 in SceneGraphNode below

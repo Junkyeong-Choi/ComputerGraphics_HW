@@ -19,6 +19,4 @@ void renderPikachuProximalTail(void);
 void renderPikachuDistalTail(void);
 void renderNet(void);
 void renderBall(void);
-void renderElectricityStartPoint(void);
-void renderElectricityMiddlePoint(void);
-void renderElectricityEndPoint(void);
+void renderElectricLine(void);
