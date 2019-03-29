@@ -74,14 +74,6 @@ void setBallCamera(glm::vec2 pos, float radius) {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void renderBackground(GameState gamestate) {
-	if (gamestate == GAME_MENU)
-		glColor3f(1.0, 1.0, 0.0);
-	else
-		glColor3f(0.6, 0.851, 0.918);
-	glRectf(0.0, 0.0, 192.0, 108.0);
-}
-
 int bitmapStringLength(void* font, const char* text) {
 	int length = 0;
 	int i = 0;
@@ -164,6 +156,9 @@ void renderMenuPikachuHalf() {
 }
 
 void renderMenu(bool is2player) {
+	glColor3f(1.0, 1.0, 0.0);
+	glRectf(0.0, 0.0, 192.0, 108.0);
+
 	glMatrixMode(GL_MODELVIEW);
 	glTranslatef(192.0 * 0.25, 108.0 * 0.5, 0.0);
 

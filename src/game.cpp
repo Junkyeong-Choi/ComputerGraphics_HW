@@ -21,19 +21,17 @@ void Game::render() {
 	else
 		setNormalCamera();
 
-	renderBackground(gamestate);
-
 	if (gamestate == GAME_MENU) {
 		renderMenu(is2player);
 	}
 	else {
+		glColor3f(0.6, 0.851, 0.918);
+		glRectf(0.0, 0.0, 192.0, 108.0);
 		renderPikachu(player1, true);
 		renderPikachu(player2, false);
 		renderNet(net);
 		renderBall(ball);
 		renderScore(score1, score2);
-
-		glColor3f(1.0, 0.0, 0.0);
 
 		if (gamestate == GAME_READY)
 			renderReady(delayTime);
