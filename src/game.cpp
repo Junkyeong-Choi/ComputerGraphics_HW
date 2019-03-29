@@ -110,66 +110,65 @@ SceneGraphNode *Game::constructSceneGraph() {
 
 	return
 	new SceneGraphNode(glm::mat4(1), renderBackground,
-		new SceneGraphNode(backgroundToPikachu1, renderPikachu,
-			new SceneGraphNode(pikachuToEar1, renderPikachuEar,
+		new SceneGraphNode(backgroundToCloud1, renderCloudBase,
+			nullptr,
+			new SceneGraphNode(backgroundToCloud2, renderCloudBase,
 				nullptr,
-				new SceneGraphNode(pikachuToProximalTail1, renderPikachuProximalTail,
-					new SceneGraphNode(proximalToDistalTail1, renderPikachuDistalTail,
+				new SceneGraphNode(backgroundToPikachu1, renderPikachu,
+					new SceneGraphNode(pikachuToEar1, renderPikachuEar,
 						nullptr,
-						nullptr
-					),
-					nullptr
-				)
-			),
-			nullptr
-		),
-		new SceneGraphNode(backgroundToPikachu2, renderPikachu,
-			new SceneGraphNode(pikachuToEar2, renderPikachuEar,
-				nullptr,
-				new SceneGraphNode(pikachuToProximalTail2, renderPikachuProximalTail,
-					new SceneGraphNode(proximalToDistalTail2, renderPikachuDistalTail,
-						nullptr,
-						nullptr
-					),
-					nullptr
-				)
-			),
-			new SceneGraphNode(backgroundToNet, renderNet,
-				nullptr,
-				new SceneGraphNode(backgroundToBall, renderBall,
-					new SceneGraphNode(ballToElectricity, NULL,
-						new SceneGraphNode(electricityToLine[0], renderElectricLine,
-							nullptr,
-							new SceneGraphNode(electricityToLine[1], renderElectricLine,
+						new SceneGraphNode(pikachuToProximalTail1, renderPikachuProximalTail,
+							new SceneGraphNode(proximalToDistalTail1, renderPikachuDistalTail,
 								nullptr,
-								new SceneGraphNode(electricityToLine[2], renderElectricLine,
+								nullptr
+							),
+							nullptr
+						)
+					),
+					new SceneGraphNode(backgroundToPikachu2, renderPikachu,
+						new SceneGraphNode(pikachuToEar2, renderPikachuEar,
+							nullptr,
+							new SceneGraphNode(pikachuToProximalTail2, renderPikachuProximalTail,
+								new SceneGraphNode(proximalToDistalTail2, renderPikachuDistalTail,
 									nullptr,
-									new SceneGraphNode(electricityToLine[3], renderElectricLine,
-										nullptr,
-										new SceneGraphNode(electricityToLine[4], renderElectricLine,
-											nullptr,
-											new SceneGraphNode(electricityToLine[5], renderElectricLine,
-												nullptr,
-												nullptr
-											)
-										)
-									)
-								)
+									nullptr
+								),
+								nullptr
 							)
 						),
-						nullptr
-					),
-					// implement cloud1 in SceneGraphNode below
-					new SceneGraphNode(backgroundToCloud1, renderCloudBase,
-						nullptr,
-						new SceneGraphNode(backgroundToCloud2, renderCloudBase,
+						new SceneGraphNode(backgroundToNet, renderNet,
 							nullptr,
-							nullptr
+							new SceneGraphNode(backgroundToBall, renderBall,
+								new SceneGraphNode(ballToElectricity, NULL,
+									new SceneGraphNode(electricityToLine[0], renderElectricLine,
+										nullptr,
+										new SceneGraphNode(electricityToLine[1], renderElectricLine,
+											nullptr,
+											new SceneGraphNode(electricityToLine[2], renderElectricLine,
+												nullptr,
+												new SceneGraphNode(electricityToLine[3], renderElectricLine,
+													nullptr,
+													new SceneGraphNode(electricityToLine[4], renderElectricLine,
+														nullptr,
+														new SceneGraphNode(electricityToLine[5], renderElectricLine,
+															nullptr,
+															nullptr
+														)
+													)
+												)
+											)
+										)
+									),
+									nullptr
+								),
+								nullptr
+							)
 						)
 					)
 				)
 			)
-		)
+		),
+		nullptr
 	);
 }
 
