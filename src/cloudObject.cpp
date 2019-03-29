@@ -1,8 +1,8 @@
 #include "cloudObject.h"
 
 void CloudObject::move(int delta) {
-	const float CLOUDSIZE_RADIUS_RATIO = 4.6;
-	const float CLOUD_ARM_LIMIT = 30;
+	const float CLOUDSIZE_RADIUS_RATIO = 4.6f;
+	const float CLOUD_ARM_LIMIT = 30.0f;
 	
 	glm::vec2 displacement = velocity * (float)delta;
 	position += displacement;
@@ -14,7 +14,7 @@ void CloudObject::move(int delta) {
 
 
 	curling += curlingVelocity * delta;
-	float epsilon = 0.05;
+	float epsilon = 0.05f;
 	if (curling > CLOUD_ARM_LIMIT || curling < -CLOUD_ARM_LIMIT) {
 		curlingVelocity = -curlingVelocity;
 		if (curling > CLOUD_ARM_LIMIT)

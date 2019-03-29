@@ -1,10 +1,12 @@
 #include "game.h"
 #include "render.h"
 #include "collision.h"
+#include "sceneGraphNode.h"
 #include <random>
 #include <ctime>
+#include <glm/gtc/matrix_transform.hpp>
 
-const float BALLSPEED = 0.15;
+const float BALLSPEED = 0.15f;
 const int DURATION_OF_VIBRATION = 500;
 
 void Game::exit() {
@@ -13,6 +15,21 @@ void Game::exit() {
 
 bool Game::isExiting() {
 	return exiting;
+}
+
+SceneGraphNode *Game::constructSceneGraph() {
+	glm::vec2 player1pos = player1.getPosition();
+	glm::vec2 player1size = player1.getSize();
+	glm::mat4 backgroundToPikachu1 = glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
+	glm::mat4 pikachuToEar1 =
+		glm::translate(glm::mat4(1), glm::vec3(player1size.x / 5, player1size.y * 6 / 7, 0.0)) * 
+		glm::rotate(glm::mat4(1), 50.0f, glm::vec3(0.0, 0.0, 1.0));
+
+	return new SceneGraphNode(glm::mat4(1), renderBackground, new SceneGraphNode(
+		backgroundToPikachu1, renderPikachu, new SceneGraphNode(
+			pikachuToEar1, renderPikachuEar, nullptr, nullptr
+		), nullptr
+	), nullptr);
 }
 
 void Game::render() {
@@ -25,10 +42,10 @@ void Game::render() {
 		renderMenu(is2player);
 	}
 	else {
-		glColor3f(0.6, 0.851, 0.918);
-		glRectf(0.0, 0.0, 192.0, 108.0);
-		renderPikachu(player1, true);
-		renderPikachu(player2, false);
+		SceneGraphNode *root = constructSceneGraph();
+		root->traverse();
+
+		renderPikachuOld(player2, false);
 		renderNet(net);
 		renderBall(ball);
 		renderScore(score1, score2);
@@ -49,7 +66,7 @@ void Game::render() {
 }
 
 float generateRandomFromZeroToOne() {
-	std::mt19937 engine(time(NULL));
+	std::mt19937 engine((unsigned int)time(NULL));
 	std::uniform_real_distribution<float> distribution(0.0, 1.0);
 
 	return distribution(engine);
@@ -67,8 +84,8 @@ glm::vec2 generateUnitVector() {
 }
 
 Game::Game() :
-	player1(glm::vec2(24.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.1f, -0.1f, 0.1f, 0.0f),
-	player2(glm::vec2(148.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.1f, -0.1f, 0.1f, 0.0f),
+	player1(glm::vec2(24.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.1f, -0.1f, 0.1f, 0.0),
+	player2(glm::vec2(148.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.1f, -0.1f, 0.1f, 0.0),
 	ball(glm::vec2(88.5f, 70.0f), 7.5f, BALLSPEED * generateUnitVector(), 0.0f, 0.1f),
 	net(glm::vec2(93.5f, 0.0f), glm::vec2(5.0f, 50.0f)),
 	gamestate(GAME_MENU),
@@ -124,10 +141,10 @@ void Game::handleInput(unsigned char key) {
 
 		switch (key) {
 		case 'a':
-			velocity.x = -0.1;
+			velocity.x = -0.1f;
 			break;
 		case 'd':
-			velocity.x = 0.1;
+			velocity.x = 0.1f;
 			break;
 		case ' ':
 			ballCameraMode = !ballCameraMode;
@@ -181,10 +198,10 @@ void Game::handleSpecialInput(int key) {
 
 		switch (key) {
 		case GLUT_KEY_LEFT:
-			velocity.x = -0.1;
+			velocity.x = -0.1f;
 			break;
 		case GLUT_KEY_RIGHT:
-			velocity.x = 0.1;
+			velocity.x = 0.1f;
 			break;
 		}
 
@@ -338,9 +355,9 @@ void Game::update(int delta) {
 			glm::vec2 velocity(0.0, 0.0);
 
 			if (player2.getPosition().x < ball.getPosition().x)
-				velocity.x = ball.getVelocity().x * 0.83;
+				velocity.x = ball.getVelocity().x * 0.83f;
 			else
-				velocity.x = -ball.getVelocity().x * 0.83;
+				velocity.x = -ball.getVelocity().x * 0.83f;
 
 			player2.setVelocity(velocity);
 		}
@@ -370,7 +387,7 @@ void Game::update(int delta) {
 
 			if (score1 == winningScore || score2 == winningScore) {
 				gamestate = GAME_SET;
-				std::mt19937 engine(time(NULL));
+				std::mt19937 engine((unsigned int)time(NULL));
 				std::uniform_int_distribution<int> distribution(0, 1);
 				player1Scored = distribution(engine);
 			}

@@ -3,12 +3,12 @@
 
 class SceneGraphNode {
 private:
-	glm::mat4x4 transform;
+	glm::mat4 transform;
 	void (*drawModel)(void);
-	SceneGraphNode *sibling;
 	SceneGraphNode *child;
+	SceneGraphNode *sibling;
 public:
-	SceneGraphNode(glm::mat4x4 _transform, void (*_drawModel)(void), SceneGraphNode *_sibling, SceneGraphNode *_child);
+	SceneGraphNode(glm::mat4 _transform, void (*_drawModel)(void), SceneGraphNode *_child, SceneGraphNode *_sibling);
 	~SceneGraphNode();
 	void traverse(void);
 };

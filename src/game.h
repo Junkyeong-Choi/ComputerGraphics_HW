@@ -6,7 +6,7 @@
 #include "ballObject.h"
 #include "characterObject.h"
 #include "cloudObject.h"
-
+#include "sceneGraphNode.h"
 
 enum GameState {
 	GAME_MENU,
@@ -47,6 +47,7 @@ private:
 	void updateBall(int delta);
 	void updatePlayer(int delta);
 	void updateClouds(int delta);
+	SceneGraphNode* constructSceneGraph();
 public:
 	Game();
 	~Game();

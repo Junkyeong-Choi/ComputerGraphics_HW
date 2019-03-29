@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
-SceneGraphNode::SceneGraphNode(glm::mat4x4 _transform, void(*_drawModel)(void), SceneGraphNode * _sibling, SceneGraphNode * _child):
+SceneGraphNode::SceneGraphNode(glm::mat4 _transform, void(*_drawModel)(void), SceneGraphNode * _child, SceneGraphNode * _sibling):
 	transform(_transform), drawModel(_drawModel), sibling(_sibling), child(_child)
 {
 }
