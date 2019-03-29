@@ -3,7 +3,7 @@
 
 void CharacterObject::move(int delta) {
 	const float TAIL_PROXIMAL_ANGLE_LIMIT = 5;
-	const float TAIL_DISTAL_ANGLE_LIMIT = 5;
+	const float TAIL_DISTAL_ANGLE_LIMIT = 15;
 	const float EAR_ANGLE_LIMIT = 5;
 
 	glm::vec2 displacement = velocity * (float)delta;
