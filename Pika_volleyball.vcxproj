@@ -131,6 +131,7 @@
     </ClCompile>
     <ClCompile Include="src\movableRectangleObject.cpp" />
     <ClCompile Include="src\render.cpp" />
+    <ClCompile Include="src\sceneGraphNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\characterObject.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="src\object.h" />
     <ClInclude Include="src\rectangleObject.h" />
     <ClInclude Include="src\render.h" />
+    <ClInclude Include="src\sceneGraphNode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
