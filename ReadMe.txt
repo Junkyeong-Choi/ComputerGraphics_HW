@@ -35,28 +35,47 @@ sets the getter and settor for the velocity. The method
 for moving the object by its velocity checks the boundary
 of game screen and doesn't let the object be out of screen.
 
+- characterObject.cpp, chacterObject.h
+Header and source code files that contain
+CharacterObject class. This files define angles and 
+velocities of each angle. It also sets the getter and
+setter for angles and their velocities. The method for 
+moving the object by its velocity also handles vibration 
+of a character when a character is hit by a ball.
+
 - ballObject.cpp, ballObject.h
 Header and source code files that contain BallObject
 class. This files define the radius and velocity of the
 ball as 2-dimensional vectors. It also sets the getter
-and settor for the radius and velocity. The method for
-moving the ball by its velocity checks the boundary of
-game screen and doesn't let the object be out of screen.
-Also, this method changes the velocity of the ball when
-the ball is hit by screen boundary.
+and settor for the radius and velocity. This class has 
+ElectricityObject as a memeber variable to render electricity 
+on a ball. The method for moving the ball by its velocity 
+checks the boundary of game screen and doesn't let the 
+object be out of screen. Also, this method changes the 
+velocity of the ball when the ball is hit by screen boundary.
+
+- electricityObject.cpp, electricityObject.h
+Header and source code files that conatain ElectricityObject
+class. This contain every bending points of a line for 
+visualization of electricity. The class has a method to move
+each bending points to express a flow of electricity.
 
 - render.cpp, render.h
 Header and source code files that contain camera setting
 functions and various rendering(drawing) functions. They
 are called in render method of Game class.
 
+- collision.cpp, collision.h
+Header and source code files that contains a collision 
+detection algorithms for game objects. The are called for
+detecting collision of each game objects in update method
+of Game class
+
 - game.cpp, game.h
 Header and source code files that contain Game class.
 This files define the game state, scores of each players,
 camera mode, and the number of players. It also defines
-the methods to update and render the game. Most importantly,
-it contains the collision detection algorithms for game
-objects.
+the methods to update and render the game. 
 
 - main.cpp
 Source code file that contains  main function for program.
