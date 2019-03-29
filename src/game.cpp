@@ -31,7 +31,7 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::mat4 electricityToLine[6];
 
 	glm::vec2 cloud1pos = clouds.begin()->getPosition();
-	glm::vec2 cloud2pos = clouds.end()->getPosition();
+	glm::vec2 cloud2pos = (++clouds.begin())->getPosition();
 
 	glm::mat4 backgroundToPikachu1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
