@@ -22,8 +22,8 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::vec2 player1size = player1.getSize();
 	glm::mat4 backgroundToPikachu1 = glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
 	glm::mat4 pikachuToEar1 =
-		glm::translate(glm::mat4(1), glm::vec3(player1size.x / 5, player1size.y * 6 / 7, 0.0)) * 
-		glm::rotate(glm::mat4(1), 50.0f, glm::vec3(0.0, 0.0, 1.0));
+		glm::translate(glm::mat4(1), glm::vec3(player1size.x / 5, player1size.y * 6 / 7, 0.0f)) * 
+		glm::rotate(glm::mat4(1), 50.0f * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	return new SceneGraphNode(glm::mat4(1), renderBackground, new SceneGraphNode(
 		backgroundToPikachu1, renderPikachu, new SceneGraphNode(
@@ -84,8 +84,8 @@ glm::vec2 generateUnitVector() {
 }
 
 Game::Game() :
-	player1(glm::vec2(24.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.1f, -0.1f, 0.1f, 0.0),
-	player2(glm::vec2(148.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.1f, -0.1f, 0.1f, 0.0),
+	player1(glm::vec2(24.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.1f, -0.1f, 0.1f, 0),
+	player2(glm::vec2(148.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.1f, -0.1f, 0.1f, 0),
 	ball(glm::vec2(88.5f, 70.0f), 7.5f, BALLSPEED * generateUnitVector(), 0.0f, 0.1f),
 	net(glm::vec2(93.5f, 0.0f), glm::vec2(5.0f, 50.0f)),
 	gamestate(GAME_MENU),

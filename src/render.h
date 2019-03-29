@@ -1,6 +1,8 @@
 #pragma once
 #include <glm/geometric.hpp>
 
+const float DEG2RAD = 3.141592f / 180.0f;
+
 void setNormalCamera();
 void setBallCamera(glm::vec2 pos, float radius);
 void renderScore(int score1, int score2);

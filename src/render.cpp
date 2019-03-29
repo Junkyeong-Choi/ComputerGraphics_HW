@@ -4,8 +4,7 @@
 #include "ballObject.h"
 #include "movableRectangleObject.h"
 #include "game.h"
-
-const float DEG2RAD = 3.141592f / 180.0f;
+#include "render.h"
 
 // modified code from https://forums.khronos.org/showthread.php/19787
 void drawEllipse(float x, float y, float xradius, float yradius, int startDegree = 0, int endDegree = 360)
@@ -276,7 +275,26 @@ void renderPikachu(void) {
 }
 
 void renderPikachuEar(void) {
+	float width = 20.0f;
+	float height = 35.0f;
 
+	glColor3f(1.0f, 1.0f, 0.0f);
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(width / 4, 0.0f, 0.0f);
+		glVertex3f(width / 8, height / 4, 0.0f);
+	}
+	glEnd();
+
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(width / 16, height / 8, 0.0f);
+		glVertex3f(width * 3 / 16, height / 8, 0.0f);
+		glVertex3f(width / 8, height / 4, 0.0f);
+	}
+	glEnd();
 }
 
 void renderPikachuEarOld(float width, float height) {
