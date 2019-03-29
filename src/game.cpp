@@ -326,6 +326,8 @@ void Game::updateBall(int delta) {
 		if (std::get<0>(collision)) {
 			if (objectsToCollideAgainstBall[i] == &player1)
 				player1.setDurationOfVibration(DURATION_OF_VIBRATION);
+			else if (objectsToCollideAgainstBall[i] == &player2)
+				player2.setDurationOfVibration(DURATION_OF_VIBRATION);
 
 			Direction dir = std::get<1>(collision);
 			glm::vec2 diffVec = std::get<2>(collision);
