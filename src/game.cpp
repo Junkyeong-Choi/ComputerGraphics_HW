@@ -5,6 +5,7 @@
 #include <random>
 #include <ctime>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 const float BALLSPEED = 0.15f;
 const int DURATION_OF_VIBRATION = 500;
@@ -26,6 +27,9 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::vec2 netSize = net.getSize();
 	glm::vec2 ballPos = ball.getPosition();
 	float ballRadius = ball.getRadius();
+	std::vector<PointInfo> pointsVector = ball.getElectricity().getPoints();
+	PointInfo points[7];
+	glm::mat4 electricityToLine[6];
 
 	glm::mat4 backgroundToPikachu1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
@@ -65,9 +69,23 @@ SceneGraphNode *Game::constructSceneGraph() {
 		glm::translate(glm::mat4(1), glm::vec3(ballPos.x, ballPos.y, 0.0f));
 
 	glm::mat4 ballToElectricity =
+		glm::scale(glm::mat4(1), glm::vec3(7.5f / 6, 1.0f, 0.0f)) *
 		glm::translate(glm::mat4(1), glm::vec3(ballRadius, ballRadius, 0.0f)) *
 		glm::rotate(glm::mat4(1), ball.getElectricityAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f)) *
 		glm::translate(glm::mat4(1), glm::vec3(0.0f, -ballRadius * sqrt(3) / 2, 0.0f));
+
+	std::vector<PointInfo>::iterator iter = pointsVector.begin();
+
+	for (int i = 0; i < 7; i++) {
+		std::cout << iter->pointPosition.x << ' ' << iter->pointPosition.y << std::endl;
+		points[i] = *iter;
+		iter++;
+	}
+
+	for (int i = 0; i < 6; i++) {
+		glm::vec2 point1 = points[i].pointPosition;
+		glm::vec2 point2 = points[i + 1].pointPosition;
+	}
 
 	return
 	new SceneGraphNode(glm::mat4(1), renderBackground,
@@ -98,11 +116,15 @@ SceneGraphNode *Game::constructSceneGraph() {
 			new SceneGraphNode(backgroundToNet, renderNet,
 				nullptr,
 				new SceneGraphNode(backgroundToBall, renderBall,
-					new SceneGraphNode(ballToElectricity, renderElectricity,
+					new SceneGraphNode(ballToElectricity, NULL,
 						nullptr,
 						nullptr
 					),
-					nullptr
+					// implement cloud1 in SceneGraphNode below
+					new SceneGraphNode(glm::mat4(1), NULL,
+						nullptr,
+						nullptr
+					)
 				)
 			)
 		)

@@ -17,6 +17,7 @@ public:
 	float getRadius() { return radius; }
 	float getElectricityAngle() { return electricityAngle; }
 	float getElectricityAngleSpeed() { return electricityAngleSpeed; }
+	ElectricityObject getElectricity() { return electricity; }
 	glm::vec2 getVelocity() { return velocity; }
 	void setRadius(float _radius) { radius = _radius; }
 	void setElectricityAngle(float _electricityAngle) { electricityAngle = _electricityAngle; }

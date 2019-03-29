@@ -378,14 +378,20 @@ void renderBall() {
 	drawEllipseStroke(0.0f, 0.0f, radius, radius);
 }
 
-void renderElectricity() {
-	float radius = 7.5f;
-
+void renderElectricityStartPoint(void) {
 	glColor3f(1.0f, 1.0f, 0.0f);
-	glBegin(GL_LINES);
-	{
-		glVertex3f(-radius / 2, 0.0f, 0.0f);
-		glVertex3f(+radius / 2, 0.0f, 0.0f);
-	}
+	glBegin(GL_LINE_STRIP);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	drawEllipse(0.0f, 0.0f, 1.0f, 1.0f);
+}
+
+void renderElectricityMiddlePoint(void) {
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	drawEllipse(0.0f, 0.0f, 1.0f, 1.0f);
+}
+
+void renderElectricityEndPoint(void) {
+	glVertex3f(0.0f, 0.0f, 0.0f);
 	glEnd();
+	drawEllipse(0.0f, 0.0f, 1.0f, 1.0f);
 }

@@ -14,5 +14,6 @@ private:
 public:
 	ElectricityObject();
 	~ElectricityObject();
+	std::vector<PointInfo> getPoints() { return foldingPointsInfo; }
 	void move(int delta);
 };

@@ -15,7 +15,8 @@ SceneGraphNode::~SceneGraphNode() {
 void SceneGraphNode::traverse(void) {
 	glPushMatrix();
 	glMultMatrixf(glm::value_ptr(transform));
-	drawModel();
+	if (drawModel != NULL)
+		drawModel();
 	if (child != NULL)
 		child->traverse();
 	glPopMatrix();
