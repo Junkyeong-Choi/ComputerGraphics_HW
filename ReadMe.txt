@@ -11,6 +11,7 @@ project. Build with the setting Release/x64.
 
 ↑/↓ : Move menu
 Enter : Select menu / Return to menu when game is over
+Spacebar : Change camera mode
 a/d : Move left pikachu
 ←/→ : Move right pikachu (only on multi player)
 
