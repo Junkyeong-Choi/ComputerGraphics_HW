@@ -297,6 +297,38 @@ void renderPikachuEar(void) {
 	glEnd();
 }
 
+void renderPikachuProximalTail(void) {
+	float width = 20.0f;
+	float height = 35.0f;
+
+	glColor3f(1.0f, 1.0f, 0.0f);
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(0.0f, height * 0.3f, 0.0f);
+		glVertex3f(width * 0.2f, height * 0.3f, 0.0f);
+		glVertex3f(width * 0.1f, 0.0f, 0.0f);
+	}
+	glEnd();
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(width * 0.1f, height * 0.4f, 0.0f);
+		glVertex3f(width * 0.35f, height * 0.55f, 0.0f);
+		glVertex3f(width * 0.25f, height * 0.2f, 0.0f);
+		glVertex3f(width * 0.1f, height * 0.2f, 0.0f);
+	}
+	glEnd();
+	glColor3f(0.624f, 0.0f, 0.0f);
+	glBegin(GL_POLYGON);
+	{
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(0.0f, height * 0.15f, 0.0f);
+		glVertex3f(width * 0.15f, height * 0.15f, 0.0f);
+		glVertex3f(width * 0.1f, 0.0f, 0.0f);
+	}
+	glEnd();
+}
+
 void renderPikachuEarOld(float width, float height) {
 	glTranslatef(width / 5, height * 6 / 7, 0.0f);
 	glRotatef(50.0f, 0.0f, 0.0f, 1.0f);
