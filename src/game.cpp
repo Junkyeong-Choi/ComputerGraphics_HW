@@ -79,8 +79,8 @@ Game::Game() :
 	is2player(false),
 	score1(0), score2(0), winningScore(5),
 	player1Scored(false) {
-	clouds.push_back(CloudObject(glm::vec2(24.0f, 70.0f), glm::vec2(35.0f, 20.0f), glm::vec2(0.05f, 0.0f), 0.0f, 0.1f));
-	clouds.push_back(CloudObject(glm::vec2(148.0f, 70.0f), glm::vec2(35.0f, 20.0f), glm::vec2(0.05f, 0.0f), 0.0f, 0.1f));
+	clouds.push_back(CloudObject(glm::vec2(24.0f, 70.0f), 7.0f, glm::vec2(0.05f, 0.0f), 0.0f, 0.1f));
+	clouds.push_back(CloudObject(glm::vec2(148.0f, 70.0f), 7.0f, glm::vec2(0.05f, 0.0f), 0.0f, 0.1f));
 }
 
 Game::~Game() {
