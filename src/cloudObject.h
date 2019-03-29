@@ -11,7 +11,7 @@ public:
 	CloudObject() {}
 	~CloudObject() {}
 	CloudObject(glm::vec2 _position, float _radius, glm::vec2 _velocity, float _curling, float _curlingVelocity) : 
-		Object(_position), radius(_radius), curling(_curling), curlingVelocity(_curlingVelocity) {}
+		Object(_position), radius(_radius), velocity(_velocity), curling(_curling), curlingVelocity(_curlingVelocity) {}
 	float getRadius() { return radius; }
 	glm::vec2 getVelocity() { return velocity; }
 	float getCurling() { return curling; }
