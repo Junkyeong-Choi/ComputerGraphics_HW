@@ -32,6 +32,7 @@ SceneGraphNode *Game::constructSceneGraph() {
 
 	glm::vec2 cloud1pos = clouds.begin()->getPosition();
 	glm::vec2 cloud2pos = (++clouds.begin())->getPosition();
+	float cloudRadius = clouds.begin()->getRadius();
 
 	glm::mat4 backgroundToPikachu1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
@@ -108,12 +109,40 @@ SceneGraphNode *Game::constructSceneGraph() {
 		glm::translate(glm::mat4(1), glm::vec3(cloud2pos.x, cloud2pos.y, 0.0f)) *
 		glm::translate(glm::mat4(1), glm::vec3(4.6f * 7.0f / 2, 7.0f * 1.5, 0.0f));
 
+	glm::mat4 cloud1ToArm1 =
+		glm::translate(glm::mat4(1), glm::vec3(-cloudRadius * sqrt(3) / 4, cloudRadius * (1.0f - sqrt(3) / 2), 0.0f)) *
+		glm::rotate(glm::mat4(1), (150.0f - clouds.begin()->getCurling()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glm::mat4 cloud1ToArm2 =
+		glm::translate(glm::mat4(1), glm::vec3(cloudRadius * sqrt(3) / 4, cloudRadius * (1.0f - sqrt(3) / 2), 0.0f)) *
+		glm::rotate(glm::mat4(1), (30.0f + clouds.begin()->getCurling()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glm::mat4 cloud2ToArm1 =
+		glm::translate(glm::mat4(1), glm::vec3(-cloudRadius * sqrt(3) / 4, cloudRadius * (1.0f - sqrt(3) / 2), 0.0f)) *
+		glm::rotate(glm::mat4(1), (150.0f - (++clouds.begin())->getCurling()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glm::mat4 cloud2ToArm2 =
+		glm::translate(glm::mat4(1), glm::vec3(cloudRadius * sqrt(3) / 4, cloudRadius * (1.0f - sqrt(3) / 2), 0.0f)) *
+		glm::rotate(glm::mat4(1), (30.0f + (++clouds.begin())->getCurling()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+
 	return
 	new SceneGraphNode(glm::mat4(1), renderBackground,
 		new SceneGraphNode(backgroundToCloud1, renderCloudBase,
-			nullptr,
-			new SceneGraphNode(backgroundToCloud2, renderCloudBase,
+			new SceneGraphNode(cloud1ToArm1, renderCloudArm,
 				nullptr,
+				new SceneGraphNode(cloud1ToArm2, renderCloudArm,
+					nullptr,
+					nullptr
+				)
+			),
+			new SceneGraphNode(backgroundToCloud2, renderCloudBase,
+				new SceneGraphNode(cloud2ToArm1, renderCloudArm,
+					nullptr,
+					new SceneGraphNode(cloud2ToArm2, renderCloudArm,
+						nullptr,
+						nullptr
+					)
+				),
 				new SceneGraphNode(backgroundToPikachu1, renderPikachu,
 					new SceneGraphNode(pikachuToEar1, renderPikachuEar,
 						nullptr,

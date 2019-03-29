@@ -21,3 +21,4 @@ void renderNet(void);
 void renderBall(void);
 void renderElectricLine(void);
 void renderCloudBase(void);
+void renderCloudArm(void);
