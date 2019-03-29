@@ -8,9 +8,9 @@ void CloudObject::move(int delta) {
 	position += displacement;
 
 	if (velocity.x < 0 && position.x + CLOUDSIZE_RADIUS_RATIO * radius < 0)
-		position.x += 192;
+		position.x += 250;
 	if (velocity.x > 0 && position.x > 192)
-		position.x -= 192;
+		position.x -= 250;
 
 
 	curling += curlingVelocity * delta;
