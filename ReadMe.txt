@@ -1,4 +1,4 @@
-﻿[CSED451] Computer Graphics Assignment 1
+﻿[CSED451] Computer Graphics Assignment
 
 ================= Pikachu Volleyball =================
 
