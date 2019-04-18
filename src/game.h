@@ -4,8 +4,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "ballObject.h"
-#include "characterObject.h"
-#include "cloudObject.h"
+#include "movableCubeObject.h"
 #include "sceneGraphNode.h"
 
 enum GameState {
@@ -17,22 +16,37 @@ enum GameState {
 };
 
 enum Direction {
-	UP,
-	RIGHT,
-	DOWN,
-	LEFT
+	POSITIVE_X,
+	POSITIVE_Y,
+	NEGATIVE_X,
+	NEGATIVE_Y
 };
 typedef std::tuple<bool, Direction, glm::vec2> Collision;
 
-#define PLAYER_MAX_VELOCITY 0.1
+const float WINDOW_X_SIZE = 192.0;
+const float WINDOW_Y_SIZE = 108.0;
+
+
+const float PLAYER_MAX_VELOCITY = 0.1;
+
+const glm::vec3 PLAYER_ONE_POSITION = glm::vec3(24.0f, 54.0f, 0.0f);
+const glm::vec3 PLAYER_ONE_SIZE = glm::vec3(20.0f, 35.0f, 0.1f);
+const glm::vec3 PLAYER_ONE_VELOCITY = glm::vec3(0.0f, 0.0f, 0.0f);
+
+const glm::vec3 PLAYER_TWO_POSITION = glm::vec3(148.0f, 54.0f, 0.0f);
+const glm::vec3 PLAYER_TWO_SIZE = glm::vec3(20.0f, 35.0f, 0.1f);
+const glm::vec3 PLAYER_TWO_VELOCITY = glm::vec3(0.0f, 0.0f, 0.0f);
+
+const glm::vec3 BALL_POSITION = glm::vec3(88.5f, 70.0f, 0.0f);
+const float BALL_RADIUS = 7.5f;
+const float BALL_SPEED = 0.15f;
+
 
 class Game {
 private:
-	CharacterObject player1;
-	CharacterObject player2;
+	MovableCubeObject player1;
+	MovableCubeObject player2;
 	BallObject ball;
-	RectangleObject net;
-	std::vector<CloudObject> clouds;
 	GameState gamestate;
 	bool ballCameraMode;
 	bool is2player;
@@ -47,7 +61,6 @@ private:
 	void restartGame();
 	void updateBall(int delta);
 	void updatePlayer(int delta);
-	void updateClouds(int delta);
 	SceneGraphNode* constructSceneGraph();
 public:
 	Game();

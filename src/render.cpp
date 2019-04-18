@@ -2,7 +2,7 @@
 #include <GL/freeglut.h>
 #include <glm/geometric.hpp>
 #include "ballObject.h"
-#include "movableRectangleObject.h"
+#include "movableCubeObject.h"
 #include "game.h"
 #include "render.h"
 

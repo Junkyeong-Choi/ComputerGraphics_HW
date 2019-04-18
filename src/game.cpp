@@ -6,9 +6,6 @@
 #include <ctime>
 #include <glm/gtc/matrix_transform.hpp>
 
-const float BALLSPEED = 0.15f;
-const int DURATION_OF_VIBRATION = 500;
-
 void Game::exit() {
 	exiting = true;
 }
@@ -22,21 +19,13 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::vec2 player2pos = player2.getPosition();
 	glm::vec2 player1size = player1.getSize();
 	glm::vec2 player2size = player2.getSize();
-	glm::vec2 netPos = net.getPosition();
-	glm::vec2 netSize = net.getSize();
 	glm::vec2 ballPos = ball.getPosition();
 	float ballRadius = ball.getRadius();
-	std::vector<PointInfo> pointsVector = ball.getElectricity().getPoints();
-	glm::vec2 points[7];
-	glm::mat4 electricityToLine[6];
-
-	glm::vec2 cloud1pos = clouds.begin()->getPosition();
-	glm::vec2 cloud2pos = (++clouds.begin())->getPosition();
-	float cloudRadius = clouds.begin()->getRadius();
 
 	glm::mat4 backgroundToPikachu1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
 
+	/*
 	glm::mat4 pikachuToEar1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1size.x / 5, player1size.y * 6 / 7, 0.0f)) * 
 		glm::rotate(glm::mat4(1), (50.0f + player1.getEarAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -48,11 +37,12 @@ SceneGraphNode *Game::constructSceneGraph() {
 	glm::mat4 proximalToDistalTail1 =
 		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.1f, player1size.y * 0.2f, 0.0f)) *
 		glm::rotate(glm::mat4(1), player1.getTailDistalAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
+		*/
 
 	glm::mat4 backgroundToPikachu2 =
 		glm::translate(glm::mat4(1), glm::vec3(player2pos.x +player2size.x, player2pos.y, 0.0f)) *
 		glm::scale(glm::mat4(1), glm::vec3(-1.0f, 1.0f, 0.0f));
-
+	/*
 	glm::mat4 pikachuToEar2 =
 		glm::translate(glm::mat4(1), glm::vec3(player1size.x / 5, player1size.y * 6 / 7, 0.0f)) *
 		glm::rotate(glm::mat4(1), (50.0f + player2.getEarAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -67,138 +57,20 @@ SceneGraphNode *Game::constructSceneGraph() {
 	
 	glm::mat4 backgroundToNet =
 		glm::translate(glm::mat4(1), glm::vec3(netPos.x, netPos.y, 0.0f));
-
+		*/
 	glm::mat4 backgroundToBall =
 		glm::translate(glm::mat4(1), glm::vec3(ballPos.x, ballPos.y, 0.0f));
 
-	glm::mat4 ballToElectricity =
-		glm::translate(glm::mat4(1), glm::vec3(ballRadius, ballRadius, 0.0f)) *
-		glm::rotate(glm::mat4(1), ball.getElectricityAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f)) *
-		glm::translate(glm::mat4(1), glm::vec3(0.0f, -ballRadius * sqrt(3) / 2, 0.0f)) *
-		glm::scale(glm::mat4(1), glm::vec3(7.5f / 6, 7.5f / 6, 0.0f));
-
-	std::vector<PointInfo>::iterator iter = pointsVector.begin();
-
-	for (int i = 0; i < 7; i++) {
-		points[i] = iter->pointPosition;
-		iter++;
-	}
-
-	for (int i = 0; i < 6; i++) {
-		// https://stackoverflow.com/questions/31064234/find-the-angle-between-two-vectors-from-an-arbitrary-origin
-		glm::vec2 point1 = points[i];
-		glm::vec2 point2 = points[i + 1];
-		glm::vec2 line = point2 - point1;
-
-		glm::vec2 normalizedLine = glm::normalize(line);
-		float angle = glm::acos(glm::dot(glm::vec2(1.0f, 0.0f), normalizedLine));
-		// https://math.stackexchange.com/questions/555198/find-direction-of-angle-between-2-vectors
-		float direction = line.y > 0 ? 1.0f : -1.0f;
-
-		electricityToLine[i] =
-			glm::translate(glm::mat4(1), glm::vec3(point1.x, point1.y, 0.0f)) *
-			glm::rotate(glm::mat4(1), direction * angle, glm::vec3(0.0f, 0.0f, 1.0f)) *
-			glm::scale(glm::mat4(1), glm::vec3(glm::length(line), glm::length(line), 0.0f));
-	}
-
-	glm::mat4 backgroundToCloud1 =
-		glm::translate(glm::mat4(1), glm::vec3(cloud1pos.x, cloud1pos.y, 0.0f)) *
-		glm::translate(glm::mat4(1), glm::vec3(4.6f * 7.0f / 2, 7.0f * 1.5, 0.0f));
-
-	glm::mat4 backgroundToCloud2 =
-		glm::translate(glm::mat4(1), glm::vec3(cloud2pos.x, cloud2pos.y, 0.0f)) *
-		glm::translate(glm::mat4(1), glm::vec3(4.6f * 7.0f / 2, 7.0f * 1.5, 0.0f));
-
-	glm::mat4 cloud1ToArm1 =
-		glm::translate(glm::mat4(1), glm::vec3(-cloudRadius * sqrt(3) / 4, cloudRadius * (1.0f - sqrt(3) / 2), 0.0f)) *
-		glm::rotate(glm::mat4(1), (150.0f - clouds.begin()->getCurling()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-
-	glm::mat4 cloud1ToArm2 =
-		glm::translate(glm::mat4(1), glm::vec3(cloudRadius * sqrt(3) / 4, cloudRadius * (1.0f - sqrt(3) / 2), 0.0f)) *
-		glm::rotate(glm::mat4(1), (30.0f + clouds.begin()->getCurling()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-
-	glm::mat4 cloud2ToArm1 =
-		glm::translate(glm::mat4(1), glm::vec3(-cloudRadius * sqrt(3) / 4, cloudRadius * (1.0f - sqrt(3) / 2), 0.0f)) *
-		glm::rotate(glm::mat4(1), (150.0f - (++clouds.begin())->getCurling()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-
-	glm::mat4 cloud2ToArm2 =
-		glm::translate(glm::mat4(1), glm::vec3(cloudRadius * sqrt(3) / 4, cloudRadius * (1.0f - sqrt(3) / 2), 0.0f)) *
-		glm::rotate(glm::mat4(1), (30.0f + (++clouds.begin())->getCurling()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-
 	return
-	new SceneGraphNode(glm::mat4(1), renderBackground,
-		new SceneGraphNode(backgroundToCloud1, renderCloudBase,
-			new SceneGraphNode(cloud1ToArm1, renderCloudArm,
-				nullptr,
-				new SceneGraphNode(cloud1ToArm2, renderCloudArm,
-					nullptr,
-					nullptr
+		new SceneGraphNode(glm::mat4(1), renderBackground,
+			new SceneGraphNode(backgroundToPikachu1, renderPikachu,
+				nullptr, new SceneGraphNode(backgroundToPikachu2, renderPikachu,
+					nullptr, new SceneGraphNode(backgroundToBall, renderBall,
+						nullptr, nullptr)
 				)
 			),
-			new SceneGraphNode(backgroundToCloud2, renderCloudBase,
-				new SceneGraphNode(cloud2ToArm1, renderCloudArm,
-					nullptr,
-					new SceneGraphNode(cloud2ToArm2, renderCloudArm,
-						nullptr,
-						nullptr
-					)
-				),
-				new SceneGraphNode(backgroundToPikachu1, renderPikachu,
-					new SceneGraphNode(pikachuToEar1, renderPikachuEar,
-						nullptr,
-						new SceneGraphNode(pikachuToProximalTail1, renderPikachuProximalTail,
-							new SceneGraphNode(proximalToDistalTail1, renderPikachuDistalTail,
-								nullptr,
-								nullptr
-							),
-							nullptr
-						)
-					),
-					new SceneGraphNode(backgroundToPikachu2, renderPikachu,
-						new SceneGraphNode(pikachuToEar2, renderPikachuEar,
-							nullptr,
-							new SceneGraphNode(pikachuToProximalTail2, renderPikachuProximalTail,
-								new SceneGraphNode(proximalToDistalTail2, renderPikachuDistalTail,
-									nullptr,
-									nullptr
-								),
-								nullptr
-							)
-						),
-						new SceneGraphNode(backgroundToNet, renderNet,
-							nullptr,
-							new SceneGraphNode(backgroundToBall, renderBall,
-								new SceneGraphNode(ballToElectricity, NULL,
-									new SceneGraphNode(electricityToLine[0], renderElectricLine,
-										nullptr,
-										new SceneGraphNode(electricityToLine[1], renderElectricLine,
-											nullptr,
-											new SceneGraphNode(electricityToLine[2], renderElectricLine,
-												nullptr,
-												new SceneGraphNode(electricityToLine[3], renderElectricLine,
-													nullptr,
-													new SceneGraphNode(electricityToLine[4], renderElectricLine,
-														nullptr,
-														new SceneGraphNode(electricityToLine[5], renderElectricLine,
-															nullptr,
-															nullptr
-														)
-													)
-												)
-											)
-										)
-									),
-									nullptr
-								),
-								nullptr
-							)
-						)
-					)
-				)
-			)
-		),
-		nullptr
-	);
+			nullptr
+		);
 }
 
 void Game::render() {
@@ -240,7 +112,7 @@ float generateRandomFromZeroToOne() {
 	return distribution(engine);
 }
 
-glm::vec2 generateUnitVector() {
+glm::vec3 generateUnitVector_old() {
 	float x = 1;
 	float y = 0;
 	while (x < 0.4 || y < 0.2) {
@@ -248,46 +120,46 @@ glm::vec2 generateUnitVector() {
 		y = sqrt(1 - x * x);
 	}
 
-	return glm::vec2(x, y);
+	return glm::vec3(x, y, 0);
+}
+
+glm::vec3 generateUnitVector() {
+	const float PI = 3.1415926535;
+	float theta = 2 * PI * generateRandomFromZeroToOne();
+	float phi = PI * generateRandomFromZeroToOne();
+	return glm::vec3(cos(theta) * cos(phi), cos(theta) * sin(phi), sin(theta));
 }
 
 Game::Game() :
-	player1(glm::vec2(24.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.5f, -0.5f, -0.5f, 0),
-	player2(glm::vec2(148.0f, 0.0f), glm::vec2(20.0f, 35.0f), glm::vec2(0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.5f, -0.5f, -0.5f, 0),
-	ball(glm::vec2(88.5f, 70.0f), 7.5f, BALLSPEED * generateUnitVector(), 0.0f, 0.1f),
-	net(glm::vec2(93.5f, 0.0f), glm::vec2(5.0f, 50.0f)),
+	player1(PLAYER_ONE_POSITION, PLAYER_ONE_SIZE, PLAYER_ONE_VELOCITY),
+	player2(PLAYER_TWO_POSITION, PLAYER_TWO_SIZE, PLAYER_TWO_VELOCITY),
+	ball(BALL_POSITION, BALL_RADIUS, BALL_SPEED * generateUnitVector_old()),
 	gamestate(GAME_MENU),
 	ballCameraMode(false),
 	delayTime(3000),
 	is2player(false),
 	score1(0), score2(0), winningScore(5),
-	player1Scored(false) {
-	clouds.push_back(CloudObject(glm::vec2(24.0f, 70.0f), 7.0f, glm::vec2(0.05f, 0.0f), 0.0f, 0.1f));
-	clouds.push_back(CloudObject(glm::vec2(148.0f, 70.0f), 7.0f, glm::vec2(0.05f, 0.0f), 0.0f, 0.1f));
-}
+	player1Scored(false) {}
 
-Game::~Game() {
-	std::vector<CloudObject>().swap(clouds);
-}
+Game::~Game() {}
 
 void Game::resetPosition() {
 	delayTime = 3000;
 
-	player1.setPosition(glm::vec2(24, 0));
-	player1.setsize(glm::vec2(20, 35));
-	player1.setVelocity(glm::vec2(0, 0));
+	player1.setPosition(PLAYER_ONE_POSITION);
+	player1.setsize(PLAYER_ONE_SIZE);
+	player1.setVelocity(PLAYER_ONE_VELOCITY);
 
-	player2.setPosition(glm::vec2(148, 0));
-	player2.setsize(glm::vec2(20, 35));
-	player2.setVelocity(glm::vec2(0, 0));
+	player2.setPosition(PLAYER_TWO_POSITION);
+	player2.setsize(PLAYER_TWO_SIZE);
+	player2.setVelocity(PLAYER_TWO_VELOCITY);
 
-	ball.setPosition(glm::vec2(88.5, 70));
-	ball.setRadius(7.5);
-	glm::vec2 ballVelocity = BALLSPEED * generateUnitVector();
+	ball.setPosition(BALL_POSITION);
+	ball.setRadius(BALL_RADIUS);
+	glm::vec3 ballVelocity = BALL_SPEED * generateUnitVector_old();
 	if ((player1Scored && ballVelocity.x < 0) || (!player1Scored && ballVelocity.x > 0))
 		ballVelocity.x = -ballVelocity.x;
 	ball.setVelocity(ballVelocity);
-	ball.setElectricityAngle(0.0f);
 }
 
 void Game::restartGame() {
@@ -316,7 +188,7 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 
 void Game::handleInput(unsigned char key) {
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
-		glm::vec2 velocity(0.0, 0.0);
+		glm::vec3 velocity(0.0f, 0.0f, 0.0f);
 
 		switch (key) {
 		case 'a':
@@ -324,6 +196,12 @@ void Game::handleInput(unsigned char key) {
 			break;
 		case 'd':
 			velocity.x = 0.1f;
+			break;
+		case 'w':
+			velocity.y = 0.1f;
+			break;
+		case 's':
+			velocity.y = -0.1f;
 			break;
 		case 'r':
 			restartGame();
@@ -354,7 +232,7 @@ void Game::handleInput(unsigned char key) {
 
 void Game::handleInputUp(unsigned char key) {
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
-		glm::vec2 velocity = player1.getVelocity();
+		glm::vec3 velocity = player1.getVelocity();
 
 		switch (key) {
 		case 'a':
@@ -364,6 +242,14 @@ void Game::handleInputUp(unsigned char key) {
 		case 'd':
 			if (velocity.x > 0)
 				velocity.x = 0;
+			break;
+		case 'w':
+			if (velocity.y > 0)
+				velocity.y = 0;
+			break;
+		case 's':
+			if (velocity.y < 0)
+				velocity.y = 0;
 			break;
 		}
 
@@ -375,8 +261,7 @@ void Game::handleSpecialInput(int key) {
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
 		if (!is2player)
 			return;
-
-		glm::vec2 velocity(0.0, 0.0);
+		glm::vec3 velocity(0.0f, 0.0f, 0.0f);
 
 		switch (key) {
 		case GLUT_KEY_LEFT:
@@ -384,6 +269,12 @@ void Game::handleSpecialInput(int key) {
 			break;
 		case GLUT_KEY_RIGHT:
 			velocity.x = 0.1f;
+			break;
+		case GLUT_KEY_UP:
+			velocity.y = 0.1f;
+			break;
+		case GLUT_KEY_DOWN:
+			velocity.y = -0.1f;
 			break;
 		}
 
@@ -402,7 +293,7 @@ void Game::handleSpecialInputUp(int key) {
 		if (!is2player)
 			return;
 
-		glm::vec2 velocity = player2.getVelocity();
+		glm::vec3 velocity = player2.getVelocity();
 
 		switch (key) {
 		case GLUT_KEY_LEFT:
@@ -413,6 +304,14 @@ void Game::handleSpecialInputUp(int key) {
 			if (velocity.x > 0)
 				velocity.x = 0;
 			break;
+		case GLUT_KEY_UP:
+			if (velocity.y > 0)
+				velocity.y = 0;
+			break;
+		case GLUT_KEY_DOWN:
+			if (velocity.y < 0)
+				velocity.y = 0;
+			break;
 		}
 
 		player2.setVelocity(velocity);
@@ -420,28 +319,23 @@ void Game::handleSpecialInputUp(int key) {
 }
 
 void Game::updateBall(int delta) {
-	RectangleObject* objectsToCollideAgainstBall[3] = { &player1, &player2, &net };
+	MovableCubeObject* objectsToCollideAgainstBall[2] = { &player1, &player2 };
 
 	ball.move(delta);
 
-	for (size_t i = 0; i < 3; i++) {
+	for (size_t i = 0; i < 2; i++) {
 		Collision collision = CheckCollision(*objectsToCollideAgainstBall[i], ball);
 		if (std::get<0>(collision)) {
-			if (objectsToCollideAgainstBall[i] == &player1)
-				player1.setDurationOfVibration(DURATION_OF_VIBRATION);
-			else if (objectsToCollideAgainstBall[i] == &player2)
-				player2.setDurationOfVibration(DURATION_OF_VIBRATION);
-
 			Direction dir = std::get<1>(collision);
 			glm::vec2 diffVec = std::get<2>(collision);
-			glm::vec2 ballVelocity = ball.getVelocity();
-			glm::vec2 ballPosition = ball.getPosition();
+			glm::vec3 ballVelocity = ball.getVelocity();
+			glm::vec3 ballPosition = ball.getPosition();
 			float ballRadius = ball.getRadius();
 
-			if (dir == LEFT || dir == RIGHT) {
+			if (dir == NEGATIVE_X || dir == POSITIVE_X) {
 				ballVelocity.x = -ballVelocity.x;
 				float penetration = ballRadius - std::abs(diffVec.x);
-				if (dir == LEFT)
+				if (dir == NEGATIVE_X)
 					ballPosition.x += penetration;
 				else
 					ballPosition.x -= penetration;
@@ -449,7 +343,7 @@ void Game::updateBall(int delta) {
 			else {
 				ballVelocity.y = -ballVelocity.y;
 				float penetration = ball.getRadius() - std::abs(diffVec.y);
-				if (dir == DOWN)
+				if (dir == NEGATIVE_Y)
 					ballPosition.y += penetration;
 				else
 					ballPosition.y -= penetration;
@@ -462,68 +356,21 @@ void Game::updateBall(int delta) {
 }
 
 void Game::updatePlayer(int delta) {
-	CharacterObject* players[2] = { &player1, &player2 };
+	player1.move(delta);
+	player2.move(delta);
 
-	for (size_t i = 0; i < 2; i++) {
+	glm::vec3 player1Position = player1.getPosition();
+	glm::vec3 player2Position = player2.getPosition();
 
-		players[i]->move(delta);
-	}
-
-	for (size_t i = 0; i < 2; i++) {
-		Collision collision = CheckCollision(net, *players[i]);
-		if (std::get<0>(collision)) {
-			Direction dir = std::get<1>(collision);
-			glm::vec2 collidingBox = std::get<2>(collision);
-			glm::vec2 objectPosition = players[i]->getPosition();
-			if (dir == LEFT || dir == RIGHT) {
-				float penetration = collidingBox.x;
-				if (dir == LEFT)
-					objectPosition.x += penetration;
-				else
-					objectPosition.x -= penetration;
-
-			}
-			else {
-				float penetration = collidingBox.y;
-				if (dir == DOWN)
-					objectPosition.x += penetration;
-				else
-					objectPosition.x -= penetration;
-			}
-			players[i]->setPosition(objectPosition);
-		}
-	}
-	glm::vec2 ballPosition = ball.getPosition();
-	glm::vec2 netPosition = net.getPosition();
-	float ballRadius = ball.getRadius();
-	glm::vec2 netSize = net.getSize();
-	glm::vec2 player1Size = player1.getSize();
-	glm::vec2 player2Size = player2.getSize();
-
-	int epsilon = 3;
-
-	if (ballPosition.y < player2Size.y - ballRadius) {
-		glm::vec2 player1Position = player1.getPosition();
-		glm::vec2 player2Position = player2.getPosition();
-		if (ballPosition.x <= epsilon && player1Position.x <= ballRadius * 2)
-			player1Position.x = ballRadius * 2 + epsilon;
-		if (ballPosition.x >= (netPosition.x - ballRadius * 2 - epsilon) && ballPosition.x <= (netPosition.x - ballRadius * 2) && player1Position.x >= (netPosition.x - ballRadius * 2 - player1Size.x))
-			player1Position.x = netPosition.x - ballRadius * 2 - player1Size.x - epsilon;
-		if (ballPosition.x >= (netPosition.x + netSize.x) && ballPosition.x <= (netPosition.x + netSize.x + epsilon) && player2Position.x <= (netPosition.x + netSize.x + ballRadius * 2))
-			player2Position.x = netPosition.x + netSize.x + ballRadius * 2 + epsilon;
-		if (ballPosition.x >= 192 - ballRadius * 2 - epsilon && player2Position.x >= 192 - ballRadius * 2 - player2Size.x)
-			player2Position.x = 192 - ballRadius * 2 - player2Size.x - epsilon;
-		player1.setPosition(player1Position);
-		player2.setPosition(player2Position);
-	}
+	if (player1Position.x + player1.getSize().x > WINDOW_X_SIZE / 2)
+		player1Position.x = WINDOW_X_SIZE / 2 - player1.getSize().x;
+	if (player2Position.x < WINDOW_X_SIZE / 2)
+		player2Position.x = WINDOW_X_SIZE / 2;
 	
+	player1.setPosition(player1Position);
+	player2.setPosition(player2Position);
 }
 
-void Game::updateClouds(int delta) {
-	std::vector<CloudObject>::iterator iter;
-	for (iter = clouds.begin(); iter != clouds.end(); iter++)
-		iter->move(delta);
-}
 
 void Game::update(int delta) {
 
@@ -537,12 +384,12 @@ void Game::update(int delta) {
 
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
 		if (!is2player) {
-			glm::vec2 velocity(0.0, 0.0);
+			glm::vec3 velocity(0.0, 0.0, 0.0);
 
-			if (player2.getPosition().x < ball.getPosition().x)
-				velocity.x = ball.getVelocity().x * 0.83f;
+			if (player2.getPosition().y < ball.getPosition().y)
+				velocity.y = ball.getVelocity().y * 0.83f;
 			else
-				velocity.x = -ball.getVelocity().x * 0.83f;
+				velocity.y = -ball.getVelocity().y * 0.83f;
 
 			player2.setVelocity(velocity);
 		}
@@ -551,19 +398,18 @@ void Game::update(int delta) {
 	if (gamestate == GAME_PLAYING) {
 		updateBall(delta);
 		updatePlayer(delta);
-		updateClouds(delta);
 
 		if (delayTime > 0)
 			delayTime -= delta;
 
 		int epsilon = 2;
 
-		if (ball.getPosition().y < epsilon) {
-			if (ball.getPosition().x < 92) {
+		if ((ball.getPosition().x < epsilon) ||
+			(ball.getPosition().x + 2 * ball.getRadius() + epsilon > WINDOW_X_SIZE)) {
+			if (ball.getPosition().x < epsilon) {
 				player1Scored = false;
 				score2++;
-			}
-				
+			}				
 			else {
 				player1Scored = true;
 				score1++;
@@ -585,7 +431,6 @@ void Game::update(int delta) {
 	else if (gamestate == GAME_SCORE) {
 		updateBall(delta / 2);
 		updatePlayer(delta / 2);
-		updateClouds(delta/2);
 		delayTime -= delta;
 
 		if (delayTime < 0) {
@@ -596,7 +441,6 @@ void Game::update(int delta) {
 	}
 	else if (gamestate == GAME_SET) {
 		updateBall(delta / 2);
-		updateClouds(delta / 2);
 	}
 
 	return;

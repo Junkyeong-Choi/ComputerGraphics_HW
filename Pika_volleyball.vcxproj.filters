@@ -27,22 +27,13 @@
     <ClCompile Include="src\ballObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\movableRectangleObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\collision.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="src\cloudObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\electricityObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\characterObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="src\sceneGraphNode.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movableCubeObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,13 +44,7 @@
     <ClInclude Include="src\ballObject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="src\movableRectangleObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="src\object.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="src\rectangleObject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="src\render.h">
@@ -68,16 +53,13 @@
     <ClInclude Include="src\collision.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="src\characterObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cloudObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="src\electricityObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="src\sceneGraphNode.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cubeObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movableCubeObject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 void BallObject::move(int delta) {
 
-	glm::vec2 displacement = velocity * (float)delta;
+	glm::vec3 displacement = velocity * (float)delta;
 	position += displacement;
 
 	if (position.x < 0 || position.x + 2 * radius > 192) {
@@ -19,9 +19,4 @@ void BallObject::move(int delta) {
 		else
 			position.y = 108 - 2 * radius;
 	}
-
-	electricityAngle += electricityAngleSpeed * delta;
-	if (electricityAngle > 360)
-		electricityAngle -= 360;
-	electricity.move(delta);
 }

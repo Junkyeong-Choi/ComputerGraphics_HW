@@ -120,29 +120,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\characterObject.cpp" />
-    <ClCompile Include="src\cloudObject.cpp" />
     <ClCompile Include="src\collision.cpp" />
     <ClCompile Include="src\ballObject.cpp" />
-    <ClCompile Include="src\electricityObject.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\movableRectangleObject.cpp" />
+    <ClCompile Include="src\movableCubeObject.cpp" />
     <ClCompile Include="src\render.cpp" />
     <ClCompile Include="src\sceneGraphNode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\characterObject.h" />
-    <ClInclude Include="src\cloudObject.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\ballObject.h" />
-    <ClInclude Include="src\electricityObject.h" />
     <ClInclude Include="src\game.h" />
-    <ClInclude Include="src\movableRectangleObject.h" />
+    <ClInclude Include="src\movableCubeObject.h" />
     <ClInclude Include="src\object.h" />
-    <ClInclude Include="src\rectangleObject.h" />
+    <ClInclude Include="src\cubeObject.h" />
     <ClInclude Include="src\render.h" />
     <ClInclude Include="src\sceneGraphNode.h" />
   </ItemGroup>
