@@ -262,6 +262,9 @@ void Game::handleInputUp(unsigned char key) {
 		player1.setSpeed(speed);
 		player1.setDirectionAngleVelocity(directionAngleVelocity);
 	}
+
+	if (key == 27) // ESC Key
+		this->exit();
 }
 
 void Game::handleSpecialInput(int key) {
