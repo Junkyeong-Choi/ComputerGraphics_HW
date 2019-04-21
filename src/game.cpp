@@ -124,15 +124,14 @@ glm::vec3 generateUnitVector_old() {
 }
 
 glm::vec3 generateUnitVector() {
-	const float PI = 3.1415926535;
-	float theta = 2 * PI * generateRandomFromZeroToOne();
-	float phi = PI * generateRandomFromZeroToOne();
-	return glm::vec3(cos(theta) * cos(phi), cos(theta) * sin(phi), sin(theta));
+	float theta = 2 * PI * generateRandomFromZeroToOne();		// the rotation angle about z-axis (on xy plane)
+	float phi = 2 * PI * generateRandomFromZeroToOne();			// the angle between z-axis and direction vector
+	return glm::vec3(cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi));
 }
 
 Game::Game() :
-	player1(PLAYER_ONE_POSITION, PLAYER_ONE_SIZE, PLAYER_ONE_VELOCITY),
-	player2(PLAYER_TWO_POSITION, PLAYER_TWO_SIZE, PLAYER_TWO_VELOCITY),
+	player1(PLAYER_ONE_POSITION, PLAYER_ONE_SIZE, PLAYER_ONE_SPEED, PLAYER_ONE_DIRECTION_ANGLE, PLAYER_ONE_DIRECTION_ANGLE_VELOCITY),
+	player2(PLAYER_TWO_POSITION, PLAYER_TWO_SIZE, PLAYER_TWO_SPEED, PLAYER_TWO_DIRECTION_ANGLE, PLAYER_TWO_DIRECTION_ANGLE_VELOCITY),
 	ball(BALL_POSITION, BALL_RADIUS, BALL_SPEED * generateUnitVector_old()),
 	gamestate(GAME_MENU),
 	ballCameraMode(false),
@@ -148,11 +147,15 @@ void Game::resetPosition() {
 
 	player1.setPosition(PLAYER_ONE_POSITION);
 	player1.setsize(PLAYER_ONE_SIZE);
-	player1.setVelocity(PLAYER_ONE_VELOCITY);
+	player1.setSpeed(PLAYER_ONE_SPEED);
+	player1.setDirectionAngle(PLAYER_ONE_DIRECTION_ANGLE);
+	player1.setDirectionAngleVelocity(PLAYER_ONE_DIRECTION_ANGLE_VELOCITY);
 
 	player2.setPosition(PLAYER_TWO_POSITION);
 	player2.setsize(PLAYER_TWO_SIZE);
-	player2.setVelocity(PLAYER_TWO_VELOCITY);
+	player1.setSpeed(PLAYER_ONE_SPEED);
+	player1.setDirectionAngle(PLAYER_ONE_DIRECTION_ANGLE);
+	player1.setDirectionAngleVelocity(PLAYER_ONE_DIRECTION_ANGLE_VELOCITY);
 
 	ball.setPosition(BALL_POSITION);
 	ball.setRadius(BALL_RADIUS);
@@ -188,20 +191,21 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 
 void Game::handleInput(unsigned char key) {
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
-		glm::vec3 velocity(0.0f, 0.0f, 0.0f);
+		float speed = player1.getSpeed();
+		glm::vec2 directionAngleVelocity = player1.getDirectionAngleVelocity();
 
 		switch (key) {
 		case 'a':
-			velocity.x = -0.1f;
+			directionAngleVelocity.x = 0.01f;
 			break;
 		case 'd':
-			velocity.x = 0.1f;
+			directionAngleVelocity.x = -0.01f;
 			break;
 		case 'w':
-			velocity.y = 0.1f;
+			speed = 0.1f;
 			break;
 		case 's':
-			velocity.y = -0.1f;
+			speed = -0.1f;
 			break;
 		case 'r':
 			restartGame();
@@ -211,7 +215,8 @@ void Game::handleInput(unsigned char key) {
 			return;
 		}
 
-		player1.setVelocity(velocity);
+		player1.setSpeed(speed);
+		player1.setDirectionAngleVelocity(directionAngleVelocity);
 	}
 	else if (gamestate == GAME_MENU) {
 		if (key == '\n' || key == 13)
@@ -232,28 +237,30 @@ void Game::handleInput(unsigned char key) {
 
 void Game::handleInputUp(unsigned char key) {
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
-		glm::vec3 velocity = player1.getVelocity();
+		float speed = player1.getSpeed();
+		glm::vec2 directionAngleVelocity = player1.getDirectionAngleVelocity();
 
 		switch (key) {
 		case 'a':
-			if (velocity.x < 0)
-				velocity.x = 0;
+			if (directionAngleVelocity.x > 0)
+				directionAngleVelocity.x = 0.0f;
 			break;
 		case 'd':
-			if (velocity.x > 0)
-				velocity.x = 0;
+			if (directionAngleVelocity.x < 0)
+				directionAngleVelocity.x = 0.0f;
 			break;
 		case 'w':
-			if (velocity.y > 0)
-				velocity.y = 0;
+			if (speed > 0)
+				speed = 0.0f;
 			break;
 		case 's':
-			if (velocity.y < 0)
-				velocity.y = 0;
+			if (speed < 0)
+				speed = 0.0f;
 			break;
 		}
 
-		player1.setVelocity(velocity);
+		player1.setSpeed(speed);
+		player1.setDirectionAngleVelocity(directionAngleVelocity);
 	}
 }
 
@@ -261,24 +268,26 @@ void Game::handleSpecialInput(int key) {
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
 		if (!is2player)
 			return;
-		glm::vec3 velocity(0.0f, 0.0f, 0.0f);
+		float speed = player2.getSpeed();
+		glm::vec2 directionAngleVelocity = player2.getDirectionAngleVelocity();
 
 		switch (key) {
 		case GLUT_KEY_LEFT:
-			velocity.x = -0.1f;
+			directionAngleVelocity.x = 0.01f;
 			break;
 		case GLUT_KEY_RIGHT:
-			velocity.x = 0.1f;
+			directionAngleVelocity.x = -0.01f;
 			break;
 		case GLUT_KEY_UP:
-			velocity.y = 0.1f;
+			speed = 0.1f;
 			break;
 		case GLUT_KEY_DOWN:
-			velocity.y = -0.1f;
+			speed = -0.1f;
 			break;
 		}
 
-		player2.setVelocity(velocity);
+		player2.setSpeed(speed);
+		player2.setDirectionAngleVelocity(directionAngleVelocity);
 	}
 	else if (gamestate == GAME_MENU) {
 		if (key == GLUT_KEY_UP)
@@ -293,28 +302,30 @@ void Game::handleSpecialInputUp(int key) {
 		if (!is2player)
 			return;
 
-		glm::vec3 velocity = player2.getVelocity();
+		float speed = player2.getSpeed();
+		glm::vec2 directionAngleVelocity = player2.getDirectionAngleVelocity();
 
 		switch (key) {
 		case GLUT_KEY_LEFT:
-			if (velocity.x < 0)
-				velocity.x = 0;
+			if (directionAngleVelocity.x > 0)
+				directionAngleVelocity.x = 0;
 			break;
 		case GLUT_KEY_RIGHT:
-			if (velocity.x > 0)
-				velocity.x = 0;
+			if (directionAngleVelocity.x < 0)
+				directionAngleVelocity.x = 0;
 			break;
 		case GLUT_KEY_UP:
-			if (velocity.y > 0)
-				velocity.y = 0;
+			if (speed > 0)
+				speed = 0;
 			break;
 		case GLUT_KEY_DOWN:
-			if (velocity.y < 0)
-				velocity.y = 0;
+			if (speed < 0)
+				speed = 0;
 			break;
 		}
 
-		player2.setVelocity(velocity);
+		player2.setSpeed(speed);
+		player2.setDirectionAngleVelocity(directionAngleVelocity);
 	}
 }
 
@@ -391,7 +402,7 @@ void Game::update(int delta) {
 			else
 				velocity.y = -ball.getVelocity().y * 0.83f;
 
-			player2.setVelocity(velocity);
+			//player2.setVelocity(velocity);
 		}
 	}
 
