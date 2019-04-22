@@ -185,8 +185,7 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 	if (isFullScreen)
 		glutFullScreen();
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glShadeModel(GL_FLAT);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Game::handleInput(unsigned char key) {
