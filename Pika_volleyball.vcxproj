@@ -120,15 +120,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\collision.cpp" />
-    <ClCompile Include="src\ballObject.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\model.cpp" />
-    <ClCompile Include="src\movableCubeObject.cpp" />
-    <ClCompile Include="src\sceneGraphNode.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
     <ClCompile Include="src\ui.cpp" />
   </ItemGroup>
