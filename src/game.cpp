@@ -135,10 +135,10 @@ void Game::handleInput(unsigned char key) {
 
 		switch (key) {
 		case 'a':
-			directionAngleVelocity.x = 0.01f;
+			directionAngleVelocity.x = 0.005f;
 			break;
 		case 'd':
-			directionAngleVelocity.x = -0.01f;
+			directionAngleVelocity.x = -0.005f;
 			break;
 		case 'w':
 			speed = 0.1f;
@@ -191,10 +191,14 @@ void Game::handleInputUp(unsigned char key) {
 		case 'w':
 			if (speed > 0)
 				speed = 0.0f;
+			cout << "(" << player1.getPosition().x << ", " << player1.getPosition().y << ", " << player1.getPosition().z << ")" << endl;
+			cout << "(" << player1.getDirectionAngle().x << ", " << player1.getDirectionAngle().y <<  ")" << endl;
 			break;
 		case 's':
 			if (speed < 0)
 				speed = 0.0f;
+			cout << "(" << player1.getPosition().x << ", " << player1.getPosition().y << ", " << player1.getPosition().z << ")" << endl;
+			cout << "(" << player1.getDirectionAngle().x << ", " << player1.getDirectionAngle().y << ")" << endl;
 			break;
 		}
 
@@ -215,10 +219,10 @@ void Game::handleSpecialInput(int key) {
 
 		switch (key) {
 		case GLUT_KEY_LEFT:
-			directionAngleVelocity.x = 0.01f;
+			directionAngleVelocity.x = 0.005f;
 			break;
 		case GLUT_KEY_RIGHT:
-			directionAngleVelocity.x = -0.01f;
+			directionAngleVelocity.x = -0.005f;
 			break;
 		case GLUT_KEY_UP:
 			speed = 0.1f;
