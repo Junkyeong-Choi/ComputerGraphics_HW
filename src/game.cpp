@@ -6,6 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "renderer.h"
 #include "ui.h"
+#include "game.h"
+#include "settings.h"
 
 void Game::exit() {
 	exiting = true;
@@ -313,10 +315,10 @@ void Game::updatePlayer(int delta) {
 	glm::vec3 player1Position = player1.getPosition();
 	glm::vec3 player2Position = player2.getPosition();
 
-	if (player1Position.x + player1.getSize().x > WINDOW_X_SIZE / 2)
-		player1Position.x = WINDOW_X_SIZE / 2 - player1.getSize().x;
-	if (player2Position.x < WINDOW_X_SIZE / 2)
-		player2Position.x = WINDOW_X_SIZE / 2;
+	if (player1Position.x + player1.getSize().x > MAP_SIZE.x / 2)
+		player1Position.x = MAP_SIZE.x / 2 - player1.getSize().x;
+	if (player2Position.x < MAP_SIZE.x / 2)
+		player2Position.x = MAP_SIZE.x / 2;
 	
 	player1.setPosition(player1Position);
 	player2.setPosition(player2Position);
@@ -355,7 +357,7 @@ void Game::update(int delta) {
 		int epsilon = 2;
 
 		if ((ball.getPosition().x < epsilon) ||
-			(ball.getPosition().x + 2 * ball.getRadius() + epsilon > WINDOW_X_SIZE)) {
+			(ball.getPosition().x + 2 * ball.getRadius() + epsilon > MAP_SIZE.x)) {
 			if (ball.getPosition().x < epsilon) {
 				player1Scored = false;
 				score2++;

@@ -125,6 +125,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\model.cpp" />
+    <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
     <ClCompile Include="src\ui.cpp" />
   </ItemGroup>
@@ -140,6 +141,7 @@
     <ClInclude Include="src\cubeObject.h" />
     <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\sceneGraphNode.h" />
+    <ClInclude Include="src\settings.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\ui.h" />
   </ItemGroup>
