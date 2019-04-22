@@ -26,7 +26,7 @@ typedef std::tuple<bool, Direction, glm::vec2> Collision;
 const float WINDOW_X_SIZE = 192.0;
 const float WINDOW_Y_SIZE = 108.0;
 
-const float PLAYER_MAX_VELOCITY = 0.1;
+const float PLAYER_MAX_VELOCITY = 0.1f;
 
 const glm::vec3 PLAYER_ONE_POSITION = glm::vec3(24.0f, 54.0f, 0.0f);
 const glm::vec3 PLAYER_ONE_SIZE = glm::vec3(20.0f, 35.0f, 0.1f);
