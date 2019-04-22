@@ -1,7 +1,6 @@
 #pragma once
 #include "cubeObject.h"
-
-const float PI = (float)3.14159265358979;
+#include "settings.h"
 
 class MovableCubeObject : public CubeObject {
 protected:

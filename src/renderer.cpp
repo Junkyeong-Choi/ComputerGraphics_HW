@@ -19,12 +19,11 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 	shader.use();
 
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(90.0f), (float)width / (float)height, 0.1f, 100.0f);
 	glm::mat4 view = glm::lookAt(glm::vec3(-50.0f, 0.0f, 0.0f) + player1.getPosition(),
-		glm::vec3(0.0f, 0.0f, 0.0f) + player1.getPosition(), glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::vec3(-50.0f, 0.0f, 0.0f) + player1.getDirectionVector() + player1.getPosition(), glm::vec3(0.0f, 0.0f, 1.0f));
 	shader.setMat4("projection", projection);
 	shader.setMat4("view", view);
 
@@ -33,30 +32,32 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, player1.getPosition());
 	model = glm::scale(model, player1.getSize() / pikachu.getSize());
-	model = glm::translate(model, pikachu.getMin());
+	model = glm::translate(model, -pikachu.getMin());
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	shader.setMat4("model", model);
 
 	pikachu.Draw(shader);
 
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, player2.getPosition());
-	model = glm::scale(model, player2.getSize() / pikachu.getSize());
-	model = glm::translate(model, pikachu.getMin());
+	//model = glm::scale(model, player2.getSize() / pikachu.getSize());
+	model = glm::translate(model, -pikachu.getMin());
 	shader.setMat4("model", model);
 
 	pikachu.Draw(shader);
 
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, ball.getPosition());
-	model = glm::scale(model, glm::vec3(ball.getRadius() * 2) / pokeball.getSize());
-	model = glm::translate(model, pokeball.getMin());
+	//model = glm::scale(model, glm::vec3(ball.getRadius() * 2) / pokeball.getSize());
+	model = glm::translate(model, -pokeball.getMin());
 	shader.setMat4("model", model);
 
 	pokeball.Draw(shader);
 
 	model = glm::mat4(1.0f);
 	model = glm::scale(model, MAP_SIZE / map.getSize());
-	model = glm::translate(model, map.getMin());
+	model = glm::translate(model, -map.getMin());
 	shader.setMat4("model", model);
 
 	map.Draw(shader);

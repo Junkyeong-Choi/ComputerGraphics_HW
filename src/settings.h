@@ -1,6 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
 
+const float PI = (float)3.14159265358979;
+
 const float PLAYER_MAX_VELOCITY = 0.1f;
 
 const glm::vec3 PLAYER_ONE_POSITION = glm::vec3(24.0f, 54.0f, 0.0f);
