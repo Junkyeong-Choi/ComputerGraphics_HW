@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 #include "shader.h"
 #include "model.h"
 
@@ -23,6 +24,15 @@ public:
 		pikachu = Model("./resources/models/pikachu/Pikachu.obj");
 		pokeball = Model("./resources/models/pokeball/Pokeball.obj");
 		map = Model("./resources/models/box/box.obj");
+
+		glm::vec3 size = pikachu.getSize();
+		std::cout << "pikachu " << size.x << ' ' << size.y << ' ' << size.z << std::endl;
+
+		size = pokeball.getSize();
+		std::cout << "pokeball " << size.x << ' ' << size.y << ' ' << size.z << std::endl;
+
+		size = map.getSize();
+		std::cout << "map " << size.x << ' ' << size.y << ' ' << size.z << std::endl;
 	}
 
 	void setScreenSize(int _width, int _height) {
@@ -30,7 +40,7 @@ public:
 		height = _height;
 	}
 
-	void render() {
+	void render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball) {
 		glEnable(GL_DEPTH_TEST);
 
 		glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -47,6 +57,7 @@ public:
 		shader.setMat4("model", model);
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 		pikachu.Draw(shader);
 		pokeball.Draw(shader);
 		map.Draw(shader);

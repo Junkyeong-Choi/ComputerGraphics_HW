@@ -21,7 +21,7 @@ void Game::render() {
 		renderMenu(is2player);
 	}
 	else {
-		renderer.render();
+		renderer.render(player1, player2, ball);
 
 		renderScore(score1, score2);
 
@@ -124,10 +124,6 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 	glewInit();
 	renderer.init();
 	renderer.setScreenSize(width, height);
-}
-
-void Game::initRenderer() {
-	
 }
 
 void Game::handleInput(unsigned char key) {

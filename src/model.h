@@ -19,10 +19,18 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
 class Model
 {
 public:
-	Model() {}
+	Model() {
+		float inf = std::numeric_limits<float>::infinity();
+		min = glm::vec3(inf, inf, inf);
+		max = glm::vec3(-inf, -inf, -inf);
+	}
 
 	Model(const char *path) {
 		loadModel(path);
+	}
+
+	glm::vec3 getSize() {
+		return max - min;
 	}
 
 	void Draw(Shader shader) {
@@ -35,6 +43,9 @@ private:
 	vector<Texture> textures_loaded;
 	vector<Mesh> meshes;
 	string directory;
+
+	glm::vec3 min;
+	glm::vec3 max;
 
 	void loadModel(string path) {
 		Assimp::Importer importer;
@@ -73,6 +84,20 @@ private:
 			vector.y = mesh->mVertices[i].y;
 			vector.z = mesh->mVertices[i].z;
 			vertex.Position = vector;
+
+			if (max.x < vector.x)
+				max.x = vector.x;
+			if (max.y < vector.y)
+				max.y = vector.y;
+			if (max.z < vector.z)
+				max.z = vector.z;
+
+			if (min.x > vector.x)
+				min.x = vector.x;
+			if (min.y > vector.y)
+				min.y = vector.y;
+			if (min.z > vector.z)
+				min.z = vector.z;
 
 			/*
 			vector.x = mesh->mNormals[i].x;

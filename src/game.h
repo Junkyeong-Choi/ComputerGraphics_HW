@@ -71,7 +71,6 @@ public:
 	Game();
 	~Game();
 	void init(int argc, char* argv[], int width, int height, bool isFullScreen);
-	void initRenderer();
 	void exit();
 	bool isExiting();
 	void handleInput(unsigned char key);

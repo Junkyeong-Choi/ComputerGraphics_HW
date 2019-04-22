@@ -52,7 +52,6 @@ int main(int argc, char* argv[]) {
 	glutKeyboardUpFunc(keyboardUp);
 	glutSpecialFunc(specialKeyboard);
 	glutSpecialUpFunc(specialKeyboardUp);
-	volleyball.initRenderer();
 
 	int delta;
 	lastFrame = glutGet(GLUT_ELAPSED_TIME);
