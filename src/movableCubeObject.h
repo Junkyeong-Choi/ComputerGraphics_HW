@@ -44,12 +44,12 @@ public:
 
 		if (position.x < 0)
 			position.x = 0;
-		if (position.x + size.x > 192)
-			position.x = 192 - size.x;
+		if (position.x + size.x > MAP_SIZE.x)
+			position.x = MAP_SIZE.x - size.x;
 		if (position.y < 0)
 			position.y = 0;
-		if (position.y + size.y > 108)
-			position.y = 108 - size.y;
+		if (position.y + size.y > MAP_SIZE.y)
+			position.y = MAP_SIZE.y - size.y;
 
 		glm::vec2 angleDisplacement = directionAngleVelocity * (float)delta;
 		directionAngle += angleDisplacement;
