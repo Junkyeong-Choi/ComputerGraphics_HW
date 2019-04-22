@@ -115,18 +115,19 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 	// Initialize window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitContextVersion(4, 6);
 	glutInitWindowSize(width, height);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Pickachu Volleyball");
 	if (isFullScreen)
 		glutFullScreen();
 
+	glewInit();
+	renderer.init();
 	renderer.setScreenSize(width, height);
 }
 
 void Game::initRenderer() {
-	renderer.init();
+	
 }
 
 void Game::handleInput(unsigned char key) {
