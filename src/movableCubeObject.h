@@ -9,7 +9,16 @@ protected:
 	glm::vec2 directionAngle;		//consists of (the rotation angle about z-axis (on xy plane), the angle between z-axis and direction vector)
 	glm::vec2 directionAngleVelocity;
 
-	void checkAngle();
+	void checkAngle() {
+		if (directionAngle.x > 2 * PI)
+			directionAngle.x -= 2 * PI;
+		if (directionAngle.x < 0)
+			directionAngle.x += 2 * PI;
+		if (directionAngle.y > 2 * PI)
+			directionAngle.y -= 2 * PI;
+		if (directionAngle.y < 0)
+			directionAngle.y += 2 * PI;
+	}
 public:
 	MovableCubeObject() {}
 	~MovableCubeObject() {}
@@ -18,12 +27,34 @@ public:
 	float getSpeed() { return speed; }
 	glm::vec2 getDirectionAngle() { return directionAngle; }
 	glm::vec2 getDirectionAngleVelocity() { return directionAngleVelocity; }
-	glm::vec3 getDirectionVector();
+	glm::vec3 getDirectionVector() {
+		float theta = directionAngle.x;			// the rotation angle about z-axis (on xy plane)
+		float phi = directionAngle.y;			// the angle between z-axis and direction vector
+
+		return glm::vec3(cos(theta)*sin(phi), sin(theta)*sin(phi), cos(phi));
+	}
 	glm::vec3 getVelocity() { return speed * getDirectionVector(); }
 
 	void setSpeed(float _speed) { speed = _speed; }
 	void setDirectionAngle(glm::vec2 _directionAngle) { directionAngle = _directionAngle; }
 	void setDirectionAngleVelocity(glm::vec2 _directionAngleVelocity) { directionAngleVelocity = _directionAngleVelocity; }
 
-	void move(int delta);
+	void move(int delta) {
+		glm::vec3 displacement = getVelocity() * (float)delta;
+		position += displacement;
+
+		if (position.x < 0)
+			position.x = 0;
+		if (position.x + size.x > 192)
+			position.x = 192 - size.x;
+		if (position.y < 0)
+			position.y = 0;
+		if (position.y + size.y > 108)
+			position.y = 108 - size.y;
+
+		glm::vec2 angleDisplacement = directionAngleVelocity * (float)delta;
+		directionAngle += angleDisplacement;
+
+		checkAngle();
+	}
 };
