@@ -2,6 +2,7 @@
 #include <GL/freeglut.h>
 #include <math.h>
 #include "ui.h"
+#include "settings.h"
 
 // modified code from https://forums.khronos.org/showthread.php/19787
 void drawEllipse(float x, float y, float xradius, float yradius, int startDegree, int endDegree)
@@ -33,7 +34,7 @@ void set2DCamera() {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, 192.0, 0.0, 108.0);
+	gluOrtho2D(0.0, MAP_SIZE.x, 0.0, MAP_SIZE.y);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -124,10 +125,10 @@ void renderMenuPikachuHalf() {
 
 void renderMenu(bool is2player) {
 	glColor3f(1.0f, 1.0f, 0.0f);
-	glRectf(0.0f, 0.0f, 192.0f, 108.0f);
+	glRectf(0.0f, 0.0f, MAP_SIZE.x, MAP_SIZE.y);
 
 	glMatrixMode(GL_MODELVIEW);
-	glTranslatef(192.0f * 0.25f, 108.0f * 0.5f, 0.0f);
+	glTranslatef(MAP_SIZE.x * 0.25f, MAP_SIZE.y * 0.5f, 0.0f);
 
 	renderMenuPikachuHalf();
 	glScalef(-1.0f, 1.0f, 0.0f);

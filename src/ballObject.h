@@ -1,5 +1,6 @@
 #pragma once
 #include "object.h"
+#include "settings.h"
 
 class BallObject : public Object {
 private:
@@ -17,20 +18,20 @@ public:
 	void move(int delta) {
 		glm::vec3 displacement = velocity * (float)delta;
 		position += displacement;
-
-		if (position.x < 0 || position.x + 2 * radius > 192) {
+		
+		if (position.x < 0 || position.x + 2 * radius > MAP_SIZE.x) {
 			velocity.x = -velocity.x;
 			if (position.x < 0)
 				position.x = 0;
 			else
-				position.x = 192 - 2 * radius;
+				position.x = MAP_SIZE.x - 2 * radius;
 		}
-		if (position.y < 0 || position.y + 2 * radius > 108) {
+		if (position.y < 0 || position.y + 2 * radius > MAP_SIZE.y) {
 			velocity.y = -velocity.y;
 			if (position.y < 0)
 				position.y = 0;
 			else
-				position.y = 108 - 2 * radius;
+				position.y = MAP_SIZE.y - 2 * radius;
 		}
 	}
 };
