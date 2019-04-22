@@ -5,7 +5,7 @@
 #include <GL/freeglut.h>
 #include "ballObject.h"
 #include "movableCubeObject.h"
-#include "sceneGraphNode.h"
+#include "renderer.h"
 
 enum GameState {
 	GAME_MENU,
@@ -26,7 +26,7 @@ typedef std::tuple<bool, Direction, glm::vec2> Collision;
 const float WINDOW_X_SIZE = 192.0;
 const float WINDOW_Y_SIZE = 108.0;
 
-const float PLAYER_MAX_VELOCITY = 0.1;
+const float PLAYER_MAX_VELOCITY = 0.1f;
 
 const glm::vec3 PLAYER_ONE_POSITION = glm::vec3(24.0f, 54.0f, 0.0f);
 const glm::vec3 PLAYER_ONE_SIZE = glm::vec3(20.0f, 35.0f, 0.1f);
@@ -61,22 +61,24 @@ private:
 	int winningScore;
 	bool player1Scored;
 	bool exiting;
+	Renderer renderer;
 
 	void resetPosition();
 	void restartGame();
 	void updateBall(int delta);
 	void updatePlayer(int delta);
-	SceneGraphNode* constructSceneGraph();
 public:
 	Game();
 	~Game();
 	void init(int argc, char* argv[], int width, int height, bool isFullScreen);
+	void initRenderer();
 	void exit();
 	bool isExiting();
 	void handleInput(unsigned char key);
 	void handleInputUp(unsigned char key);
 	void handleSpecialInput(int key);
 	void handleSpecialInputUp(int key);
+	void setScreenSize(int width, int height);
 	void update(int delta);
 	void render();
 };

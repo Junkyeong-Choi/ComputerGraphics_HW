@@ -13,6 +13,8 @@ class Shader
 public:
 	unsigned int ID;
 
+	Shader() {}
+
 	Shader(const GLchar* vertexPath, const GLchar* fragmentPath) {
 		std::string vertexCode;
 		std::string fragmentCode;

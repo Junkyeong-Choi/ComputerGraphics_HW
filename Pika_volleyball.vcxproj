@@ -126,11 +126,14 @@
     <ClCompile Include="src\main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\movableCubeObject.cpp" />
-    <ClCompile Include="src\render.cpp" />
     <ClCompile Include="src\sceneGraphNode.cpp" />
+    <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="src\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\ballObject.h" />
     <ClInclude Include="src\game.h" />
@@ -139,9 +142,14 @@
     <ClInclude Include="src\movableCubeObject.h" />
     <ClInclude Include="src\object.h" />
     <ClInclude Include="src\cubeObject.h" />
-    <ClInclude Include="src\render.h" />
+    <ClInclude Include="src\renderer.h" />
     <ClInclude Include="src\sceneGraphNode.h" />
     <ClInclude Include="src\shader.h" />
+    <ClInclude Include="src\ui.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shader.frag" />
+    <None Include="src\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

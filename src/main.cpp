@@ -20,7 +20,7 @@ void display() {
 }
 
 void reshape(int w, int h) {
-	glViewport(0, 0, w, h);
+	volleyball.setScreenSize(w, h);
 }
 
 void close() {
@@ -52,6 +52,7 @@ int main(int argc, char* argv[]) {
 	glutKeyboardUpFunc(keyboardUp);
 	glutSpecialFunc(specialKeyboard);
 	glutSpecialUpFunc(specialKeyboardUp);
+	volleyball.initRenderer();
 
 	int delta;
 	lastFrame = glutGet(GLUT_ELAPSED_TIME);

@@ -1,10 +1,11 @@
 #include "game.h"
-#include "render.h"
 #include "collision.h"
 #include "sceneGraphNode.h"
 #include <random>
 #include <ctime>
 #include <glm/gtc/matrix_transform.hpp>
+#include "renderer.h"
+#include "ui.h"
 
 void Game::exit() {
 	exiting = true;
@@ -14,77 +15,13 @@ bool Game::isExiting() {
 	return exiting;
 }
 
-SceneGraphNode *Game::constructSceneGraph() {
-	glm::vec2 player1pos = player1.getPosition();
-	glm::vec2 player2pos = player2.getPosition();
-	glm::vec2 player1size = player1.getSize();
-	glm::vec2 player2size = player2.getSize();
-	glm::vec2 ballPos = ball.getPosition();
-	float ballRadius = ball.getRadius();
-
-	glm::mat4 backgroundToPikachu1 =
-		glm::translate(glm::mat4(1), glm::vec3(player1pos.x, player1pos.y, 0.0f));
-
-	/*
-	glm::mat4 pikachuToEar1 =
-		glm::translate(glm::mat4(1), glm::vec3(player1size.x / 5, player1size.y * 6 / 7, 0.0f)) * 
-		glm::rotate(glm::mat4(1), (50.0f + player1.getEarAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-
-	glm::mat4 pikachuToProximalTail1 =
-		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.05f, player1size.y * 0.2f, 0.0f)) *
-		glm::rotate(glm::mat4(1), (60.0f + player1.getTailProximalAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-	
-	glm::mat4 proximalToDistalTail1 =
-		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.1f, player1size.y * 0.2f, 0.0f)) *
-		glm::rotate(glm::mat4(1), player1.getTailDistalAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-		*/
-
-	glm::mat4 backgroundToPikachu2 =
-		glm::translate(glm::mat4(1), glm::vec3(player2pos.x +player2size.x, player2pos.y, 0.0f)) *
-		glm::scale(glm::mat4(1), glm::vec3(-1.0f, 1.0f, 0.0f));
-	/*
-	glm::mat4 pikachuToEar2 =
-		glm::translate(glm::mat4(1), glm::vec3(player1size.x / 5, player1size.y * 6 / 7, 0.0f)) *
-		glm::rotate(glm::mat4(1), (50.0f + player2.getEarAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-
-	glm::mat4 pikachuToProximalTail2 =
-		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.05f, player1size.y * 0.2f, 0.0f)) *
-		glm::rotate(glm::mat4(1), (60.0f + player2.getTailProximalAngle()) * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-
-	glm::mat4 proximalToDistalTail2 =
-		glm::translate(glm::mat4(1), glm::vec3(player1size.x * 0.1f, player1size.y * 0.2f, 0.0f)) *
-		glm::rotate(glm::mat4(1), player2.getTailDistalAngle() * DEG2RAD, glm::vec3(0.0f, 0.0f, 1.0f));
-	
-	glm::mat4 backgroundToNet =
-		glm::translate(glm::mat4(1), glm::vec3(netPos.x, netPos.y, 0.0f));
-		*/
-	glm::mat4 backgroundToBall =
-		glm::translate(glm::mat4(1), glm::vec3(ballPos.x, ballPos.y, 0.0f));
-
-	return
-		new SceneGraphNode(glm::mat4(1), renderBackground,
-			new SceneGraphNode(backgroundToPikachu1, renderPikachu,
-				nullptr, new SceneGraphNode(backgroundToPikachu2, renderPikachu,
-					nullptr, new SceneGraphNode(backgroundToBall, renderBall,
-						nullptr, nullptr)
-				)
-			),
-			nullptr
-		);
-}
-
 void Game::render() {
-	if (ballCameraMode)
-		setBallCamera(ball.getPosition(), ball.getRadius());
-	else
-		setNormalCamera();
-
 	if (gamestate == GAME_MENU) {
+		set2DCamera();
 		renderMenu(is2player);
 	}
 	else {
-		SceneGraphNode *root = constructSceneGraph();
-		root->traverse();
+		renderer.render();
 
 		renderScore(score1, score2);
 
@@ -98,8 +35,6 @@ void Game::render() {
 			renderWinText(is2player, score1, score2);
 		else
 			renderCameraText(ballCameraMode);
-
-		delete root;
 	}
 
 	glutSwapBuffers();
@@ -138,7 +73,8 @@ Game::Game() :
 	delayTime(3000),
 	is2player(false),
 	score1(0), score2(0), winningScore(5),
-	player1Scored(false) {}
+	player1Scored(false),
+	renderer() {}
 
 Game::~Game() {}
 
@@ -179,13 +115,18 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 	// Initialize window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitContextVersion(4, 6);
 	glutInitWindowSize(width, height);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Pickachu Volleyball");
 	if (isFullScreen)
 		glutFullScreen();
 
-	glEnable(GL_DEPTH_TEST);
+	renderer.setScreenSize(width, height);
+}
+
+void Game::initRenderer() {
+	renderer.init();
 }
 
 void Game::handleInput(unsigned char key) {
@@ -384,7 +325,6 @@ void Game::updatePlayer(int delta) {
 	player2.setPosition(player2Position);
 }
 
-
 void Game::update(int delta) {
 
 	if (gamestate == GAME_READY) {
@@ -457,4 +397,8 @@ void Game::update(int delta) {
 	}
 
 	return;
+}
+
+void Game::setScreenSize(int width, int height) {
+	renderer.setScreenSize(width, height);
 }
