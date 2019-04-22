@@ -23,4 +23,4 @@ const glm::vec3 BALL_POSITION = glm::vec3(88.5f, 70.0f, 0.0f);
 const float BALL_RADIUS = 7.5f;
 const float BALL_SPEED = 0.015f;
 
-const glm::vec3 MAP_SIZE = glm::vec3(192.0f, 108.0f, 100.0f);
+const glm::vec3 MAP_SIZE = glm::vec3(192.0f, 108.0f, 10.0f);

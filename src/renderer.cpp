@@ -56,8 +56,8 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	pokeball.Draw(shader);
 
 	model = glm::mat4(1.0f);
+	model = glm::translate(model, map.getMin());
 	model = glm::scale(model, MAP_SIZE / map.getSize());
-	model = glm::translate(model, -map.getMin());
 	shader.setMat4("model", model);
 
 	map.Draw(shader);
