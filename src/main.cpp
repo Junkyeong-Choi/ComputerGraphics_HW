@@ -35,14 +35,6 @@ void keyboardUp(unsigned char key, int x, int y) {
 	volleyball.handleInputUp(key);
 }
 
-void specialKeyboard(int key, int x, int y) {
-	volleyball.handleSpecialInput(key);
-}
-
-void specialKeyboardUp(int key, int x, int y) {
-	volleyball.handleSpecialInputUp(key);
-}
-
 // Architecture inspired by https://learnopengl.com/In-Practice/2D-Game/Breakout
 int main(int argc, char* argv[]) {
 	volleyball.init(argc, argv, width, height, isFullScreen);
@@ -50,8 +42,6 @@ int main(int argc, char* argv[]) {
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keyboardUp);
-	glutSpecialFunc(specialKeyboard);
-	glutSpecialUpFunc(specialKeyboardUp);
 
 	int delta;
 	lastFrame = glutGet(GLUT_ELAPSED_TIME);

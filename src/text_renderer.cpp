@@ -7,12 +7,14 @@
 #include "text_renderer.h"
 
 
-TextRenderer::TextRenderer(GLuint width, GLuint height)
+TextRenderer::TextRenderer(GLuint _width, GLuint _height)
 {
 	// Load and configure shader
 	this->TextShader = Shader("./src/text.vert", "./src/text.frag");
 	this->TextShader.use();
-	this->TextShader.setMat4("projection", glm::ortho(0.0f, static_cast<GLfloat>(width), 0.0f, static_cast<GLfloat>(height)));
+	this->TextShader.setMat4("projection", glm::ortho(0.0f, static_cast<GLfloat>(_width), 0.0f, static_cast<GLfloat>(_height)));
+	width = _width;
+	height = _height;
 	// Configure VAO/VBO for texture quads
 	glGenVertexArrays(1, &this->VAO);
 	glGenBuffers(1, &this->VBO);
@@ -145,4 +147,11 @@ void TextRenderer::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat sc
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextRenderer::setScreenSize(int _width, int _height) {
+	width = _width;
+	height = _height;
+	this->TextShader.use();
+	this->TextShader.setMat4("projection", glm::ortho(0.0f, static_cast<GLfloat>(_width), 0.0f, static_cast<GLfloat>(_height)));
 }

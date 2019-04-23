@@ -24,7 +24,6 @@ private:
 	MovableCubeObject player2;
 	BallObject ball;
 	GameState gamestate;
-	bool is2player;
 	int delayTime;
 	int score1;
 	int score2;
@@ -47,8 +46,6 @@ public:
 	bool isExiting();
 	void handleInput(unsigned char key);
 	void handleInputUp(unsigned char key);
-	void handleSpecialInput(int key);
-	void handleSpecialInputUp(int key);
 	void setScreenSize(int width, int height);
 	void update(int delta);
 	void render();
