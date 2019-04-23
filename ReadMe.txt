@@ -101,6 +101,11 @@ Header and source code files that contains rendering functions of
 main screen. These are developed in older version so that they don't
 use shaders but use immediate mode.
 
+- cameraForViewThree.h
+Header files that contain CamerForViewThree class. This file is
+for special purpose where viewmode is on VIEW_CELLING mode. It
+speficies where the camera should be based on user's input(j/k/l/i).
+
 - collision.h
 Header and source code files that contains a collision 
 detection algorithms for game objects. The are called for
