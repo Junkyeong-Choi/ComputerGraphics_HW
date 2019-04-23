@@ -348,14 +348,32 @@ void Game::update(int delta) {
 
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
 		if (!is2player) {
-			glm::vec3 velocity(0.0, 0.0, 0.0);
+			float speed(abs(ball.getVelocity().y) * 0.90f);
+			glm::vec3 player2Position = player2.getPosition();
+			glm::vec2 player2DirectionAngle = player2.getDirectionAngle();
+			glm::vec2 player2DirectionAngleVelocity = player2.getDirectionAngleVelocity();
 
-			if (player2.getPosition().y < ball.getPosition().y)
-				velocity.y = abs(ball.getVelocity().y) * 0.90f;
-			else
-				velocity.y = -abs(ball.getVelocity().y) * 0.90f;
-			
-			player2.setVelocity(velocity);
+			float epsilon = 0.003f;
+
+			if (player2Position.y < ball.getPosition().y) {
+				if (player2DirectionAngle.x < 1.0f / 2.0f * PI - epsilon)
+					player2DirectionAngleVelocity.x = 0.005f;
+
+				else if (player2DirectionAngle.x > 1.0f / 2.0f * PI + epsilon)
+					player2DirectionAngleVelocity.x = -0.005f;
+				else
+					player2DirectionAngleVelocity.x = 0.0f;
+			}
+			else {
+				if (player2DirectionAngle.x < 3.0f / 2.0f * PI - epsilon)
+					player2DirectionAngleVelocity.x = 0.005f;
+
+				else
+					player2DirectionAngleVelocity.x = 0.0f;
+			}
+
+			player2.setSpeed(speed);
+			player2.setDirectionAngleVelocity(player2DirectionAngleVelocity);
 		}
 	}
 
