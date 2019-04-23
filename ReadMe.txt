@@ -16,7 +16,8 @@ w/s : Move 1'st Pikachu
 ←/→ : Change moving direction 2'nd Pikachu (only on multi player)
 ↑/↓ : Move 2'nd Pkachu (only on multi player)
 r: Restart game
-1/2/3 : Change View mode of camera
+Spacebar : Change View mode of camera
+j/l/i/k : Move camera on celling view of camera
 
 -- Files --
 
