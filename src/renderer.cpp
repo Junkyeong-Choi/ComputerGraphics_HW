@@ -67,6 +67,7 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	model = glm::translate(model, -pikachu.getMin());
 	shader.setMat4("model", model);
 
+	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
 	pikachu.Draw(shader);
 
 	model = glm::mat4(1.0f);
@@ -82,6 +83,7 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	model = glm::translate(model, -pikachu.getMin());
 	shader.setMat4("model", model);
 
+	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
 	pikachu.Draw(shader);
 
 	model = glm::mat4(1.0f);
@@ -90,6 +92,7 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	model = glm::translate(model, -pokeball.getMin());
 	shader.setMat4("model", model);
 
+	shader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
 	pokeball.Draw(shader);
 
 	model = glm::mat4(1.0f);
@@ -97,5 +100,6 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	model = glm::translate(model, -map.getMin());
 	shader.setMat4("model", model);
 
+	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
 	map.Draw(shader);
 }
