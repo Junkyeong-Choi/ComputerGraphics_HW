@@ -10,6 +10,7 @@
 #include "ballObject.h"
 #include "text_renderer.h"
 #include "settings.h"
+#include "cameraForViewThree.h"
 
 enum ViewMode {
 	VIEW_CHARACTER_EYE,
@@ -27,7 +28,7 @@ private:
 	int width;
 	int height;
 
-	glm::mat4 getViewMatrix(MovableCubeObject& player1, ViewMode viewmode);
+	glm::mat4 getViewMatrix(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	glm::mat4 makePikachuModelMatrix(MovableCubeObject& player, bool isPlayer1);
 	glm::mat4 makePokeballModelMatrix(BallObject& ball);
 	glm::mat4 makeMapModelMatrix();
@@ -36,6 +37,6 @@ public:
 	~Renderer() {}
 	void init(int width, int height);
 	void setScreenSize(int _width, int _height);
-	void renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode);
+	void renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	void renderText(ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime);
 };

@@ -19,7 +19,7 @@ void Renderer::setScreenSize(int _width, int _height) {
 	textRenderer.setScreenSize(_width, _height);
 }
 
-glm::mat4 Renderer::getViewMatrix(MovableCubeObject& player1, ViewMode viewmode) {
+glm::mat4 Renderer::getViewMatrix(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree) {
 	glm::vec3 eye, center, up;
 	if (viewmode == VIEW_CHARACTER_EYE) {
 		eye = player1.getPosition() + (player1.getSize() / 2.0f) + (player1.getSize().x / 2.0f) * player1.getDirectionVector();
@@ -32,9 +32,9 @@ glm::mat4 Renderer::getViewMatrix(MovableCubeObject& player1, ViewMode viewmode)
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
 	else if (viewmode == VIEW_CELLING) {
-		eye = glm::vec3(player1.getPosition().x, player1.getPosition().y, MAP_SIZE.z * 3.0f);
+		eye = glm::vec3(cameraForViewThree.getPosition().x, cameraForViewThree.getPosition().y, MAP_SIZE.z * 3.0f);
 		center = glm::vec3(MAP_SIZE.x / 2.0f, MAP_SIZE.y / 2.0f, 0.0f);
-		up = glm::vec3(0.0f, 1.0f, 0.0f);
+		up = glm::vec3(1.0f, 0.0f, 0.0f);
 	}
 
 	return glm::lookAt(eye, center, up);
@@ -93,7 +93,7 @@ glm::mat4 Renderer::makeMapModelMatrix() {
 	return model;
 }
 
-void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode) {
+void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, CameraForViewThree& cameraForViewThree) {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -102,7 +102,7 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 	shader.use();
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 1000.0f);
-	glm::mat4 view = getViewMatrix(player1, viewmode);
+	glm::mat4 view = getViewMatrix(player1, viewmode, cameraForViewThree);
 	shader.setMat4("projection", projection);
 	shader.setMat4("view", view);
 
