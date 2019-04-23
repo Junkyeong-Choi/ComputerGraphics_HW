@@ -20,6 +20,10 @@ j/l/i/k : Move camera on celling view of camera
 
 -- Files --
 
+- settings.h
+Header file that contains several global variables such as
+player size, ball velocity, and map size.
+
 - object.h
 Header file that contains Object class. This file defines
 the position of object as a 3-dimentional vector. It also
@@ -64,10 +68,15 @@ about vertex attribute array.
 - model.cpp, model.h
 Header and source code files that contains Model class. These
 files load obj files that contain information about model and 
-save as a structure of struct aiscene, which is defined by assimp
-library. As it loads obj file and construct aiscene, it changes
+save as a structure of struct aiScene, which is defined by assimp
+library. As it loads obj file and construct aiScene, it changes
 data structure in forms of predefined Mesh, Texture class, enabling
 drawing for model.
+
+- text_renderer.cpp, text_renderer.h
+Header and source code files that contains TextRenderer class.
+These files load font file and text shader, and actually renders
+texts by using font textures.
 
 - renderer.cpp, renderer.h
 Header and source code files that contains Renderer class. These 
@@ -75,9 +84,24 @@ files load actual model(Pikachu, Pokeball, Map) and shader and
 actually renders a scene by defining transform matrix(model-view-
 projection).
 
-- shader.frag, shader.vert
+- sceneGraphNode.h
+Header file that contains SceneGraphNode class. SceneGraphNode
+contains informations that are needed for rendering such as
+color, model information, and transformation matrix. Traversing
+scene graph results rendering the whole scene it contains.
 
-- collision.cpp, collision.h
+- shader.vert, shader.frag
+Vertex/fragment shader files that are used in Renderer class.
+
+- text.vert, text.frag
+Vertex/fragment shader files that are used in TextRenderer class.
+
+- ui.cpp, ui.h
+Header and source code files that contains rendering functions of
+main screen. These are developed in older version so that they don't
+use shaders but use immediate mode.
+
+- collision.h
 Header and source code files that contains a collision 
 detection algorithms for game objects. The are called for
 detecting collision of each game objects in update method
