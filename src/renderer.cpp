@@ -12,6 +12,14 @@ void Renderer::init(int width, int height) {
 	textRenderer.Load("./resources/fonts/OCRAEXT.TTF", 48);
 }
 
+bool Renderer::getHiddenLineRemoval() {
+	return hiddenLineRemoval;
+}
+
+void Renderer::setHiddenLineRemoval(bool value) {
+	hiddenLineRemoval = value;
+}
+
 void Renderer::setScreenSize(int _width, int _height) {
 	width = _width;
 	height = _height;
@@ -111,11 +119,11 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 	SceneGraphNode* sceneGraph =
 		new SceneGraphNode(makeMapModelMatrix() , &map, glm::vec3(1.0f), false,
 			nullptr,
-			new SceneGraphNode(makePikachuModelMatrix(player1, true), &pikachu, glm::vec3(1.0f, 1.0f, 0.0f), true,
+			new SceneGraphNode(makePikachuModelMatrix(player1, true), &pikachu, glm::vec3(1.0f, 1.0f, 0.0f), hiddenLineRemoval,
 				nullptr,
-				new SceneGraphNode(makePikachuModelMatrix(player2, false), &pikachu, glm::vec3(1.0f, 1.0f, 0.0f), true,
+				new SceneGraphNode(makePikachuModelMatrix(player2, false), &pikachu, glm::vec3(1.0f, 1.0f, 0.0f), hiddenLineRemoval,
 					nullptr,
-					new SceneGraphNode(makePokeballModelMatrix(ball), &pokeball, glm::vec3(1.0f, 0.0f, 0.0f), true,
+					new SceneGraphNode(makePokeballModelMatrix(ball), &pokeball, glm::vec3(1.0f, 0.0f, 0.0f), hiddenLineRemoval,
 						nullptr,
 						nullptr
 					)

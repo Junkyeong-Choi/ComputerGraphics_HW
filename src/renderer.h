@@ -27,6 +27,7 @@ private:
 	Model map;
 	int width;
 	int height;
+	bool hiddenLineRemoval = true;
 
 	glm::mat4 getViewMatrix(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	glm::mat4 makePikachuModelMatrix(MovableCubeObject& player, bool isPlayer1);
@@ -36,6 +37,8 @@ public:
 	Renderer() {}
 	~Renderer() {}
 	void init(int width, int height);
+	bool getHiddenLineRemoval();
+	void setHiddenLineRemoval(bool value);
 	void setScreenSize(int _width, int _height);
 	void renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	void renderText(ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime);
