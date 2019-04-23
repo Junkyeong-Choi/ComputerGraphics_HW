@@ -6,7 +6,6 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-#include "texture.h"
 #include "shader.h"
 
 // TextRenderer class from LearnOpenGL tutorial

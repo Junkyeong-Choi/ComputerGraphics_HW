@@ -127,7 +127,6 @@
     <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
-    <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\text_renderer.cpp" />
     <ClCompile Include="src\ui.cpp" />
   </ItemGroup>
@@ -145,7 +144,6 @@
     <ClInclude Include="src\sceneGraphNode.h" />
     <ClInclude Include="src\settings.h" />
     <ClInclude Include="src\shader.h" />
-    <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\text_renderer.h" />
     <ClInclude Include="src\ui.h" />
   </ItemGroup>

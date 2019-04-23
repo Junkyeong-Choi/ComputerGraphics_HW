@@ -2,15 +2,13 @@
 #include "settings.h"
 
 void Renderer::init(int width, int height) {
+	textRenderer = TextRenderer(width, height);
+	textRenderer.Load("./resources/fonts/OCRAEXT.TTF", 48);
 	shader = Shader("./src/shader.vert", "./src/shader.frag");
 	pikachu = Model("./resources/models/pikachu/Pikachu.obj");
 	pokeball = Model("./resources/models/pokeball/pokeball2.obj");
 	map = Model("./resources/models/box/box.obj");
 	glViewport(0, 0, width, height);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	textRenderer = TextRenderer(width, height);
-	textRenderer.Load("./resources/fonts/OCRAEXT.TTF", 24);
 }
 
 void Renderer::setScreenSize(int _width, int _height) {
@@ -116,8 +114,6 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
 	map.Draw(shader);*/
 
-	glDisable(GL_DEPTH_TEST);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	textRenderer.RenderText("Please show me some characters", 0.0f, 0.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+	glClear(GL_COLOR_BUFFER_BIT);
+	textRenderer.RenderText("10", 50.0f, 50.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 }
