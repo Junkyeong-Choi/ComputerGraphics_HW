@@ -4,7 +4,7 @@
 void Renderer::init() {
 	shader = Shader("./src/shader.vert", "./src/shader.frag");
 	pikachu = Model("./resources/models/pikachu/Pikachu.obj");
-	pokeball = Model("./resources/models/pokeball/Pokeball.obj");
+	pokeball = Model("./resources/models/pokeball/pokeball2.obj");
 	map = Model("./resources/models/box/box.obj");
 
 	glm::vec3 size = map.getMin();
