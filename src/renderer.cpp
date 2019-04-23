@@ -35,7 +35,7 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
 	else if (viewmode == VIEW_CELLING) {
-		eye = glm::vec3(MAP_SIZE.x / 2.0f, MAP_SIZE.y / 2.0f, 3 * MAP_SIZE.z);
+		eye = glm::vec3(player1.getPosition().x, player1.getPosition().y, MAP_SIZE.z * 3.0f);
 		center = glm::vec3(MAP_SIZE.x / 2.0f, MAP_SIZE.y / 2.0f, 0.0f);
 		up = glm::vec3(0.0f, 1.0f, 0.0f);
 	}
