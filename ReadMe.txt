@@ -11,10 +11,12 @@ project. Build with the setting Release/x64.
 
 ↑/↓ : Move menu
 Enter : Select menu / Return to menu when game is over
-a/d : Change moving direction of pikachu
-w/s : Move pikachu
+a/d : Change moving direction 1'st Pikachu
+w/s : Move 1'st Pikachu
+←/→ : Change moving direction 2'nd Pikachu (only on multi player)
+↑/↓ : Move 2'nd Pkachu (only on multi player)
 r: Restart game
-Spacebar : Change View mode of camera
+1/2/3 : Change View mode of camera
 
 -- Files --
 
@@ -55,11 +57,23 @@ some interface to loading, compiling, and linking shader
 program to our program.
 
 - mesh.h
-
+Header files that contain Mesh class. This file construct
+VAO, VBO and EBO for shader program and also proceed settings 
+about vertex attribute array.
 
 - model.cpp, model.h
+Header and source code files that contains Model class. These
+files load obj files that contain information about model and 
+save as a structure of struct aiscene, which is defined by assimp
+library. As it loads obj file and construct aiscene, it changes
+data structure in forms of predefined Mesh, Texture class, enabling
+drawing for model.
 
 - renderer.cpp, renderer.h
+Header and source code files that contains Renderer class. These 
+files load actual model(Pikachu, Pokeball, Map) and shader and
+actually renders a scene by defining transform matrix(model-view-
+projection).
 
 - shader.frag, shader.vert
 
