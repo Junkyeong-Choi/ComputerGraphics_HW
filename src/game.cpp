@@ -19,8 +19,7 @@ bool Game::isExiting() {
 
 void Game::render() {
 	if (gamestate == GAME_MENU) {
-		set2DCamera();
-		renderMenu(is2player);
+		renderMenu();
 	}
 	else {
 		renderer.render(player1, player2, ball, viewmode, gamestate, score1, score2, delayTime);
@@ -61,7 +60,6 @@ Game::Game() :
 	ball(BALL_POSITION, BALL_RADIUS, BALL_SPEED * generateUnitVector_old()),
 	gamestate(GAME_MENU),
 	delayTime(3000),
-	is2player(false),
 	score1(0), score2(0), winningScore(5),
 	player1Scored(false),
 	viewmode(VIEW_CHARACTER_BACK),
@@ -195,71 +193,6 @@ void Game::handleInputUp(unsigned char key) {
 		this->exit();
 }
 
-void Game::handleSpecialInput(int key) {
-	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
-		if (!is2player)
-			return;
-		float speed = player2.getSpeed();
-		glm::vec2 directionAngleVelocity = player2.getDirectionAngleVelocity();
-
-		switch (key) {
-		case GLUT_KEY_LEFT:
-			directionAngleVelocity.x = 0.005f;
-			break;
-		case GLUT_KEY_RIGHT:
-			directionAngleVelocity.x = -0.005f;
-			break;
-		case GLUT_KEY_UP:
-			speed = 0.1f;
-			break;
-		case GLUT_KEY_DOWN:
-			speed = -0.1f;
-			break;
-		}
-
-		player2.setSpeed(speed);
-		player2.setDirectionAngleVelocity(directionAngleVelocity);
-	}
-	else if (gamestate == GAME_MENU) {
-		if (key == GLUT_KEY_UP)
-			is2player = false;
-		else if (key == GLUT_KEY_DOWN)
-			is2player = true;
-	}
-}
-
-void Game::handleSpecialInputUp(int key) {
-	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
-		if (!is2player)
-			return;
-
-		float speed = player2.getSpeed();
-		glm::vec2 directionAngleVelocity = player2.getDirectionAngleVelocity();
-
-		switch (key) {
-		case GLUT_KEY_LEFT:
-			if (directionAngleVelocity.x > 0)
-				directionAngleVelocity.x = 0;
-			break;
-		case GLUT_KEY_RIGHT:
-			if (directionAngleVelocity.x < 0)
-				directionAngleVelocity.x = 0;
-			break;
-		case GLUT_KEY_UP:
-			if (speed > 0)
-				speed = 0;
-			break;
-		case GLUT_KEY_DOWN:
-			if (speed < 0)
-				speed = 0;
-			break;
-		}
-
-		player2.setSpeed(speed);
-		player2.setDirectionAngleVelocity(directionAngleVelocity);
-	}
-}
-
 void Game::updateBall(int delta) {
 	MovableCubeObject* objectsToCollideAgainstBall[2] = { &player1, &player2 };
 
@@ -324,34 +257,33 @@ void Game::update(int delta) {
 	}
 
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
-		if (!is2player) {
-			float speed(abs(ball.getVelocity().y) * 0.90f);
-			glm::vec3 player2Position = player2.getPosition();
-			glm::vec2 player2DirectionAngle = player2.getDirectionAngle();
-			glm::vec2 player2DirectionAngleVelocity = player2.getDirectionAngleVelocity();
+		float speed(abs(ball.getVelocity().y) * 0.90f);
+		glm::vec3 player2Position = player2.getPosition();
+		glm::vec2 player2DirectionAngle = player2.getDirectionAngle();
+		glm::vec2 player2DirectionAngleVelocity = player2.getDirectionAngleVelocity();
 
-			float epsilon = 0.003f;
+		float epsilon = 0.003f;
 
-			if (player2Position.y < ball.getPosition().y) {
-				if (player2DirectionAngle.x < 1.0f / 2.0f * PI - epsilon)
-					player2DirectionAngleVelocity.x = 0.005f;
+		if (player2Position.y < ball.getPosition().y) {
+			if (player2DirectionAngle.x < 1.0f / 2.0f * PI - epsilon)
+				player2DirectionAngleVelocity.x = 0.005f;
 
-				else if (player2DirectionAngle.x > 1.0f / 2.0f * PI + epsilon)
-					player2DirectionAngleVelocity.x = -0.005f;
-				else
-					player2DirectionAngleVelocity.x = 0.0f;
-			}
-			else {
-				if (player2DirectionAngle.x < 3.0f / 2.0f * PI - epsilon)
-					player2DirectionAngleVelocity.x = 0.005f;
-
-				else
-					player2DirectionAngleVelocity.x = 0.0f;
-			}
-
-			player2.setSpeed(speed);
-			player2.setDirectionAngleVelocity(player2DirectionAngleVelocity);
+			else if (player2DirectionAngle.x > 1.0f / 2.0f * PI + epsilon)
+				player2DirectionAngleVelocity.x = -0.005f;
+			else
+				player2DirectionAngleVelocity.x = 0.0f;
 		}
+		else {
+			if (player2DirectionAngle.x < 3.0f / 2.0f * PI - epsilon)
+				player2DirectionAngleVelocity.x = 0.005f;
+
+			else
+				player2DirectionAngleVelocity.x = 0.0f;
+		}
+
+		player2.setSpeed(speed);
+		player2.setDirectionAngleVelocity(player2DirectionAngleVelocity);
+
 	}
 
 	if (gamestate == GAME_PLAYING) {

@@ -11,12 +11,10 @@ project. Build with the setting Release/x64.
 
 ↑/↓ : Move menu
 Enter : Select menu / Return to menu when game is over
-a/d : Change moving direction 1'st Pikachu
-w/s : Move 1'st Pikachu
-←/→ : Change moving direction 2'nd Pikachu (only on multi player)
-↑/↓ : Move 2'nd Pkachu (only on multi player)
+a/d : Change moving direction of pikachu
+w/s : Move pikachu
 r: Restart game
-1/2/3 : Change View mode of camera
+Spacebar : Change View mode of camera
 
 -- Files --
 

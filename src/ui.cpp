@@ -90,7 +90,9 @@ void renderMenuPikachuHalf() {
 	glEnd();
 }
 
-void renderMenu(bool is2player) {
+void renderMenu() {
+	set2DCamera();
+
 	glColor3f(1.0f, 1.0f, 0.0f);
 	glRectf(0.0f, 0.0f, MAP_SIZE.x, MAP_SIZE.y);
 
@@ -107,15 +109,6 @@ void renderMenu(bool is2player) {
 	glColor3f(0.8f, 0.0f, 0.0f);
 	renderText(0.75f, 0.65f, "PIKACHU VOLLEYBALL");
 
-	if (is2player)
-		glColor3f(0.4f, 0.4f, 0.4f);
-	else
-		glColor3f(0.0f, 0.0f, 0.0f);
-	renderText(0.75f, 0.45f, "Single Play");
-
-	if (is2player)
-		glColor3f(0.0f, 0.0f, 0.0f);
-	else
-		glColor3f(0.4f, 0.4f, 0.4f);
-	renderText(0.75f, 0.35f, "Multi Play");
+	glColor3f(0.0f, 0.0f, 0.0f);
+	renderText(0.75f, 0.40f, "Press Enter");
 }
