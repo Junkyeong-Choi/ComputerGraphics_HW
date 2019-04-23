@@ -2,13 +2,12 @@
 #include "settings.h"
 
 void Renderer::init(int width, int height) {
-	textRenderer = TextRenderer(width, height);
-	textRenderer.Load("./resources/fonts/OCRAEXT.TTF", 48);
 	shader = Shader("./src/shader.vert", "./src/shader.frag");
 	pikachu = Model("./resources/models/pikachu/Pikachu.obj");
 	pokeball = Model("./resources/models/pokeball/pokeball2.obj");
 	map = Model("./resources/models/box/box.obj");
-	glViewport(0, 0, width, height);
+	textRenderer = TextRenderer(width, height);
+	textRenderer.Load("./resources/fonts/OCRAEXT.TTF", 48);
 }
 
 void Renderer::setScreenSize(int _width, int _height) {
@@ -18,6 +17,7 @@ void Renderer::setScreenSize(int _width, int _height) {
 
 void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode) {
 	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -115,6 +115,7 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	map.Draw(shader);
 
 	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	textRenderer.RenderText("10", 50.0f, 50.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 }

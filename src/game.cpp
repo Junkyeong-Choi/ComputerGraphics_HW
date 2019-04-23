@@ -128,9 +128,9 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 
 	glewInit();
 
-	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glViewport(0, 0, width, height);
 
 	renderer.init(width, height);
 }
