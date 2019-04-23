@@ -12,6 +12,7 @@ void Renderer::init() {
 }
 
 void Renderer::setScreenSize(int _width, int _height) {
+	glViewport(0, 0, _width, _height);
 	width = _width;
 	height = _height;
 }
