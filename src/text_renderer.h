@@ -31,6 +31,7 @@ public:
 	// Shader used for text rendering
 	Shader TextShader;
 	// Constructor
+	TextRenderer() {}
 	TextRenderer(GLuint width, GLuint height);
 	// Pre-compiles a list of characters from the given font
 	void Load(std::string font, GLuint fontSize);

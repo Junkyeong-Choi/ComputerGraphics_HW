@@ -8,6 +8,7 @@
 #include "model.h"
 #include "movableCubeObject.h"
 #include "ballObject.h"
+#include "text_renderer.h"
 
 enum ViewMode {
 	VIEW_CHARACTER_EYE,
@@ -17,6 +18,7 @@ enum ViewMode {
 
 class Renderer {
 private:
+	TextRenderer textRenderer;
 	Shader shader;
 	Model pikachu;
 	Model pokeball;
@@ -26,7 +28,7 @@ private:
 public:
 	Renderer() {}
 	~Renderer() {}
-	void init();
+	void init(int width, int height);
 	void setScreenSize(int _width, int _height);
 	void render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode);
 };

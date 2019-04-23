@@ -6,6 +6,7 @@
 #include "ballObject.h"
 #include "movableCubeObject.h"
 #include "renderer.h"
+#include "text_renderer.h"
 
 enum GameState {
 	GAME_MENU,

@@ -25,11 +25,9 @@ void Game::render() {
 	else {
 		renderer.render(player1, player2, ball, viewmode);
 
-		glDisable(GL_DEPTH_TEST);
-		glClear(GL_DEPTH_BUFFER_BIT);
-
+		/*
 		renderScore(score1, score2);
-
+		
 		if (gamestate == GAME_READY)
 			renderReady(delayTime);
 		else if (gamestate == GAME_PLAYING && delayTime > 0)
@@ -39,7 +37,7 @@ void Game::render() {
 		else if (gamestate == GAME_SET)
 			renderWinText(is2player, score1, score2);
 		else
-			renderCameraText(false);
+			renderCameraText(false);*/
 	}
 
 	glutSwapBuffers();
@@ -129,8 +127,7 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 		glutFullScreen();
 
 	glewInit();
-	renderer.init();
-	renderer.setScreenSize(width, height);
+	renderer.init(width, height);
 }
 
 void Game::handleInput(unsigned char key) {
