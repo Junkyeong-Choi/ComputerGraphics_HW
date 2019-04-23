@@ -9,6 +9,12 @@
 #include "movableCubeObject.h"
 #include "ballObject.h"
 
+enum ViewMode {
+	VIEW_CHARACTER_EYE,
+	VIEW_CHARACTER_BACK,
+	VIEW_CELLING
+};
+
 class Renderer {
 private:
 	Shader shader;

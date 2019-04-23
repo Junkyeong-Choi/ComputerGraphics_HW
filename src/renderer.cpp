@@ -50,7 +50,7 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	model = glm::translate(model, player2.getPosition());
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(270.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, player2DirectionAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, -player2DirectionAngle, glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::translate(model, -pikachu.getMin());
 	model = glm::scale(model, player2.getSize() / pikachu.getSize());
 	shader.setMat4("model", model);

@@ -37,6 +37,13 @@ public:
 	void setSpeed(float _speed) { speed = _speed; }
 	void setDirectionAngle(glm::vec2 _directionAngle) { directionAngle = _directionAngle; }
 	void setDirectionAngleVelocity(glm::vec2 _directionAngleVelocity) { directionAngleVelocity = _directionAngleVelocity; }
+	void setVelocity(glm::vec3 _velocity) {
+		speed = glm::length(_velocity);
+		glm::vec3 normalized = _velocity / speed;
+		float phi = acos(normalized.z);			//phi is in [0, PI]
+		float theta = atan2(_velocity.y, _velocity.x);
+		directionAngle = glm::vec2(theta, phi);
+	}
 
 	void move(int delta) {
 		glm::vec3 displacement = getVelocity() * (float)delta;

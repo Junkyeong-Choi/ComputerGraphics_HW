@@ -19,7 +19,7 @@ const glm::vec2 PLAYER_TWO_DIRECTION_ANGLE = glm::vec2(-PI, PI / 2);
 const glm::vec2 PLAYER_TWO_DIRECTION_ANGLE_VELOCITY = glm::vec2(0.0f, 0.0f);
 
 
-const glm::vec3 BALL_POSITION = glm::vec3(88.5f, 70.0f, 0.0f);
+const glm::vec3 BALL_POSITION = glm::vec3(88.5f, 54.0f, 0.0f);
 const float BALL_RADIUS = 7.5f;
 const float BALL_SPEED = 0.10f;
 

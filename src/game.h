@@ -30,7 +30,6 @@ private:
 	MovableCubeObject player2;
 	BallObject ball;
 	GameState gamestate;
-	bool ballCameraMode;
 	bool is2player;
 	int delayTime;
 	int score1;
@@ -39,6 +38,7 @@ private:
 	bool player1Scored;
 	bool exiting;
 	Renderer renderer;
+	ViewMode viewmode;
 
 	void resetPosition();
 	void restartGame();
