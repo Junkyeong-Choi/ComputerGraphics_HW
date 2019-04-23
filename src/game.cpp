@@ -22,7 +22,8 @@ void Game::render() {
 		renderMenu();
 	}
 	else {
-		renderer.render(player1, player2, ball, viewmode, gamestate, score1, score2, delayTime);
+		renderer.renderScene(player1, player2, ball, viewmode);
+		renderer.renderText(viewmode, gamestate, score1, score2, delayTime);
 	}
 
 	glutSwapBuffers();

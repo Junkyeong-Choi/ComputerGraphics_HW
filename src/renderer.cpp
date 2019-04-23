@@ -18,7 +18,7 @@ void Renderer::setScreenSize(int _width, int _height) {
 	textRenderer.setScreenSize(_width, _height);
 }
 
-void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime) {
+void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode) {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -117,6 +117,10 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
 	map.Draw(shader);
 
+	
+}
+
+void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime) {
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -128,13 +132,16 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	if (gamestate == GAME_READY) {
 		text_width = textRenderer.TextWidth(std::to_string(delayTime / 1000 + 1), 1.0f);
 		textRenderer.RenderText(std::to_string(delayTime / 1000 + 1), width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-	} else if (gamestate == GAME_PLAYING && delayTime > 0) {
+	}
+	else if (gamestate == GAME_PLAYING && delayTime > 0) {
 		text_width = textRenderer.TextWidth("GO!", 1.0f);
 		textRenderer.RenderText("GO!", width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-	} else if (gamestate == GAME_SCORE) {
+	}
+	else if (gamestate == GAME_SCORE) {
 		text_width = textRenderer.TextWidth("SCORE!", 1.0f);
 		textRenderer.RenderText("SCORE!", width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-	} else if (gamestate == GAME_SET) {
+	}
+	else if (gamestate == GAME_SET) {
 		string s;
 
 		if (score1 > score2)
@@ -147,7 +154,8 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 
 		text_width = textRenderer.TextWidth("(Press Enter)", 0.8f);
 		textRenderer.RenderText("(Press Enter)", width / 2.0f - text_width / 2.0f, height - 10.0f - 96.0f, 0.8f, glm::vec3(1.0f, 0.0f, 0.0f));
-	} else {
+	}
+	else {
 		string s = "???";
 
 		if (viewmode == VIEW_CHARACTER_EYE)
@@ -158,6 +166,6 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 			s = "Ceiling View";
 
 		text_width = textRenderer.TextWidth(s + string(" (Spacebar to change)"), 0.5f);
-		textRenderer.RenderText(s + string(" (Spacebar to change)"),width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 0.5f, glm::vec3(0.9f));
+		textRenderer.RenderText(s + string(" (Spacebar to change)"), width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 0.5f, glm::vec3(0.9f));
 	}
 }

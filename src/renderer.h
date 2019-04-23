@@ -31,5 +31,6 @@ public:
 	~Renderer() {}
 	void init(int width, int height);
 	void setScreenSize(int _width, int _height);
-	void render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime);
+	void renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode);
+	void renderText(ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime);
 };
