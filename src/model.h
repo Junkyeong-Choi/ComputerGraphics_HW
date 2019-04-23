@@ -58,8 +58,6 @@ private:
 		Assimp::Importer importer;
 		const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
-		std::cout << min.x << ' ' << min.y << ' ' << min.z << std::endl;
-
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 			cout << "ERROR::ASSIMP::" << importer.GetErrorString() << endl;
 			return;
@@ -67,8 +65,6 @@ private:
 		directory = path.substr(0, path.find_last_of('/'));
 
 		processNode(scene->mRootNode, scene);
-
-		std::cout << min.x << ' ' << min.y << ' ' << min.z << std::endl;
 	}
 
 	void processNode(aiNode *node, const aiScene *scene) {

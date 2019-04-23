@@ -25,6 +25,9 @@ void Game::render() {
 	else {
 		renderer.render(player1, player2, ball, viewmode);
 
+		glDisable(GL_DEPTH_TEST);
+		glClear(GL_DEPTH_BUFFER_BIT);
+
 		renderScore(score1, score2);
 
 		if (gamestate == GAME_READY)

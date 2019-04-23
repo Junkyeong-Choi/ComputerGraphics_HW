@@ -6,9 +6,6 @@ void Renderer::init() {
 	pikachu = Model("./resources/models/pikachu/Pikachu.obj");
 	pokeball = Model("./resources/models/pokeball/pokeball2.obj");
 	map = Model("./resources/models/box/box.obj");
-
-	glm::vec3 size = map.getMin();
-	std::cout << size.x << ' ' << size.y << std::endl;
 }
 
 void Renderer::setScreenSize(int _width, int _height) {
@@ -19,7 +16,6 @@ void Renderer::setScreenSize(int _width, int _height) {
 
 void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode) {
 	glEnable(GL_DEPTH_TEST);
-
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

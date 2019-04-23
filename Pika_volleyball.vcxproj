@@ -115,7 +115,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;freeglut.lib;glew32.lib;Opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;assimp-vc140-mt.lib;freeglut.lib;glew32.lib;Opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -127,6 +127,8 @@
     <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\text_renderer.cpp" />
     <ClCompile Include="src\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,11 +145,15 @@
     <ClInclude Include="src\sceneGraphNode.h" />
     <ClInclude Include="src\settings.h" />
     <ClInclude Include="src\shader.h" />
+    <ClInclude Include="src\texture.h" />
+    <ClInclude Include="src\text_renderer.h" />
     <ClInclude Include="src\ui.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shader.frag" />
     <None Include="src\shader.vert" />
+    <None Include="src\text.frag" />
+    <None Include="src\text.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

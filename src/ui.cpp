@@ -31,6 +31,7 @@ void drawEllipseStroke(float x, float y, float xradius, float yradius, int start
 void set2DCamera() {
 	glShadeModel(GL_FLAT);
 	glDisable(GL_DEPTH_TEST);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -72,7 +73,7 @@ void renderText(float x, float y, const char* text) {
 
 void renderScore(int score1, int score2) {
 	char buffer[10];
-	glColor3f(0.0, 0.0, 0.0);
+	glColor3f(1.0f, 1.0f, 1.0f);
 	_itoa_s(score1, buffer, 10);
 	renderText(0.1f, 0.9f, buffer);
 	_itoa_s(score2, buffer, 10);
@@ -82,17 +83,17 @@ void renderScore(int score1, int score2) {
 void renderReady(int delayTime) {
 	char buffer[10];
 	_itoa_s(delayTime / 1000 + 1, buffer, 10);
-	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(1.0f, 0.0f, 0.0f);
 	renderText(0.5f, 0.9f, buffer);
 }
 
 void renderGo() {
-	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(1.0f, 0.0f, 0.0f);
 	renderText(0.5f, 0.9f, "GO!");
 }
 
 void renderScoreText() {
-	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(1.0f, 0.0f, 0.0f);
 	renderText(0.5f, 0.9f, "SCORE!");
 }
 
@@ -106,13 +107,13 @@ void renderCameraText(bool ballCameraMode) {
 }
 
 void renderMenuPikachuHalf() {
-	glColor3f(0.0, 0.0, 0.0);
+	glColor3f(0.0f, 0.0f, 0.0f);
 	drawEllipse(10, 5, 8.0, 8.0);
-	glColor3f(1.0, 1.0, 1.0);
+	glColor3f(1.0f, 1.0f, 1.0f);
 	drawEllipse(11.5, 10.5, 4.0, 4.0);
-	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(1.0f, 0.0f, 0.0f);
 	drawEllipse(16.5, -20.0, 7.0, 7.0);
-	glColor3f(0.0, 0.0, 0.0);
+	glColor3f(0.0f, 0.0f, 0.0f);
 	drawEllipseStroke(0.0, -10.0, 4.0, 2.0, 180, 370);
 	glBegin(GL_POLYGON);
 	{
