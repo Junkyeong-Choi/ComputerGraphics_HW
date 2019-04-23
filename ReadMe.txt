@@ -77,6 +77,12 @@ projection).
 
 - shader.frag, shader.vert
 
+- cameraForViewThree.h
+Header files that contain CamerForViewThree class. This file is
+for special purpose where viewmode is on VIEW_CELLING mode. It
+speficies where the camera should be based on user's input(j/k/l/i).
+
+
 - collision.cpp, collision.h
 Header and source code files that contains a collision 
 detection algorithms for game objects. The are called for
