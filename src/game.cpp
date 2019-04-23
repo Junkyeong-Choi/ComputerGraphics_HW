@@ -60,7 +60,7 @@ Game::Game() :
 	ball(BALL_POSITION, BALL_RADIUS, BALL_SPEED * generateUnitVector_old()),
 	gamestate(GAME_MENU),
 	delayTime(3000),
-	score1(0), score2(0), winningScore(5),
+	score1(0), score2(0), winningScore(WINNING_SCORE),
 	player1Scored(false),
 	viewmode(VIEW_CHARACTER_BACK),
 	renderer() {}
@@ -92,7 +92,6 @@ void Game::resetPosition() {
 
 void Game::restartGame() {
 	resetPosition();
-	viewmode = VIEW_CHARACTER_BACK;
 	delayTime = 3000;
 	score1 = 0;
 	score2 = 0;
