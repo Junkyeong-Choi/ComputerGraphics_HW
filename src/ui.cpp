@@ -72,41 +72,6 @@ void renderText(float x, float y, const char* text) {
 	glutBitmapString(font, reinterpret_cast<const unsigned char *>(text));
 }
 
-void renderScore(int score1, int score2) {
-	char buffer[10];
-	glColor3f(1.0f, 1.0f, 1.0f);
-	_itoa_s(score1, buffer, 10);
-	renderText(0.1f, 0.9f, buffer);
-	_itoa_s(score2, buffer, 10);
-	renderText(0.9f, 0.9f, buffer);
-}
-
-void renderReady(int delayTime) {
-	char buffer[10];
-	_itoa_s(delayTime / 1000 + 1, buffer, 10);
-	glColor3f(1.0f, 0.0f, 0.0f);
-	renderText(0.5f, 0.9f, buffer);
-}
-
-void renderGo() {
-	glColor3f(1.0f, 0.0f, 0.0f);
-	renderText(0.5f, 0.9f, "GO!");
-}
-
-void renderScoreText() {
-	glColor3f(1.0f, 0.0f, 0.0f);
-	renderText(0.5f, 0.9f, "SCORE!");
-}
-
-void renderCameraText(bool ballCameraMode) {
-	glColor3f(0.4f, 0.4f, 0.4f);
-
-	if (ballCameraMode)
-		renderText(0.5f, 0.9f, "Ball Camera (Spacebar to change)");
-	else
-		renderText(0.5f, 0.9f, "Normal Camera (Spacebar to change)");
-}
-
 void renderMenuPikachuHalf() {
 	glColor3f(0.0f, 0.0f, 0.0f);
 	drawEllipse(10, 5, 8.0, 8.0);
@@ -153,24 +118,4 @@ void renderMenu(bool is2player) {
 	else
 		glColor3f(0.4f, 0.4f, 0.4f);
 	renderText(0.75f, 0.35f, "Multi Play");
-}
-
-void renderWinText(bool is2player, int score1, int score2) {
-	glColor3f(1.0f, 0.0f, 0.0f);
-
-	if (is2player) {
-		if (score1 > score2)
-			renderText(0.5f, 0.9f, "PLAYER 1 WIN!");
-		else
-			renderText(0.5f, 0.9f, "PLAYER 2 WIN!");
-	}
-	else {
-		if (score1 > score2)
-			renderText(0.5f, 0.9f, "YOU WIN!");
-		else
-			renderText(0.5f, 0.9f, "YOU LOSE ;(");
-	}
-
-	glColor3f(0.4f, 0.4f, 0.4f);
-	renderText(0.5f, 0.8f, "(Press Enter)");
 }
