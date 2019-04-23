@@ -11,61 +11,59 @@ project. Build with the setting Release/x64.
 
 ↑/↓ : Move menu
 Enter : Select menu / Return to menu when game is over
-Spacebar : Change camera mode
-a/d : Move left pikachu
-←/→ : Move right pikachu (only on multi player)
+a/d : Change moving direction 1'st Pikachu
+w/s : Move 1'st Pikachu
+←/→ : Change moving direction 2'nd Pikachu (only on multi player)
+↑/↓ : Move 2'nd Pkachu (only on multi player)
 r: Restart game
+1/2/3 : Change View mode of camera
 
 -- Files --
 
 - object.h
 Header file that contains Object class. This file defines
-the position of object as a 2-dimentional vector. It also
+the position of object as a 3-dimentional vector. It also
 sets the getter and settor for the position.
 
-- rectangleObject.h
+- cubeObject.h
 Header file that contains RectangleObject class. This
 file defines the size of rectangle object as a
-2-dimensional vector. It also sets the getter and settor
+3-dimensional vector. It also sets the getter and settor
 for the size.
 
-- movableRectangleObject.cpp, movableRectangleObject.h
-Header and source code files that contain
-MovableRectangleObject class. This files define velocity
-of rectangle object as a 2-dimensional vector. It also
-sets the getter and settor for the velocity. The method
-for moving the object by its velocity checks the boundary
-of game screen and doesn't let the object be out of screen.
+- movableCubeObject.h
+Header files that containMovableRectangleObject class. 
+This file defines velocity of rectangle object as a speed 
+value and a 2-dimensional direction angle vector. The 
+elements on the vector consist of the rotation angle about 
+z-axis (on xy plane), the angle between z-axis and direction 
+vector. It also sets the getter and settor for the speed, 
+direction angles and velocity. The method for moving the 
+object by its velocity checks the boundary of game screen 
+and doesn't let the object be out of screen.
 
-- characterObject.cpp, chacterObject.h
-Header and source code files that contain
-CharacterObject class. This files define angles and 
-velocities of each angle. It also sets the getter and
-setter for angles and their velocities. The method for 
-moving the object by its velocity also handles vibration 
-of a character when a character is hit by a ball.
-
-- ballObject.cpp, ballObject.h
-Header and source code files that contain BallObject
-class. This files define the radius and velocity of the
-ball as 2-dimensional vectors. It also sets the getter
-and settor for the radius and velocity. This class has 
-ElectricityObject as a memeber variable to render electricity 
-on a ball. The method for moving the ball by its velocity 
+- ballObject.h
+Header  files that contain BallObject class. This files
+defines the radius and velocity of the ball as 2-dimensional 
+vectors. It also sets the getter and settor for the radius 
+and velocity. The method for moving the ball by its velocity
 checks the boundary of game screen and doesn't let the 
 object be out of screen. Also, this method changes the 
 velocity of the ball when the ball is hit by screen boundary.
 
-- electricityObject.cpp, electricityObject.h
-Header and source code files that conatain ElectricityObject
-class. This contain every bending points of a line for 
-visualization of electricity. The class has a method to move
-each bending points to express a flow of electricity.
+- shader.h
+Header files that contain Shader class. This file defines
+some interface to loading, compiling, and linking shader 
+program to our program.
 
-- render.cpp, render.h
-Header and source code files that contain camera setting
-functions and various rendering(drawing) functions. They
-are called in render method of Game class.
+- mesh.h
+
+
+- model.cpp, model.h
+
+- renderer.cpp, renderer.h
+
+- shader.frag, shader.vert
 
 - collision.cpp, collision.h
 Header and source code files that contains a collision 
