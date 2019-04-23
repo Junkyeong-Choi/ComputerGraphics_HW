@@ -16,7 +16,7 @@ void Renderer::setScreenSize(int _width, int _height) {
 	height = _height;
 }
 
-void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball) {
+void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode) {
 	glEnable(GL_DEPTH_TEST);
 
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -25,8 +25,25 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	shader.use();
 
 	glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)width / (float)height, 0.1f, 1000.0f);
-	glm::mat4 view = glm::lookAt(player1.getPosition() + player1.getSize() / 2.0f - player1.getSize().x * 2 * player1.getDirectionVector(),
-		player1.getPosition() + player1.getSize() / 2.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	
+	glm::vec3 eye, center, up;
+	if (viewmode == VIEW_CHARACTER_EYE) {
+		eye = player1.getPosition() + player1.getSize() / 2.0f - player1.getSize().x * 2 * player1.getDirectionVector();
+		center = player1.getPosition() + player1.getSize() / 2.0f;
+		up = glm::vec3(0.0f, 0.0f, 1.0f);
+	}
+	else if (viewmode == VIEW_CHARACTER_BACK) {
+		eye = player1.getPosition() + player1.getSize() * (3.0f/4.0f) - player1.getSize().x * 2 * player1.getDirectionVector();
+		center = player1.getPosition() + player1.getSize() / 2.0f;
+		up = glm::vec3(0.0f, 0.0f, 1.0f);
+	}
+	else if (viewmode == VIEW_CELLING) {
+		eye = player1.getPosition() + player1.getSize() / 2.0f - player1.getSize().x * 2 * player1.getDirectionVector();
+		center = player1.getPosition() + player1.getSize() / 2.0f;
+		up = glm::vec3(0.0f, 0.0f, 1.0f);
+	}
+	glm::mat4 view = glm::lookAt(eye, center, up);
+		
 	shader.setMat4("projection", projection);
 	shader.setMat4("view", view);
 

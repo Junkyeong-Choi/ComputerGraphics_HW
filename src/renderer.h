@@ -28,5 +28,5 @@ public:
 	~Renderer() {}
 	void init();
 	void setScreenSize(int _width, int _height);
-	void render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball);
+	void render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode);
 };

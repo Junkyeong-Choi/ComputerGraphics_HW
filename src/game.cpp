@@ -23,7 +23,7 @@ void Game::render() {
 		renderMenu(is2player);
 	}
 	else {
-		renderer.render(player1, player2, ball);
+		renderer.render(player1, player2, ball, viewmode);
 
 		renderScore(score1, score2);
 
