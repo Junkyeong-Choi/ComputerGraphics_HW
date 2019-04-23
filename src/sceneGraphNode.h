@@ -2,29 +2,31 @@
 #include <glm/mat4x4.hpp>
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
+#include "model.h"
+#include "shader.h"
 
 class SceneGraphNode {
 private:
 	glm::mat4 transform;
-	void (*drawModel)(void);
+	Model* model;
+	glm::vec3 color;
 	SceneGraphNode *child;
 	SceneGraphNode *sibling;
 public:
-	SceneGraphNode(glm::mat4 _transform, void(*_drawModel)(void), SceneGraphNode * _child, SceneGraphNode * _sibling) :
-		transform(_transform), drawModel(_drawModel), sibling(_sibling), child(_child) {}
+	SceneGraphNode(glm::mat4 _transform, Model* _model, glm::vec3 _color, SceneGraphNode * _child, SceneGraphNode * _sibling) :
+		transform(_transform), model(_model), color(_color), sibling(_sibling), child(_child) {}
 	~SceneGraphNode() {
 		delete child;
 		delete sibling;
 	}
-	void traverse(void) {
-		glPushMatrix();
-		glMultMatrixf(glm::value_ptr(transform));
-		if (drawModel != NULL)
-			drawModel();
+	void traverse(Shader shader, glm::mat4 acc) {
+		shader.setVec3("aColor", color);
+		shader.setMat4("model", acc * transform);
+		if (model != NULL)
+			model->Draw(shader);
 		if (child != NULL)
-			child->traverse();
-		glPopMatrix();
+			child->traverse(shader, acc * transform);
 		if (sibling != NULL)
-			sibling->traverse();
+			sibling->traverse(shader, acc);
 	}
 };

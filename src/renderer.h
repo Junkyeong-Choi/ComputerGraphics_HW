@@ -26,6 +26,11 @@ private:
 	Model map;
 	int width;
 	int height;
+
+	glm::mat4 getViewMatrix(MovableCubeObject& player1, ViewMode viewmode);
+	glm::mat4 makePikachuModelMatrix(MovableCubeObject& player, bool isPlayer1);
+	glm::mat4 makePokeballModelMatrix(BallObject& ball);
+	glm::mat4 makeMapModelMatrix();
 public:
 	Renderer() {}
 	~Renderer() {}

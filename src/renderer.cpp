@@ -1,6 +1,7 @@
 #include "renderer.h"
 #include "settings.h"
 #include "game.h"
+#include "sceneGraphNode.h"
 
 void Renderer::init(int width, int height) {
 	shader = Shader("./src/shader.vert", "./src/shader.frag");
@@ -18,16 +19,7 @@ void Renderer::setScreenSize(int _width, int _height) {
 	textRenderer.setScreenSize(_width, _height);
 }
 
-void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode) {
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	shader.use();
-
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 1000.0f);
-	
+glm::mat4 Renderer::getViewMatrix(MovableCubeObject& player1, ViewMode viewmode) {
 	glm::vec3 eye, center, up;
 	if (viewmode == VIEW_CHARACTER_EYE) {
 		eye = player1.getPosition() + (player1.getSize() / 2.0f) + (player1.getSize().x / 2.0f) * player1.getDirectionVector();
@@ -44,59 +36,44 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 		center = glm::vec3(MAP_SIZE.x / 2.0f, MAP_SIZE.y / 2.0f, 0.0f);
 		up = glm::vec3(0.0f, 1.0f, 0.0f);
 	}
-	glm::mat4 view = glm::lookAt(eye, center, up);
-		
-	shader.setMat4("projection", projection);
-	shader.setMat4("view", view);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	float player1DirectionAngle = player1.getDirectionAngle().x;
-	float player2DirectionAngle = player2.getDirectionAngle().x;
+	return glm::lookAt(eye, center, up);
+}
+
+glm::mat4 Renderer::makePikachuModelMatrix(MovableCubeObject& player, bool isPlayer1) {
+	float playerDirectionAngle = player.getDirectionAngle().x;
+	if (!isPlayer1)
+		playerDirectionAngle = glm::radians(180.0f) - playerDirectionAngle;
 
 	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	rotation = glm::rotate(rotation, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glm::mat4 model = glm::mat4(1.0f);
 	// finally, get pikachu to its position
-	model = glm::translate(model, player1.getPosition());
+	model = glm::translate(model, player.getPosition());
 	// fourth, rotate pikachu to look at the right direction
-	model = glm::translate(model, +player1.getSize() / 2.0f);
-	model = glm::rotate(model, player1DirectionAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::translate(model, -player1.getSize() / 2.0f);
+	model = glm::translate(model, +player.getSize() / 2.0f);
+	model = glm::rotate(model, playerDirectionAngle, glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, -player.getSize() / 2.0f);
 	// third, apply scaling to match model's size to bounding box (should be done after rotating model)
-	model = glm::scale(model, player1.getSize() / glm::vec3(rotation * glm::vec4(pikachu.getSize(), 1.0f)));
+	model = glm::scale(model, player.getSize() / glm::vec3(rotation * glm::vec4(pikachu.getSize(), 1.0f)));
 	// second, rotate pikachu so that the head towards to the positive z-axis
 	model = model * rotation;
 	// first, align pikachu's left-bottom-back point to origin
 	model = glm::translate(model, -pikachu.getMin());
-	shader.setMat4("model", model);
 
-	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
-	pikachu.Draw(shader);
+	return model;
+}
 
-	model = glm::mat4(1.0f);
-	// finally, get pikachu to its position
-	model = glm::translate(model, player2.getPosition());
-	// fourth, rotate pikachu to look at the right direction
-	model = glm::translate(model, +player2.getSize() / 2.0f);
-	model = glm::rotate(model, glm::radians(180.0f) - player2DirectionAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::translate(model, -player2.getSize() / 2.0f);
-	// third, apply scaling to match model's size to bounding box (should be done after rotating model)
-	model = glm::scale(model, player2.getSize() / glm::vec3(rotation * glm::vec4(pikachu.getSize(), 1.0f)));
-	// second, rotate pikachu so that the head towards to the positive z-axis
-	model = model * rotation;
-	// first, align pikachu's left-bottom-back point to origin
-	model = glm::translate(model, -pikachu.getMin());
-	shader.setMat4("model", model);
-
-	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
-	pikachu.Draw(shader);
+glm::mat4 Renderer::makePokeballModelMatrix(BallObject& ball) {
+	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(rotation, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glm::vec3 normalized_velocity = ball.getVelocity() / sqrt(glm::dot(ball.getVelocity(), ball.getVelocity()));
 	float theta = acos(glm::dot(normalized_velocity, glm::vec3(1.0f, 0.0f, 0.0f)));
 	theta = ball.getVelocity().y > 0 ? theta : -theta;
 
-	model = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, ball.getPosition());
 	model = glm::translate(model, +glm::vec3(ball.getRadius()));
 	model = glm::rotate(model, theta, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -104,20 +81,51 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 	model = glm::scale(model, glm::vec3(ball.getRadius() * 2) / pokeball.getSize());
 	model = model * rotation;
 	model = glm::translate(model, -pokeball.getMin());
-	shader.setMat4("model", model);
 
-	shader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
-	pokeball.Draw(shader);
+	return model;
+}
 
-	model = glm::mat4(1.0f);
+glm::mat4 Renderer::makeMapModelMatrix() {
+	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::scale(model, MAP_SIZE / map.getSize());
 	model = glm::translate(model, -map.getMin());
-	shader.setMat4("model", model);
 
-	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	map.Draw(shader);
+	return model;
+}
 
-	
+void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode) {
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	shader.use();
+
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 1000.0f);
+	glm::mat4 view = getViewMatrix(player1, viewmode);
+	shader.setMat4("projection", projection);
+	shader.setMat4("view", view);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	SceneGraphNode* sceneGraph =
+		new SceneGraphNode(makeMapModelMatrix() , &map, glm::vec3(1.0f),
+			nullptr,
+			new SceneGraphNode(makePikachuModelMatrix(player1, true), &pikachu, glm::vec3(1.0f, 1.0f, 0.0f),
+				nullptr,
+				new SceneGraphNode(makePikachuModelMatrix(player2, false), &pikachu, glm::vec3(1.0f, 1.0f, 0.0f),
+					nullptr,
+					new SceneGraphNode(makePokeballModelMatrix(ball), &pokeball, glm::vec3(1.0f, 0.0f, 0.0f),
+						nullptr,
+						nullptr
+					)
+				)
+			)
+		);
+
+	sceneGraph->traverse(shader, glm::mat4(1.0f));
+
+	delete sceneGraph;
 }
 
 void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime) {
