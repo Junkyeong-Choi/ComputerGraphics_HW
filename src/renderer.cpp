@@ -17,7 +17,7 @@ void Renderer::setScreenSize(int _width, int _height) {
 }
 
 void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode) {
-	/*glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -112,8 +112,9 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	shader.setMat4("model", model);
 
 	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-	map.Draw(shader);*/
+	map.Draw(shader);
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	glDisable(GL_DEPTH_TEST);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	textRenderer.RenderText("10", 50.0f, 50.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 }
