@@ -23,7 +23,7 @@ void Game::render() {
 		renderMenu(is2player);
 	}
 	else {
-		renderer.render(player1, player2, ball, viewmode, gamestate, score1, score2, delayTime);
+		renderer.render(player1, player2, ball, viewmode, gamestate, cameraForViewThree, score1, score2, delayTime);
 	}
 
 	glutSwapBuffers();
@@ -65,6 +65,7 @@ Game::Game() :
 	score1(0), score2(0), winningScore(5),
 	player1Scored(false),
 	viewmode(VIEW_CHARACTER_BACK),
+	cameraForViewThree(glm::vec2(0.0f,0.0f), glm::vec2(PLAYER_ONE_POSITION)),
 	renderer() {}
 
 Game::~Game() {}
@@ -125,6 +126,7 @@ void Game::handleInput(unsigned char key) {
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
 		float speed = player1.getSpeed();
 		glm::vec2 directionAngleVelocity = player1.getDirectionAngleVelocity();
+		glm::vec2 cameraForViewThreeVelocity = cameraForViewThree.getVelocity();
 		switch (key) {
 		case 'a':
 			directionAngleVelocity.x = 0.005f;
@@ -141,9 +143,22 @@ void Game::handleInput(unsigned char key) {
 		case 'r':
 			restartGame();
 			break;
+		case 'j':
+			cameraForViewThreeVelocity.y = 0.1f;
+			break;
+		case 'l':
+			cameraForViewThreeVelocity.y = -0.1f;
+			break;
+		case 'i':
+			cameraForViewThreeVelocity.x = 0.1f;
+			break;
+		case 'k':
+			cameraForViewThreeVelocity.x = -0.1f;
+			break;
 		}
 		player1.setSpeed(speed);
 		player1.setDirectionAngleVelocity(directionAngleVelocity);
+		cameraForViewThree.setVelocity(cameraForViewThreeVelocity);
 	}
 	else if (gamestate == GAME_MENU) {
 		if (key == '\n' || key == 13)
@@ -165,6 +180,7 @@ void Game::handleInputUp(unsigned char key) {
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
 		float speed = player1.getSpeed();
 		glm::vec2 directionAngleVelocity = player1.getDirectionAngleVelocity();
+		glm::vec2 cameraForViewThreeVelocity = cameraForViewThree.getVelocity();
 
 		switch (key) {
 		case 'a':
@@ -178,17 +194,32 @@ void Game::handleInputUp(unsigned char key) {
 		case 'w':
 			if (speed > 0)
 				speed = 0.0f;
-			cout << "ballVelocity: (" << ball.getVelocity().x << ", " << ball.getVelocity().y << ", " << ball.getVelocity().z << ")" << endl;
-			cout << "player2Velocity: (" << player2.getVelocity().x << ", " << player2.getVelocity().y << ", " << player2.getVelocity().z << ")" << endl;
 			break;
 		case 's':
 			if (speed < 0)
 				speed = 0.0f;
 			break;
+		case 'j':
+			if (cameraForViewThreeVelocity.y > 0)
+				cameraForViewThreeVelocity.y = 0;
+			break;
+		case 'l':
+			if (cameraForViewThreeVelocity.y < 0)
+				cameraForViewThreeVelocity.y = 0;
+			break;
+		case 'i':
+			if (cameraForViewThreeVelocity.x > 0)
+				cameraForViewThreeVelocity.x = 0;
+			break;
+		case 'k':
+			if (cameraForViewThreeVelocity.x < 0)
+				cameraForViewThreeVelocity.x = 0;
+			break;
 		}
 
 		player1.setSpeed(speed);
 		player1.setDirectionAngleVelocity(directionAngleVelocity);
+		cameraForViewThree.setVelocity(cameraForViewThreeVelocity);
 	}
 
 	if (key == 27) // ESC Key
@@ -357,6 +388,7 @@ void Game::update(int delta) {
 	if (gamestate == GAME_PLAYING) {
 		updateBall(delta);
 		updatePlayer(delta);
+		cameraForViewThree.move(delta);
 
 		if (delayTime > 0)
 			delayTime -= delta;
@@ -390,6 +422,7 @@ void Game::update(int delta) {
 	else if (gamestate == GAME_SCORE) {
 		updateBall(delta / 2);
 		updatePlayer(delta / 2);
+		cameraForViewThree.move(delta/2);
 		delayTime -= delta;
 
 		if (delayTime < 0) {

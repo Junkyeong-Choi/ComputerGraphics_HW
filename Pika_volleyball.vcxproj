@@ -132,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stb_image.h" />
+    <ClInclude Include="src\cameraForViewThree.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\ballObject.h" />
     <ClInclude Include="src\game.h" />

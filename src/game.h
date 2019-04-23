@@ -7,6 +7,7 @@
 #include "movableCubeObject.h"
 #include "renderer.h"
 #include "text_renderer.h"
+#include "cameraForViewThree.h"
 
 enum Direction {
 	POSITIVE_X,
@@ -32,6 +33,7 @@ private:
 	bool exiting;
 	Renderer renderer;
 	ViewMode viewmode;
+	CameraForViewThree cameraForViewThree;
 
 	void resetPosition();
 	void restartGame();

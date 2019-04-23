@@ -16,7 +16,7 @@ void Renderer::setScreenSize(int _width, int _height) {
 	height = _height;
 }
 
-void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime) {
+void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, GameState gamestate, CameraForViewThree& cameraForViewThree, int score1, int score2, int delayTime) {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -38,9 +38,9 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
 	else if (viewmode == VIEW_CELLING) {
-		eye = glm::vec3(player1.getPosition().x, player1.getPosition().y, MAP_SIZE.z * 3.0f);
+		eye = glm::vec3(cameraForViewThree.getPosition().x, cameraForViewThree.getPosition().y, MAP_SIZE.z * 3.0f);
 		center = glm::vec3(MAP_SIZE.x / 2.0f, MAP_SIZE.y / 2.0f, 0.0f);
-		up = glm::vec3(0.0f, 1.0f, 0.0f);
+		up = glm::vec3(1.0f, 0.0f, 0.0f);
 	}
 	glm::mat4 view = glm::lookAt(eye, center, up);
 		
