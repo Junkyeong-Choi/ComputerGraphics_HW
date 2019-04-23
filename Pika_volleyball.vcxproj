@@ -124,35 +124,35 @@
     <ClCompile Include="src\main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="src\model.cpp" />
-    <ClCompile Include="src\renderer.cpp" />
-    <ClCompile Include="src\stb_image.cpp" />
-    <ClCompile Include="src\text_renderer.cpp" />
-    <ClCompile Include="src\ui.cpp" />
+    <ClCompile Include="src\rendering\model.cpp" />
+    <ClCompile Include="src\rendering\renderer.cpp" />
+    <ClCompile Include="src\rendering\stb_image.cpp" />
+    <ClCompile Include="src\rendering\text_renderer.cpp" />
+    <ClCompile Include="src\rendering\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\stb_image.h" />
-    <ClInclude Include="src\cameraForViewThree.h" />
+    <ClInclude Include="src\rendering\cameraForViewThree.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\ballObject.h" />
     <ClInclude Include="src\game.h" />
-    <ClInclude Include="src\mesh.h" />
-    <ClInclude Include="src\model.h" />
+    <ClInclude Include="src\rendering\mesh.h" />
+    <ClInclude Include="src\rendering\model.h" />
     <ClInclude Include="src\movableCubeObject.h" />
     <ClInclude Include="src\object.h" />
     <ClInclude Include="src\cubeObject.h" />
-    <ClInclude Include="src\renderer.h" />
-    <ClInclude Include="src\sceneGraphNode.h" />
+    <ClInclude Include="src\rendering\renderer.h" />
+    <ClInclude Include="src\rendering\sceneGraphNode.h" />
     <ClInclude Include="src\settings.h" />
-    <ClInclude Include="src\shader.h" />
-    <ClInclude Include="src\text_renderer.h" />
-    <ClInclude Include="src\ui.h" />
+    <ClInclude Include="src\rendering\shader.h" />
+    <ClInclude Include="src\rendering\text_renderer.h" />
+    <ClInclude Include="src\rendering\ui.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shader.frag" />
-    <None Include="src\shader.vert" />
-    <None Include="src\text.frag" />
-    <None Include="src\text.vert" />
+    <None Include="src\shaders\shader.frag" />
+    <None Include="src\shaders\shader.vert" />
+    <None Include="src\shaders\text.frag" />
+    <None Include="src\shaders\text.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

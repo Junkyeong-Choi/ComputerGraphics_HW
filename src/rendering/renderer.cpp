@@ -4,7 +4,7 @@
 #include "sceneGraphNode.h"
 
 void Renderer::init(int width, int height) {
-	shader = Shader("./src/shader.vert", "./src/shader.frag");
+	shader = Shader("./src/shaders/shader.vert", "./src/shaders/shader.frag");
 	pikachu = Model("./resources/models/pikachu/Pikachu.obj");
 	pokeball = Model("./resources/models/pokeball/pokeball2.obj");
 	map = Model("./resources/models/box/box.obj");

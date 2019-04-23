@@ -5,9 +5,9 @@
 #include <GL/freeglut.h>
 #include "ballObject.h"
 #include "movableCubeObject.h"
-#include "renderer.h"
-#include "text_renderer.h"
-#include "cameraForViewThree.h"
+#include "rendering/renderer.h"
+#include "rendering/text_renderer.h"
+#include "rendering/cameraForViewThree.h"
 
 enum Direction {
 	POSITIVE_X,

@@ -10,7 +10,7 @@
 TextRenderer::TextRenderer(GLuint _width, GLuint _height)
 {
 	// Load and configure shader
-	this->TextShader = Shader("./src/text.vert", "./src/text.frag");
+	this->TextShader = Shader("./src/shaders/text.vert", "./src/shaders/text.frag");
 	this->TextShader.use();
 	this->TextShader.setMat4("projection", glm::ortho(0.0f, static_cast<GLfloat>(_width), 0.0f, static_cast<GLfloat>(_height)));
 	width = _width;

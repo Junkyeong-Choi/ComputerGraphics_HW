@@ -1,11 +1,10 @@
 #include "game.h"
 #include "collision.h"
-#include "sceneGraphNode.h"
 #include <random>
 #include <ctime>
 #include <glm/gtc/matrix_transform.hpp>
-#include "renderer.h"
-#include "ui.h"
+#include "rendering/renderer.h"
+#include "rendering/ui.h"
 #include "game.h"
 #include "settings.h"
 
