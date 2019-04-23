@@ -28,13 +28,13 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	
 	glm::vec3 eye, center, up;
 	if (viewmode == VIEW_CHARACTER_EYE) {
-		eye = player1.getPosition() + player1.getSize() / 2.0f + (player1.getSize().x / 2.0f) * player1.getDirectionVector();
+		eye = player1.getPosition() + (player1.getSize() / 2.0f) + (player1.getSize().x / 2.0f) * player1.getDirectionVector();
 		center = eye + player1.getDirectionVector();
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
 	else if (viewmode == VIEW_CHARACTER_BACK) {
-		eye = player1.getPosition() + player1.getSize() * (3.0f/4.0f) - player1.getSize().x * 2 * player1.getDirectionVector();
-		center = player1.getPosition() + player1.getSize() / 2.0f;
+		eye = player1.getPosition() + (player1.getSize() / 2.0f) - player1.getSize().x * 2 * player1.getDirectionVector() + glm::vec3(0.0f, 0.0f, 10.0f);
+		center = eye + player1.getDirectionVector() + glm::vec3(0.0f, 0.0f, -0.1f);
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
 	else if (viewmode == VIEW_CELLING) {
@@ -90,9 +90,17 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
 	pikachu.Draw(shader);
 
+	glm::vec3 normalized_velocity = ball.getVelocity() / sqrt(glm::dot(ball.getVelocity(), ball.getVelocity()));
+	float theta = acos(glm::dot(normalized_velocity, glm::vec3(1.0f, 0.0f, 0.0f)));
+	theta = ball.getVelocity().y > 0 ? theta : -theta;
+
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, ball.getPosition());
+	model = glm::translate(model, +glm::vec3(ball.getRadius()));
+	model = glm::rotate(model, theta, glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, -glm::vec3(ball.getRadius()));
 	model = glm::scale(model, glm::vec3(ball.getRadius() * 2) / pokeball.getSize());
+	model = model * rotation;
 	model = glm::translate(model, -pokeball.getMin());
 	shader.setMat4("model", model);
 
