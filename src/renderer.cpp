@@ -90,9 +90,17 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	shader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
 	pikachu.Draw(shader);
 
+	glm::vec3 normalized_velocity = ball.getVelocity() / sqrt(glm::dot(ball.getVelocity(), ball.getVelocity()));
+	float theta = acos(glm::dot(normalized_velocity, glm::vec3(1.0f, 0.0f, 0.0f)));
+	theta = ball.getVelocity().y > 0 ? theta : -theta;
+
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, ball.getPosition());
+	model = glm::translate(model, +glm::vec3(ball.getRadius()));
+	model = glm::rotate(model, theta, glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, -glm::vec3(ball.getRadius()));
 	model = glm::scale(model, glm::vec3(ball.getRadius() * 2) / pokeball.getSize());
+	model = model * rotation;
 	model = glm::translate(model, -pokeball.getMin());
 	shader.setMat4("model", model);
 
