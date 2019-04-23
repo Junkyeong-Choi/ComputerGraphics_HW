@@ -58,7 +58,9 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	// finally, get pikachu to its position
 	model = glm::translate(model, player1.getPosition());
 	// fourth, rotate pikachu to look at the right direction
+	model = glm::translate(model, +player1.getSize() / 2.0f);
 	model = glm::rotate(model, player1DirectionAngle, glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, -player1.getSize() / 2.0f);
 	// third, apply scaling to match model's size to bounding box (should be done after rotating model)
 	model = glm::scale(model, player1.getSize() / glm::vec3(rotation * glm::vec4(pikachu.getSize(), 1.0f)));
 	// second, rotate pikachu so that the head towards to the positive z-axis
@@ -74,7 +76,9 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	// finally, get pikachu to its position
 	model = glm::translate(model, player2.getPosition());
 	// fourth, rotate pikachu to look at the right direction
+	model = glm::translate(model, +player2.getSize() / 2.0f);
 	model = glm::rotate(model, glm::radians(180.0f) - player2DirectionAngle, glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, -player2.getSize() / 2.0f);
 	// third, apply scaling to match model's size to bounding box (should be done after rotating model)
 	model = glm::scale(model, player2.getSize() / glm::vec3(rotation * glm::vec4(pikachu.getSize(), 1.0f)));
 	// second, rotate pikachu so that the head towards to the positive z-axis
