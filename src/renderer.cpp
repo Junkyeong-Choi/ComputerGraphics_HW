@@ -28,8 +28,8 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	
 	glm::vec3 eye, center, up;
 	if (viewmode == VIEW_CHARACTER_EYE) {
-		eye = player1.getPosition() + player1.getSize() / 2.0f - player1.getSize().x * 2 * player1.getDirectionVector();
-		center = player1.getPosition() + player1.getSize() / 2.0f;
+		eye = player1.getPosition() + glm::vec3(0.0f, 0.0f, player1.getSize().z / 2.0f) + (player1.getSize().x / 2.0f) * player1.getDirectionVector();
+		center = eye + player1.getDirectionVector();
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
 	else if (viewmode == VIEW_CHARACTER_BACK) {
@@ -38,9 +38,9 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
 	else if (viewmode == VIEW_CELLING) {
-		eye = player1.getPosition() + player1.getSize() / 2.0f - player1.getSize().x * 2 * player1.getDirectionVector();
-		center = player1.getPosition() + player1.getSize() / 2.0f;
-		up = glm::vec3(0.0f, 0.0f, 1.0f);
+		eye = glm::vec3(MAP_SIZE.x / 2.0f, MAP_SIZE.y / 2.0f, 3 * MAP_SIZE.z);
+		center = glm::vec3(MAP_SIZE.x / 2.0f, MAP_SIZE.y / 2.0f, 0.0f);
+		up = glm::vec3(0.0f, 1.0f, 0.0f);
 	}
 	glm::mat4 view = glm::lookAt(eye, center, up);
 		
