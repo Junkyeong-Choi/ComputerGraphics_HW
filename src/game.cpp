@@ -351,9 +351,9 @@ void Game::update(int delta) {
 			glm::vec3 velocity(0.0, 0.0, 0.0);
 
 			if (player2.getPosition().y < ball.getPosition().y)
-				velocity.y = ball.getVelocity().y * 0.90f;
+				velocity.y = abs(ball.getVelocity().y) * 0.90f;
 			else
-				velocity.y = -ball.getVelocity().y * 0.90f;
+				velocity.y = -abs(ball.getVelocity().y) * 0.90f;
 			
 			player2.setVelocity(velocity);
 		}
