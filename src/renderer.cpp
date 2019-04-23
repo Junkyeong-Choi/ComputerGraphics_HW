@@ -14,6 +14,8 @@ void Renderer::init(int width, int height) {
 void Renderer::setScreenSize(int _width, int _height) {
 	width = _width;
 	height = _height;
+	glViewport(0, 0, _width, _height);
+	textRenderer.setScreenSize(_width, _height);
 }
 
 void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime) {

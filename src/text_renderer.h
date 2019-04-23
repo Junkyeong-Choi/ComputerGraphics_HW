@@ -34,12 +34,16 @@ public:
 	TextRenderer(GLuint width, GLuint height);
 	// Pre-compiles a list of characters from the given font
 	void Load(std::string font, GLuint fontSize);
+	// Returns the width of text
 	GLfloat TextWidth(std::string text, GLfloat scale);
 	// Renders a string of text using the precompiled list of characters
 	void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color = glm::vec3(1.0f));
+	// Sets screen size
+	void setScreenSize(int _width, int _height);
 private:
 	// Render state
 	GLuint VAO, VBO;
+	int width, height;
 };
 
 #endif 
