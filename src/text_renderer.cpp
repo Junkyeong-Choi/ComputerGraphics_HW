@@ -86,6 +86,21 @@ void TextRenderer::Load(std::string font, GLuint fontSize)
 	FT_Done_FreeType(ft);
 }
 
+GLfloat TextRenderer::TextWidth(std::string text, GLfloat scale)
+{
+	// Iterate through all characters
+	std::string::const_iterator c;
+	GLfloat width = 0;
+
+	for (c = text.begin(); c != text.end(); c++)
+	{
+		Character ch = Characters[*c];
+		width += (ch.Advance >> 6) * scale; // Bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
+	}
+
+	return width;
+}
+
 void TextRenderer::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
 {
 	// Activate corresponding render state	

@@ -8,14 +8,6 @@
 #include "renderer.h"
 #include "text_renderer.h"
 
-enum GameState {
-	GAME_MENU,
-	GAME_READY,
-	GAME_PLAYING,
-	GAME_SCORE,
-	GAME_SET,
-};
-
 enum Direction {
 	POSITIVE_X,
 	POSITIVE_Y,

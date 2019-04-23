@@ -23,21 +23,7 @@ void Game::render() {
 		renderMenu(is2player);
 	}
 	else {
-		renderer.render(player1, player2, ball, viewmode);
-
-		/*
-		renderScore(score1, score2);
-		
-		if (gamestate == GAME_READY)
-			renderReady(delayTime);
-		else if (gamestate == GAME_PLAYING && delayTime > 0)
-			renderGo();
-		else if (gamestate == GAME_SCORE)
-			renderScoreText();
-		else if (gamestate == GAME_SET)
-			renderWinText(is2player, score1, score2);
-		else
-			renderCameraText(false);*/
+		renderer.render(player1, player2, ball, viewmode, gamestate, score1, score2, delayTime);
 	}
 
 	glutSwapBuffers();
@@ -155,16 +141,6 @@ void Game::handleInput(unsigned char key) {
 		case 'r':
 			restartGame();
 			break;
-		case '1':
-			viewmode = VIEW_CHARACTER_EYE;
-			break;
-		case '2':
-			viewmode = VIEW_CHARACTER_BACK;
-			break;
-		case '3':
-			viewmode = VIEW_CELLING;
-			break;
-			return;
 		}
 		player1.setSpeed(speed);
 		player1.setDirectionAngleVelocity(directionAngleVelocity);
@@ -181,12 +157,8 @@ void Game::handleInput(unsigned char key) {
 			resetPosition();
 		}
 	}
-	if (key == '1')
-		viewmode = VIEW_CHARACTER_EYE;
-	else if (key == '2')
-		viewmode = VIEW_CHARACTER_BACK;
-	else if (key == '3')
-		viewmode = VIEW_CELLING;
+	if (key == ' ')
+		viewmode = (ViewMode)((viewmode + 1) % 3);
 }
 
 void Game::handleInputUp(unsigned char key) {

@@ -29,6 +29,7 @@ void drawEllipseStroke(float x, float y, float xradius, float yradius, int start
 }
 
 void set2DCamera() {
+	glUseProgram(0);
 	glShadeModel(GL_FLAT);
 	glDisable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include "settings.h"
+#include "game.h"
 
 void Renderer::init(int width, int height) {
 	shader = Shader("./src/shader.vert", "./src/shader.frag");
@@ -15,7 +16,7 @@ void Renderer::setScreenSize(int _width, int _height) {
 	height = _height;
 }
 
-void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode) {
+void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime) {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
@@ -117,5 +118,44 @@ void Renderer::render(MovableCubeObject& player1, MovableCubeObject& player2, Ba
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	textRenderer.RenderText("10", 50.0f, 50.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+	textRenderer.RenderText(std::to_string(score1), 30.0f, height - 10.0f - 48.0f, 1.0f);
+	GLfloat text_width = textRenderer.TextWidth(std::to_string(score1), 1.0f);
+	textRenderer.RenderText(std::to_string(score2), width - 30.0f - text_width, height - 10.0f - 48.0f, 1.0f);
+
+	if (gamestate == GAME_READY) {
+		text_width = textRenderer.TextWidth(std::to_string(delayTime / 1000 + 1), 1.0f);
+		textRenderer.RenderText(std::to_string(delayTime / 1000 + 1), width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	} else if (gamestate == GAME_PLAYING && delayTime > 0) {
+		text_width = textRenderer.TextWidth("GO!", 1.0f);
+		textRenderer.RenderText("GO!", width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	} else if (gamestate == GAME_SCORE) {
+		text_width = textRenderer.TextWidth("SCORE!", 1.0f);
+		textRenderer.RenderText("SCORE!", width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	} else if (gamestate == GAME_SET) {
+		string s;
+
+		if (score1 > score2)
+			s = "YOU WIN!";
+		else
+			s = "YOU LOSE ;(";
+
+		text_width = textRenderer.TextWidth(s, 1.0f);
+		textRenderer.RenderText(s, width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+
+		text_width = textRenderer.TextWidth("(Press Enter)", 0.8f);
+		textRenderer.RenderText("(Press Enter)", width / 2.0f - text_width / 2.0f, height - 10.0f - 96.0f, 0.8f, glm::vec3(1.0f, 0.0f, 0.0f));
+	} else {
+		string s = "???";
+
+		if (viewmode == VIEW_CHARACTER_EYE)
+			s = "Eye View";
+		else if (viewmode == VIEW_CHARACTER_BACK)
+			s = "Back View";
+		else if (viewmode == VIEW_CELLING)
+			s = "Ceiling View";
+
+		text_width = textRenderer.TextWidth(s + string(" (Spacebar to change)"), 0.5f);
+		textRenderer.RenderText(s + string(" (Spacebar to change)"),width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 0.5f, glm::vec3(0.9f));
+	}
 }

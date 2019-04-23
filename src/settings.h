@@ -1,6 +1,14 @@
 #pragma once
 #include <glm/glm.hpp>
 
+enum GameState {
+	GAME_MENU,
+	GAME_READY,
+	GAME_PLAYING,
+	GAME_SCORE,
+	GAME_SET,
+};
+
 const float PI = (float)3.14159265358979;
 
 const float PLAYER_MAX_VELOCITY = 0.1f;
