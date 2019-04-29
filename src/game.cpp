@@ -171,8 +171,6 @@ void Game::handleInput(unsigned char key) {
 	}
 	if (key == ' ')
 		viewmode = (ViewMode)((viewmode + 1) % 3);
-	else if (key == 'h')
-		renderer.setHiddenLineRemoval(!renderer.getHiddenLineRemoval());
 }
 
 void Game::handleInputUp(unsigned char key) {
