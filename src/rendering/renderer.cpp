@@ -10,6 +10,20 @@ void Renderer::init(int width, int height) {
 	map = Model("./resources/models/box/box.obj");
 	textRenderer = TextRenderer(width, height);
 	textRenderer.Load("./resources/fonts/OCRAEXT.TTF", 48);
+
+	shader.use();
+
+	shader.setVec3("pointLight.ambient", glm::vec3(0.2f));
+	shader.setVec3("pointLight.diffuse", glm::vec3(0.5f));
+	shader.setVec3("pointLight.specular", glm::vec3(1.0f));
+	shader.setFloat("pointLight.constant", 1.0f);
+	shader.setFloat("pointLight.linear", 0.0014f);
+	shader.setFloat("pointLight.quadratic", 0.000007f);
+
+	shader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+	shader.setFloat("material.shininess", 32.0f);
 }
 
 void Renderer::setScreenSize(int _width, int _height) {
@@ -19,20 +33,32 @@ void Renderer::setScreenSize(int _width, int _height) {
 	textRenderer.setScreenSize(_width, _height);
 }
 
+glm::vec3 Renderer::getCameraPosition(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree) {
+	glm::vec3 position;
+	if (viewmode == VIEW_CHARACTER_EYE)
+		position = player1.getPosition() + (player1.getSize() / 2.0f) + (player1.getSize().x / 2.0f) * player1.getDirectionVector();
+	else if (viewmode == VIEW_CHARACTER_BACK)
+		position = player1.getPosition() + (player1.getSize() / 2.0f) - player1.getSize().x * 2 * player1.getDirectionVector() + glm::vec3(0.0f, 0.0f, 10.0f);
+	else if (viewmode == VIEW_CELLING)
+		position = glm::vec3(cameraForViewThree.getPosition().x, cameraForViewThree.getPosition().y, MAP_SIZE.z * 3.0f);
+
+	return position;
+}
+
 glm::mat4 Renderer::getViewMatrix(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree) {
 	glm::vec3 eye, center, up;
+
+	eye = getCameraPosition(player1, viewmode, cameraForViewThree);
+
 	if (viewmode == VIEW_CHARACTER_EYE) {
-		eye = player1.getPosition() + (player1.getSize() / 2.0f) + (player1.getSize().x / 2.0f) * player1.getDirectionVector();
 		center = eye + player1.getDirectionVector();
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
 	else if (viewmode == VIEW_CHARACTER_BACK) {
-		eye = player1.getPosition() + (player1.getSize() / 2.0f) - player1.getSize().x * 2 * player1.getDirectionVector() + glm::vec3(0.0f, 0.0f, 10.0f);
 		center = eye + player1.getDirectionVector() + glm::vec3(0.0f, 0.0f, -0.1f);
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
 	else if (viewmode == VIEW_CELLING) {
-		eye = glm::vec3(cameraForViewThree.getPosition().x, cameraForViewThree.getPosition().y, MAP_SIZE.z * 3.0f);
 		center = glm::vec3(MAP_SIZE.x / 2.0f, MAP_SIZE.y / 2.0f, 0.0f);
 		up = glm::vec3(1.0f, 0.0f, 0.0f);
 	}
@@ -106,6 +132,9 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 	glm::mat4 view = getViewMatrix(player1, viewmode, cameraForViewThree);
 	shader.setMat4("projection", projection);
 	shader.setMat4("view", view);
+
+	shader.setVec3("pointLight.position", ball.getPosition() + glm::vec3(ball.getRadius()) + glm::vec3(0.0f, 0.0f, 10.0f));
+	shader.setVec3("viewPos", getCameraPosition(player1, viewmode, cameraForViewThree));
 
 	SceneGraphNode* sceneGraph =
 		new SceneGraphNode(makeMapModelMatrix() , &map, glm::vec3(1.0f),

@@ -27,7 +27,8 @@ private:
 	Model map;
 	int width;
 	int height;
-
+	
+	glm::vec3 getCameraPosition(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	glm::mat4 getViewMatrix(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	glm::mat4 makePikachuModelMatrix(MovableCubeObject& player, bool isPlayer1);
 	glm::mat4 makePokeballModelMatrix(BallObject& ball);

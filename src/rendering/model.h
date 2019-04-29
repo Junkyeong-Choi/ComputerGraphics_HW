@@ -56,7 +56,7 @@ private:
 
 	void loadModel(string path) {
 		Assimp::Importer importer;
-		const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+		const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 			cout << "ERROR::ASSIMP::" << importer.GetErrorString() << endl;
@@ -105,13 +105,11 @@ private:
 				min.y = vector.y;
 			if (min.z > vector.z)
 				min.z = vector.z;
-
-			/*
+			
 			vector.x = mesh->mNormals[i].x;
 			vector.y = mesh->mNormals[i].y;
 			vector.z = mesh->mNormals[i].z;
 			vertex.Normal = vector;
-			*/
 
 			if (mesh->mTextureCoords[0]) {
 				glm::vec3 vec;
