@@ -25,11 +25,11 @@ public:
 		max = glm::vec3(-inf, -inf, -inf);
 	}
 
-	Model(const char *path) {
+	Model(const char *path, bool smooth) {
 		float inf = std::numeric_limits<float>::infinity();
 		min = glm::vec3(inf, inf, inf);
 		max = glm::vec3(-inf, -inf, -inf);
-		loadModel(path);
+		loadModel(path, smooth);
 	}
 
 	glm::vec3 getSize() {
@@ -54,9 +54,14 @@ private:
 	glm::vec3 min;
 	glm::vec3 max;
 
-	void loadModel(string path) {
+	void loadModel(string path, bool smooth) {
 		Assimp::Importer importer;
-		const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
+		const aiScene *scene;
+
+		if (smooth)
+			scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals);
+		else
+			scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 			cout << "ERROR::ASSIMP::" << importer.GetErrorString() << endl;

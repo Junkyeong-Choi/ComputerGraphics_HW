@@ -149,6 +149,9 @@
     <ClInclude Include="src\rendering\ui.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\shaders\normal.frag" />
+    <None Include="src\shaders\normal.geom" />
+    <None Include="src\shaders\normal.vert" />
     <None Include="src\shaders\shader.frag" />
     <None Include="src\shaders\shader.vert" />
     <None Include="src\shaders\text.frag" />

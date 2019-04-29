@@ -5,9 +5,9 @@
 
 void Renderer::init(int width, int height) {
 	shader = Shader("./src/shaders/shader.vert", "./src/shaders/shader.frag");
-	pikachu = Model("./resources/models/pikachu/Pikachu.obj");
-	pokeball = Model("./resources/models/pokeball/pokeball2.obj");
-	map = Model("./resources/models/box/box.obj");
+	pikachu = Model("./resources/models/pikachu/Pikachu.obj", true);
+	pokeball = Model("./resources/models/pokeball/pokeball2.obj", true);
+	map = Model("./resources/models/box/box.obj", false);
 	textRenderer = TextRenderer(width, height);
 	textRenderer.Load("./resources/fonts/OCRAEXT.TTF", 48);
 
