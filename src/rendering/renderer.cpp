@@ -95,7 +95,8 @@ glm::mat4 Renderer::makeMapModelMatrix() {
 
 void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, CameraForViewThree& cameraForViewThree) {
 	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -128,8 +129,6 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 
 void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime) {
 	glDisable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	textRenderer.RenderText(std::to_string(score1), 30.0f, height - 10.0f - 48.0f, 1.0f);
 	GLfloat text_width = textRenderer.TextWidth(std::to_string(score1), 1.0f);
