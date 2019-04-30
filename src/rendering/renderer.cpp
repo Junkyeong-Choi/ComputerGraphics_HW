@@ -4,26 +4,42 @@
 #include "sceneGraphNode.h"
 
 void Renderer::init(int width, int height) {
-	shader = Shader("./src/shaders/shader.vert", "./src/shaders/shader.frag");
+	gouraudShader = Shader("./src/shaders/gouraud.vert", "./src/shaders/gouraud.frag");
+	phongShader = Shader("./src/shaders/phong.vert", "./src/shaders/phong.frag");
 	pikachu = Model("./resources/models/pikachu/Pikachu.obj", true);
 	pokeball = Model("./resources/models/pokeball/pokeball2.obj", true);
 	map = Model("./resources/models/box/box.obj", false);
+	isPhong = false;
 	textRenderer = TextRenderer(width, height);
 	textRenderer.Load("./resources/fonts/OCRAEXT.TTF", 48);
 
-	shader.use();
+	gouraudShader.use();
 
-	shader.setVec3("pointLight.ambient", glm::vec3(0.2f));
-	shader.setVec3("pointLight.diffuse", glm::vec3(0.5f));
-	shader.setVec3("pointLight.specular", glm::vec3(1.0f));
-	shader.setFloat("pointLight.constant", 1.0f);
-	shader.setFloat("pointLight.linear", 0.045f);
-	shader.setFloat("pointLight.quadratic", 0.0075f);
+	gouraudShader.setVec3("pointLight.ambient", glm::vec3(0.2f));
+	gouraudShader.setVec3("pointLight.diffuse", glm::vec3(0.5f));
+	gouraudShader.setVec3("pointLight.specular", glm::vec3(1.0f));
+	gouraudShader.setFloat("pointLight.constant", 1.0f);
+	gouraudShader.setFloat("pointLight.linear", 0.045f);
+	gouraudShader.setFloat("pointLight.quadratic", 0.0075f);
 
-	shader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
-	shader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
-	shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-	shader.setFloat("material.shininess", 32.0f);
+	gouraudShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	gouraudShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	gouraudShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+	gouraudShader.setFloat("material.shininess", 32.0f);
+
+	phongShader.use();
+
+	phongShader.setVec3("pointLight.ambient", glm::vec3(0.2f));
+	phongShader.setVec3("pointLight.diffuse", glm::vec3(0.5f));
+	phongShader.setVec3("pointLight.specular", glm::vec3(1.0f));
+	phongShader.setFloat("pointLight.constant", 1.0f);
+	phongShader.setFloat("pointLight.linear", 0.045f);
+	phongShader.setFloat("pointLight.quadratic", 0.0075f);
+
+	phongShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
+	phongShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
+	phongShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+	phongShader.setFloat("material.shininess", 32.0f);
 }
 
 void Renderer::setScreenSize(int _width, int _height) {
@@ -126,6 +142,8 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	Shader& shader = isPhong ? phongShader : gouraudShader;
+
 	shader.use();
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 1000.0f);
@@ -211,4 +229,12 @@ void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, in
 		text_width = textRenderer.TextWidth(s + string(" (Spacebar to change)"), 0.5f);
 		textRenderer.RenderText(s + string(" (Spacebar to change)"), width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 0.5f, glm::vec3(0.9f));
 	}
+}
+
+bool Renderer::getIsPhong() {
+	return isPhong;
+}
+
+void Renderer::setIsPhong(bool value) {
+	isPhong = value;
 }
