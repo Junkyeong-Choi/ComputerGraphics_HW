@@ -21,7 +21,7 @@ void Game::render() {
 		renderMenu();
 	}
 	else {
-		renderer.renderScene(player1, player2, ball, viewmode, cameraForViewThree);
+		renderer.renderScene(player1, player2, ball, viewmode, cameraForViewThree, degree);
 		renderer.renderText(viewmode, gamestate, score1, score2, delayTime);
 	}
 
@@ -64,7 +64,8 @@ Game::Game() :
 	player1Scored(false),
 	viewmode(VIEW_CHARACTER_BACK),
 	cameraForViewThree(glm::vec2(0.0f,0.0f), glm::vec2(PLAYER_ONE_POSITION)),
-	renderer() {}
+	renderer(),
+	degree(0) {}
 
 Game::~Game() {}
 
@@ -89,6 +90,8 @@ void Game::resetPosition() {
 	if ((player1Scored && ballVelocity.x < 0) || (!player1Scored && ballVelocity.x > 0))
 		ballVelocity.x = -ballVelocity.x;
 	ball.setVelocity(ballVelocity);
+
+	degree = 0;
 }
 
 void Game::restartGame() {
@@ -292,6 +295,12 @@ void Game::updatePlayer(int delta) {
 	player2.setPosition(player2Position);
 }
 
+void Game::updateDirLight(int delta) {
+	degree += (int)(DIR_LIGHT_ANGLE_VELOCITY * delta);
+	if (degree >= 360)
+		degree = degree % 360;
+}
+
 void Game::update(int delta) {
 
 	if (gamestate == GAME_READY) {
@@ -335,6 +344,7 @@ void Game::update(int delta) {
 	if (gamestate == GAME_PLAYING) {
 		updateBall(delta);
 		updatePlayer(delta);
+		updateDirLight(delta);
 		cameraForViewThree.move(delta);
 
 		if (delayTime > 0)
@@ -369,6 +379,7 @@ void Game::update(int delta) {
 	else if (gamestate == GAME_SCORE) {
 		updateBall(delta / 2);
 		updatePlayer(delta / 2);
+		updateDirLight(delta / 2);
 		cameraForViewThree.move(delta/2);
 		delayTime -= delta;
 
@@ -380,6 +391,7 @@ void Game::update(int delta) {
 	}
 	else if (gamestate == GAME_SET) {
 		updateBall(delta / 2);
+		updateDirLight(delta / 2);
 	}
 
 	return;

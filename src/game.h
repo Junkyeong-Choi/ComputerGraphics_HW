@@ -33,11 +33,13 @@ private:
 	Renderer renderer;
 	ViewMode viewmode;
 	CameraForViewThree cameraForViewThree;
+	int degree;
 
 	void resetPosition();
 	void restartGame();
 	void updateBall(int delta);
 	void updatePlayer(int delta);
+	void updateDirLight(int delta);
 public:
 	Game();
 	~Game();

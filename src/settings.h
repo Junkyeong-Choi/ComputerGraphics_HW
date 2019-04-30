@@ -34,3 +34,5 @@ const float BALL_SPEED = 0.1f;
 const int WINNING_SCORE = 5;
 
 const glm::vec3 MAP_SIZE = glm::vec3(192.0f, 108.0f, 50.0f);
+
+const float DIR_LIGHT_ANGLE_VELOCITY = 0.1f;

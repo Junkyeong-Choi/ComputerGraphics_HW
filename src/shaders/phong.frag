@@ -51,6 +51,7 @@ void main()
 	if (useNormalMap) {
 		norm = texture(material.texture_normal1, TexCoords).rgb;
 		norm = normalize(norm * 2.0f - 1.0f);
+		norm = normalize(TBN * norm);
 	} else {
 		norm = normalize(Normal);
 	}

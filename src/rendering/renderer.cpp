@@ -136,7 +136,7 @@ glm::mat4 Renderer::makeMapModelMatrix() {
 	return model;
 }
 
-void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, CameraForViewThree& cameraForViewThree) {
+void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, CameraForViewThree& cameraForViewThree, int degree) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -156,7 +156,6 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 	shader.setVec3("pointLight.position", ball.getPosition() + glm::vec3(ball.getRadius()) + glm::vec3(0.0f, 0.0f, 10.0f));
 	shader.setVec3("viewPos", getCameraPosition(player1, viewmode, cameraForViewThree));
 
-	int degree = glutGet(GLUT_ELAPSED_TIME) / 10;
 	float radian = glm::radians((float)(degree % 180));
 	float dayOrNight = degree % 360 < 180 ? 1.0f : 0.2f;
 

@@ -42,7 +42,7 @@ public:
 	~Renderer() {}
 	void init(int width, int height);
 	void setScreenSize(int _width, int _height);
-	void renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
+	void renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, CameraForViewThree& cameraForViewThree, int degree);
 	void renderText(ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime);
 	bool getIsPhong();
 	void setIsPhong(bool value);
