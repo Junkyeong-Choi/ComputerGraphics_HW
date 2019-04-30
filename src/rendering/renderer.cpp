@@ -20,8 +20,8 @@ void Renderer::init(int width, int height) {
 	gouraudShader.setVec3("pointLight.diffuse", glm::vec3(0.5f));
 	gouraudShader.setVec3("pointLight.specular", glm::vec3(1.0f));
 	gouraudShader.setFloat("pointLight.constant", 1.0f);
-	gouraudShader.setFloat("pointLight.linear", 0.045f);
-	gouraudShader.setFloat("pointLight.quadratic", 0.0075f);
+	gouraudShader.setFloat("pointLight.linear", 0.027f);
+	gouraudShader.setFloat("pointLight.quadratic", 0.0028f);
 
 	gouraudShader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
 	gouraudShader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);

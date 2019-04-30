@@ -9,5 +9,6 @@ Ks 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
-map_Kd diffuse.jpg
-map_Ks specular.jpg
+map_Kd brickwall.jpg
+map_Ks brickwall.jpg
+map_bump brickwall_normal.jpg
