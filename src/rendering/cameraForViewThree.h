@@ -20,5 +20,14 @@ public:
 		glm::vec2 displacement = (float)delta * velocity;
 
 		position += displacement;
+
+		if (position.x > MAP_SIZE.x / 2)
+			position.x = MAP_SIZE.x / 2;
+		if (position.x < -MAP_SIZE.x / 5)
+			position.x = -MAP_SIZE.x / 5;
+		if (position.y > 1.5 * MAP_SIZE.y)
+			position.y = 1.5 * MAP_SIZE.y;
+		if (position.y < -MAP_SIZE.y / 2)
+			position.y = -MAP_SIZE.y / 2;
 	}
 };
