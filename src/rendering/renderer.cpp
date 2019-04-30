@@ -10,6 +10,7 @@ void Renderer::init(int width, int height) {
 	pokeball = Model("./resources/models/ball/ball.obj", true);
 	map = Model("./resources/models/box/box.obj", false);
 	isPhong = false;
+	useTexture = false;
 	textRenderer = TextRenderer(width, height);
 	textRenderer.Load("./resources/fonts/OCRAEXT.TTF", 48);
 
@@ -145,6 +146,7 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 	Shader& shader = isPhong ? phongShader : gouraudShader;
 
 	shader.use();
+	shader.setBool("useTexture", useTexture);
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 1000.0f);
 	glm::mat4 view = getViewMatrix(player1, viewmode, cameraForViewThree);
@@ -191,7 +193,8 @@ void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, in
 	textRenderer.RenderText(std::to_string(score2), width - 30.0f - text_width, height - 10.0f - 48.0f, 1.0f);
 
 	string view = "???";
-	string shading = isPhong ? "Phong shading" : "Gouraud shading";
+	string shading = isPhong ? " | Phong shading" : " | Gouraud shading";
+	string texture = useTexture ? " | Texture(O)" : " | Texture(X)";
 
 	if (viewmode == VIEW_CHARACTER_EYE)
 		view = "Eye View";
@@ -200,11 +203,11 @@ void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, in
 	else if (viewmode == VIEW_CEILING)
 		view = "Ceiling View";
 
-	text_width = textRenderer.TextWidth(view + string(" (Spacebar to change)"), 0.3f);
-	textRenderer.RenderText(view + string(" (Spacebar to change)"), 30.0f, 30.0f, 0.3f, glm::vec3(1.0f));
+	text_width = textRenderer.TextWidth(view + shading + texture, 0.3f);
+	textRenderer.RenderText(view + shading + texture, width / 2.0f - text_width / 2.0f, 35.0f, 0.3f, glm::vec3(1.0f));
 
-	text_width = textRenderer.TextWidth(shading + string(" (\'f\' to change)"), 0.3f);
-	textRenderer.RenderText(shading + string(" (\'f\' to change)"), width - 30.0f - text_width, 30.0f, 0.3f, glm::vec3(1.0f));
+	text_width = textRenderer.TextWidth("Press Spacebar | F | T to change", 0.3f);
+	textRenderer.RenderText("Press Spacebar | F | T to change", width / 2.0f - text_width / 2.0f, 15.0f, 0.3f, glm::vec3(1.0f));
 
 	if (gamestate == GAME_READY) {
 		text_width = textRenderer.TextWidth(std::to_string(delayTime / 1000 + 1), 1.0f);
@@ -240,4 +243,12 @@ bool Renderer::getIsPhong() {
 
 void Renderer::setIsPhong(bool value) {
 	isPhong = value;
+}
+
+bool Renderer::getUseTexture() {
+	return useTexture;
+}
+
+void Renderer::setUseTexture(bool value) {
+	useTexture = value;
 }

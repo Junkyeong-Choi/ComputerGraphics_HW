@@ -120,6 +120,9 @@ void Game::init(int argc, char* argv[], int width, int height, bool isFullScreen
 }
 
 void Game::handleInput(unsigned char key) {
+	if ('A' <= key && key <= 'Z')
+		key = key - 'A' + 'a';
+
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
 		float speed = player1.getSpeed();
 		glm::vec2 directionAngleVelocity = player1.getDirectionAngleVelocity();
@@ -177,9 +180,14 @@ void Game::handleInput(unsigned char key) {
 		viewmode = (ViewMode)((viewmode + 1) % 3);
 	else if (key == 'f')
 		renderer.setIsPhong(!renderer.getIsPhong());
+	else if (key == 't')
+		renderer.setUseTexture(!renderer.getUseTexture());
 }
 
 void Game::handleInputUp(unsigned char key) {
+	if ('A' <= key && key <= 'Z')
+		key = key - 'A' + 'a';
+
 	if (gamestate == GAME_PLAYING || gamestate == GAME_SCORE) {
 		float speed = player1.getSpeed();
 		glm::vec2 directionAngleVelocity = player1.getDirectionAngleVelocity();

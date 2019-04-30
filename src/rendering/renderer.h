@@ -29,6 +29,7 @@ private:
 	int width;
 	int height;
 	bool isPhong;
+	bool useTexture;
 	
 	glm::vec3 getCameraPosition(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	glm::mat4 getViewMatrix(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
@@ -44,4 +45,6 @@ public:
 	void renderText(ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime);
 	bool getIsPhong();
 	void setIsPhong(bool value);
+	bool getUseTexture();
+	void setUseTexture(bool value);
 };
