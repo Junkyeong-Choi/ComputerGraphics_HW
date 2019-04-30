@@ -17,8 +17,8 @@ void Renderer::init(int width, int height) {
 	shader.setVec3("pointLight.diffuse", glm::vec3(0.5f));
 	shader.setVec3("pointLight.specular", glm::vec3(1.0f));
 	shader.setFloat("pointLight.constant", 1.0f);
-	shader.setFloat("pointLight.linear", 0.0014f);
-	shader.setFloat("pointLight.quadratic", 0.000007f);
+	shader.setFloat("pointLight.linear", 0.045f);
+	shader.setFloat("pointLight.quadratic", 0.0075f);
 
 	shader.setVec3("material.ambient", 1.0f, 1.0f, 1.0f);
 	shader.setVec3("material.diffuse", 1.0f, 1.0f, 1.0f);
@@ -135,6 +135,15 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 
 	shader.setVec3("pointLight.position", ball.getPosition() + glm::vec3(ball.getRadius()) + glm::vec3(0.0f, 0.0f, 10.0f));
 	shader.setVec3("viewPos", getCameraPosition(player1, viewmode, cameraForViewThree));
+
+	int degree = glutGet(GLUT_ELAPSED_TIME) / 10;
+	float radian = glm::radians((float)(degree % 180));
+	float dayOrNight = degree % 360 < 180 ? 1.0f : 0.2f;
+
+	shader.setVec3("dirLight.direction", glm::vec3(0.0f, -glm::cos(radian), -glm::sin(radian)));
+	shader.setVec3("dirLight.ambient", glm::vec3(0.2f));
+	shader.setVec3("dirLight.diffuse", glm::vec3(0.5f * dayOrNight * glm::sin(radian)));
+	shader.setVec3("dirLight.specular", glm::vec3(1.0f * dayOrNight * glm::sin(radian)));
 
 	SceneGraphNode* sceneGraph =
 		new SceneGraphNode(makeMapModelMatrix() , &map, glm::vec3(1.0f),
