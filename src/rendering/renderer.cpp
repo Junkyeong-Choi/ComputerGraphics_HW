@@ -55,7 +55,7 @@ glm::vec3 Renderer::getCameraPosition(MovableCubeObject& player1, ViewMode viewm
 		position = player1.getPosition() + (player1.getSize() / 2.0f) + (player1.getSize().x / 2.0f) * player1.getDirectionVector();
 	else if (viewmode == VIEW_CHARACTER_BACK)
 		position = player1.getPosition() + (player1.getSize() / 2.0f) - player1.getSize().x * 2 * player1.getDirectionVector() + glm::vec3(0.0f, 0.0f, 10.0f);
-	else if (viewmode == VIEW_CELLING)
+	else if (viewmode == VIEW_CEILING)
 		position = glm::vec3(cameraForViewThree.getPosition().x, cameraForViewThree.getPosition().y, MAP_SIZE.z * 3.0f);
 
 	return position;
@@ -74,7 +74,7 @@ glm::mat4 Renderer::getViewMatrix(MovableCubeObject& player1, ViewMode viewmode,
 		center = eye + player1.getDirectionVector() + glm::vec3(0.0f, 0.0f, -0.1f);
 		up = glm::vec3(0.0f, 0.0f, 1.0f);
 	}
-	else if (viewmode == VIEW_CELLING) {
+	else if (viewmode == VIEW_CEILING) {
 		center = glm::vec3(MAP_SIZE.x / 2.0f, MAP_SIZE.y / 2.0f, 0.0f);
 		up = glm::vec3(1.0f, 0.0f, 0.0f);
 	}
@@ -197,7 +197,7 @@ void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, in
 		view = "Eye View";
 	else if (viewmode == VIEW_CHARACTER_BACK)
 		view = "Back View";
-	else if (viewmode == VIEW_CELLING)
+	else if (viewmode == VIEW_CEILING)
 		view = "Ceiling View";
 
 	text_width = textRenderer.TextWidth(view + string(" (Spacebar to change)"), 0.3f);

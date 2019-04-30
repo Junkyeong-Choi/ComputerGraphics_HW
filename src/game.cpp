@@ -141,19 +141,19 @@ void Game::handleInput(unsigned char key) {
 			restartGame();
 			break;
 		case 'j':
-			if(viewmode == VIEW_CELLING)
+			if(viewmode == VIEW_CEILING)
 				cameraForViewThreeVelocity.y = 0.1f;
 			break;
 		case 'l':
-			if (viewmode == VIEW_CELLING)
+			if (viewmode == VIEW_CEILING)
 				cameraForViewThreeVelocity.y = -0.1f;
 			break;
 		case 'i':
-			if (viewmode == VIEW_CELLING)
+			if (viewmode == VIEW_CEILING)
 				cameraForViewThreeVelocity.x = 0.1f;
 			break;
 		case 'k':
-			if (viewmode == VIEW_CELLING)
+			if (viewmode == VIEW_CEILING)
 				cameraForViewThreeVelocity.x = -0.1f;
 			break;
 		}

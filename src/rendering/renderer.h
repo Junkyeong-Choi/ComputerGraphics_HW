@@ -15,7 +15,7 @@
 enum ViewMode {
 	VIEW_CHARACTER_EYE,
 	VIEW_CHARACTER_BACK,
-	VIEW_CELLING
+	VIEW_CEILING
 };
 
 class Renderer {
