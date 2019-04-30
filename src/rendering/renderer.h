@@ -21,12 +21,14 @@ enum ViewMode {
 class Renderer {
 private:
 	TextRenderer textRenderer;
-	Shader shader;
+	Shader gouraudShader;
+	Shader phongShader;
 	Model pikachu;
 	Model pokeball;
 	Model map;
 	int width;
 	int height;
+	bool isPhong;
 	
 	glm::vec3 getCameraPosition(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	glm::mat4 getViewMatrix(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
@@ -40,4 +42,6 @@ public:
 	void setScreenSize(int _width, int _height);
 	void renderScene(MovableCubeObject& player1, MovableCubeObject& player2, BallObject& ball, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	void renderText(ViewMode viewmode, GameState gamestate, int score1, int score2, int delayTime);
+	bool getIsPhong();
+	void setIsPhong(bool value);
 };

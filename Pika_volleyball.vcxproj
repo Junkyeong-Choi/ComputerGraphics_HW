@@ -149,11 +149,13 @@
     <ClInclude Include="src\rendering\ui.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\shaders\gouraud.frag" />
+    <None Include="src\shaders\gouraud.vert" />
     <None Include="src\shaders\normal.frag" />
     <None Include="src\shaders\normal.geom" />
     <None Include="src\shaders\normal.vert" />
-    <None Include="src\shaders\shader.frag" />
-    <None Include="src\shaders\shader.vert" />
+    <None Include="src\shaders\phong.frag" />
+    <None Include="src\shaders\phong.vert" />
     <None Include="src\shaders\text.frag" />
     <None Include="src\shaders\text.vert" />
   </ItemGroup>
