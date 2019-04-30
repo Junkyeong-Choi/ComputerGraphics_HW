@@ -141,16 +141,20 @@ void Game::handleInput(unsigned char key) {
 			restartGame();
 			break;
 		case 'j':
-			cameraForViewThreeVelocity.y = 0.1f;
+			if(viewmode == VIEW_CELLING)
+				cameraForViewThreeVelocity.y = 0.1f;
 			break;
 		case 'l':
-			cameraForViewThreeVelocity.y = -0.1f;
+			if (viewmode == VIEW_CELLING)
+				cameraForViewThreeVelocity.y = -0.1f;
 			break;
 		case 'i':
-			cameraForViewThreeVelocity.x = 0.1f;
+			if (viewmode == VIEW_CELLING)
+				cameraForViewThreeVelocity.x = 0.1f;
 			break;
 		case 'k':
-			cameraForViewThreeVelocity.x = -0.1f;
+			if (viewmode == VIEW_CELLING)
+				cameraForViewThreeVelocity.x = -0.1f;
 			break;
 		}
 		player1.setSpeed(speed);
