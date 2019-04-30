@@ -4,6 +4,7 @@ out vec4 FragColor;
 struct Material {
 	sampler2D texture_diffuse1;
 	sampler2D texture_specular1;
+	sampler2D texture_normal1;
 	float shininess;
 };
 
@@ -30,7 +31,9 @@ struct PointLight {
 in vec3 FragPos;
 in vec2 TexCoords;
 in vec3 Normal;
+in mat3 TBN;
 
+uniform bool useNormalMap;
 uniform bool useTexture;
 uniform vec3 aColor;
 uniform vec3 viewPos;
@@ -43,7 +46,15 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
-	vec3 norm = normalize(Normal);
+	vec3 norm;
+
+	if (useNormalMap) {
+		norm = texture(material.texture_normal1, TexCoords).rgb;
+		norm = normalize(norm * 2.0f - 1.0f);
+	} else {
+		norm = normalize(Normal);
+	}
+
     vec3 viewDir = normalize(viewPos - FragPos);
 
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
