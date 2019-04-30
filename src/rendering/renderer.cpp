@@ -7,7 +7,7 @@ void Renderer::init(int width, int height) {
 	gouraudShader = Shader("./src/shaders/gouraud.vert", "./src/shaders/gouraud.frag");
 	phongShader = Shader("./src/shaders/phong.vert", "./src/shaders/phong.frag");
 	pikachu = Model("./resources/models/pikachu/Pikachu.obj", true);
-	pokeball = Model("./resources/models/pokeball/pokeball2.obj", true);
+	pokeball = Model("./resources/models/ball/ball.obj", true);
 	map = Model("./resources/models/box/box.obj", false);
 	isPhong = false;
 	textRenderer = TextRenderer(width, height);
