@@ -30,6 +30,7 @@ private:
 	int height;
 	bool isPhong;
 	bool useTexture;
+	bool useNormalMap;
 	
 	glm::vec3 getCameraPosition(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
 	glm::mat4 getViewMatrix(MovableCubeObject& player1, ViewMode viewmode, CameraForViewThree& cameraForViewThree);
@@ -47,4 +48,6 @@ public:
 	void setIsPhong(bool value);
 	bool getUseTexture();
 	void setUseTexture(bool value);
+	bool getUseNormalMap();
+	void setUseNormalMap(bool value);
 };

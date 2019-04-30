@@ -166,7 +166,7 @@ void Renderer::renderScene(MovableCubeObject& player1, MovableCubeObject& player
 	shader.setVec3("dirLight.specular", glm::vec3(1.0f * dayOrNight * glm::sin(radian)));
 
 	SceneGraphNode* sceneGraph =
-		new SceneGraphNode(makeMapModelMatrix() , &map, glm::vec3(1.0f), true,
+		new SceneGraphNode(makeMapModelMatrix() , &map, glm::vec3(1.0f), useNormalMap,
 			nullptr,
 			new SceneGraphNode(makePikachuModelMatrix(player1, true), &pikachu, glm::vec3(1.0f, 1.0f, 0.0f), false,
 				nullptr,
@@ -195,6 +195,7 @@ void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, in
 	string view = "???";
 	string shading = isPhong ? " | Phong shading" : " | Gouraud shading";
 	string texture = useTexture ? " | Texture(O)" : " | Texture(X)";
+	string normal = useNormalMap ? " | Normal Mapping(O)" : " | Normal Mapping(X)";
 
 	if (viewmode == VIEW_CHARACTER_EYE)
 		view = "Eye View";
@@ -203,11 +204,11 @@ void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, in
 	else if (viewmode == VIEW_CEILING)
 		view = "Ceiling View";
 
-	text_width = textRenderer.TextWidth(view + shading + texture, 0.3f);
-	textRenderer.RenderText(view + shading + texture, width / 2.0f - text_width / 2.0f, 35.0f, 0.3f, glm::vec3(1.0f));
+	text_width = textRenderer.TextWidth(view + shading + texture + normal, 0.3f);
+	textRenderer.RenderText(view + shading + texture + normal, width / 2.0f - text_width / 2.0f, 35.0f, 0.3f, glm::vec3(1.0f));
 
-	text_width = textRenderer.TextWidth("Press Spacebar | F | T to change", 0.3f);
-	textRenderer.RenderText("Press Spacebar | F | T to change", width / 2.0f - text_width / 2.0f, 15.0f, 0.3f, glm::vec3(1.0f));
+	text_width = textRenderer.TextWidth("Press Spacebar | F | T | N to change", 0.3f);
+	textRenderer.RenderText("Press Spacebar | F | T | N to change", width / 2.0f - text_width / 2.0f, 15.0f, 0.3f, glm::vec3(1.0f));
 
 	if (gamestate == GAME_READY) {
 		text_width = textRenderer.TextWidth(std::to_string(delayTime / 1000 + 1), 1.0f);
@@ -251,4 +252,12 @@ bool Renderer::getUseTexture() {
 
 void Renderer::setUseTexture(bool value) {
 	useTexture = value;
+}
+
+bool Renderer::getUseNormalMap() {
+	return useNormalMap;
+}
+
+void Renderer::setUseNormalMap(bool value) {
+	useNormalMap = value;
 }

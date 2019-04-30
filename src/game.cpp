@@ -182,6 +182,8 @@ void Game::handleInput(unsigned char key) {
 		renderer.setIsPhong(!renderer.getIsPhong());
 	else if (key == 't')
 		renderer.setUseTexture(!renderer.getUseTexture());
+	else if (key == 'n')
+		renderer.setUseNormalMap(!renderer.getUseNormalMap());
 }
 
 void Game::handleInputUp(unsigned char key) {
