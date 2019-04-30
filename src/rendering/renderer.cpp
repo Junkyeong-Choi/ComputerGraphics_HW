@@ -190,6 +190,22 @@ void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, in
 	GLfloat text_width = textRenderer.TextWidth(std::to_string(score1), 1.0f);
 	textRenderer.RenderText(std::to_string(score2), width - 30.0f - text_width, height - 10.0f - 48.0f, 1.0f);
 
+	string view = "???";
+	string shading = isPhong ? "Phong shading" : "Gouraud shading";
+
+	if (viewmode == VIEW_CHARACTER_EYE)
+		view = "Eye View";
+	else if (viewmode == VIEW_CHARACTER_BACK)
+		view = "Back View";
+	else if (viewmode == VIEW_CELLING)
+		view = "Ceiling View";
+
+	text_width = textRenderer.TextWidth(view + string(" (Spacebar to change)"), 0.3f);
+	textRenderer.RenderText(view + string(" (Spacebar to change)"), 30.0f, 30.0f, 0.3f, glm::vec3(1.0f));
+
+	text_width = textRenderer.TextWidth(shading + string(" (\'f\' to change)"), 0.3f);
+	textRenderer.RenderText(shading + string(" (\'f\' to change)"), width - 30.0f - text_width, 30.0f, 0.3f, glm::vec3(1.0f));
+
 	if (gamestate == GAME_READY) {
 		text_width = textRenderer.TextWidth(std::to_string(delayTime / 1000 + 1), 1.0f);
 		textRenderer.RenderText(std::to_string(delayTime / 1000 + 1), width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -215,19 +231,6 @@ void Renderer::renderText(ViewMode viewmode, GameState gamestate, int score1, in
 
 		text_width = textRenderer.TextWidth("(Press Enter)", 0.8f);
 		textRenderer.RenderText("(Press Enter)", width / 2.0f - text_width / 2.0f, height - 10.0f - 96.0f, 0.8f, glm::vec3(1.0f, 0.0f, 0.0f));
-	}
-	else {
-		string s = "???";
-
-		if (viewmode == VIEW_CHARACTER_EYE)
-			s = "Eye View";
-		else if (viewmode == VIEW_CHARACTER_BACK)
-			s = "Back View";
-		else if (viewmode == VIEW_CELLING)
-			s = "Ceiling View";
-
-		text_width = textRenderer.TextWidth(s + string(" (Spacebar to change)"), 0.5f);
-		textRenderer.RenderText(s + string(" (Spacebar to change)"), width / 2.0f - text_width / 2.0f, height - 10.0f - 48.0f, 0.5f, glm::vec3(0.9f));
 	}
 }
 
